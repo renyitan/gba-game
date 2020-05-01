@@ -165,7 +165,7 @@ typedef unsigned int word;
 #define TIMER_FREQUENCY_1024 0x0003
 
 // other defines
-#define REG_VCOUNT     *(u16*)0x4000006
+#define REG_VCOUNT     *(volatile u16*)0x4000006
 #define REG_WIN0H      *(u16*)0x4000040
 #define REG_WIN1H      *(u16*)0x4000042
 #define REG_WIN0V      *(u16*)0x4000044
