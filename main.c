@@ -4,11 +4,13 @@
 #include "numbers.h"
 #include "gba.h"
 #include "mygbalib.h"
+#include "position.h";
 
 // Global variable for counter
 int IDENTITY = 0;
 int XPOS = 10;
 int YPOS = SCREEN_HEIGHT / 2;
+int num = 1;
 
 void Handler(void)
 {

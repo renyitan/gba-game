@@ -1208,24 +1208,46 @@ u16 sprites[] = {
 0,0,0,0,0,0,0,0
 };
 # 2 "mygbalib.h" 2
+# 1 "position.h" 1
+extern int XPOS;
+extern int YPOS;
+extern int IDENTITY;
+extern int num;
+# 3 "mygbalib.h" 2
 
 
 void checkbutton(void)
 {
 
     u16 buttons = (0x3FF & (~*(volatile u16*)0x4000130));
-# 25 "mygbalib.h"
+    int displacement = 1;
+
     if ((buttons & 0x010) == 0x010)
     {
-        buttonR();
+        XPOS = XPOS + displacement;
+        drawSprite(IDENTITY, num, XPOS, YPOS);
     }
-# 41 "mygbalib.h"
+    if ((buttons & 0x020) == 0x020)
+    {
+        XPOS = XPOS - displacement;
+        drawSprite(IDENTITY, num, XPOS, YPOS);
+    }
+    if ((buttons & 0x080) == 0x080)
+    {
+        YPOS = YPOS + displacement;
+        drawSprite(IDENTITY, num, XPOS, YPOS);
+    }
+    if ((buttons & 0x040) == 0x040)
+    {
+        YPOS = YPOS - displacement;
+        drawSprite(IDENTITY, num, XPOS, YPOS);
+    }
 }
 
-void buttonR() {
+void buttonR()
+{
     drawSprite(0, 1, 20, 160 / 2);
 }
-
 
 void fillPalette(void)
 {
@@ -1236,38 +1258,44 @@ void fillPalette(void)
         ((unsigned short *) 0x5000200)[i] = palette[i];
 }
 
-
 void fillSprites(void)
 {
     int i;
 
 
-    for (i = 0; i < 128*16*16; i++)
-        ((unsigned short *) 0x6010000)[i] = (sprites[i*2+1] << 8) + sprites[i*2];
+    for (i = 0; i < 128 * 16 * 16; i++)
+        ((unsigned short *) 0x6010000)[i] = (sprites[i * 2 + 1] << 8) + sprites[i * 2];
 
 
-    for(i = 0; i < 128; i++)
-        drawSprite(0, i, 240,160);
+    for (i = 0; i < 128; i++)
+        drawSprite(0, i, 240, 160);
 }
-
 
 void drawSprite(int numb, int N, int x, int y)
 {
 
-    *(unsigned short *)(0x7000000 + 8*N) = y | 0x2000;
-    *(unsigned short *)(0x7000002 + 8*N) = x | 0x4000;
-    *(unsigned short *)(0x7000004 + 8*N) = numb*8;
+    *(unsigned short *)(0x7000000 + 8 * N) = y | 0x2000;
+    *(unsigned short *)(0x7000002 + 8 * N) = x | 0x4000;
+    *(unsigned short *)(0x7000004 + 8 * N) = numb * 8;
 }
 # 7 "main.c" 2
+# 1 "position.h" 1
+extern int XPOS;
+extern int YPOS;
+extern int IDENTITY;
+extern int num;
+# 8 "main.c" 2
 
 
-int COUNTER_NUM = 0;
+int IDENTITY = 0;
 int XPOS = 10;
+int YPOS = 160 / 2;
+int num = 1;
 
 void Handler(void)
 {
     *(u16*)0x4000208 = 0x00;
-# 32 "main.c"
+
     if ((*(u16*)0x4000202 & 0x1000) == 0x1000)
     {
         checkbutton();
@@ -1301,7 +1329,7 @@ int main(void)
     *(u16*)0x4000132 |= 0x7FFF;
     *(u16*)0x4000208 = 0x1;
 
-    drawSprite(COUNTER_NUM, 1, 10, 160 / 2);
+    drawSprite(IDENTITY, 1, XPOS, YPOS);
 
     while (1)
         ;

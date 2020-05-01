@@ -7102,26 +7102,100 @@ checkbutton:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 1, uses_anonymous_args = 0
 	mov	ip, sp
-	stmfd	sp!, {fp, ip, lr, pc}
-	mov	r2, #67108864
-	add	r2, r2, #304
-	ldrh	r3, [r2, #0]
-	mvn	r3, r3
-	tst	r3, #16
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	mov	r3, #67108864
+	add	r3, r3, #304
+	ldrh	r2, [r3, #0]
+	mvn	r2, r2
+	mov	r4, r2, asl #22
+	mov	r4, r4, lsr #22
+	tst	r4, #16
 	sub	fp, ip, #-4294967292
-	bne	.L3
-.L1:
-	ldmea	fp, {fp, sp, lr}
-	bx	lr
+	ldr	r5, .L10
+	bne	.L6
+.L2:
+	tst	r4, #32
+	ldr	r5, .L10
+	bne	.L7
 .L3:
-	ldr	r0, .L4
-	mov	lr, pc
-	bx	r0
-	b	.L1
-.L5:
-	.align	2
+	tst	r4, #128
+	ldr	ip, .L10+4
+	bne	.L8
 .L4:
-	.word	buttonR
+	tst	r4, #64
+	ldr	ip, .L10+4
+	bne	.L9
+.L1:
+	ldmea	fp, {r4, r5, fp, sp, lr}
+	bx	lr
+.L9:
+	ldr	r3, .L10+8
+	ldr	lr, [ip, #0]	@  YPOS
+	ldr	r2, .L10+12
+	ldr	r0, [r3, #0]	@  IDENTITY
+	ldr	r3, .L10
+	sub	lr, lr, #1
+	ldr	r1, [r2, #0]	@  num
+	str	lr, [ip, #0]	@  YPOS
+	ldr	r2, [r3, #0]	@  XPOS
+	ldr	ip, .L10+16
+	mov	r3, lr
+	mov	lr, pc
+	bx	ip
+	b	.L1
+.L8:
+	ldr	r3, .L10+8
+	ldr	lr, [ip, #0]	@  YPOS
+	ldr	r2, .L10+12
+	ldr	r0, [r3, #0]	@  IDENTITY
+	ldr	r3, .L10
+	add	lr, lr, #1
+	ldr	r1, [r2, #0]	@  num
+	str	lr, [ip, #0]	@  YPOS
+	ldr	r2, [r3, #0]	@  XPOS
+	ldr	ip, .L10+16
+	mov	r3, lr
+	mov	lr, pc
+	bx	ip
+	b	.L4
+.L7:
+	ldr	lr, [r5, #0]	@  XPOS
+	ldr	r3, .L10+8
+	ldr	r2, .L10+12
+	ldr	ip, .L10+4
+	sub	lr, lr, #1
+	ldr	r0, [r3, #0]	@  IDENTITY
+	ldr	r1, [r2, #0]	@  num
+	ldr	r3, [ip, #0]	@  YPOS
+	mov	r2, lr
+	str	lr, [r5, #0]	@  XPOS
+	ldr	ip, .L10+16
+	mov	lr, pc
+	bx	ip
+	b	.L3
+.L6:
+	ldr	lr, [r5, #0]	@  XPOS
+	ldr	r3, .L10+8
+	ldr	r2, .L10+12
+	ldr	ip, .L10+4
+	add	lr, lr, #1
+	ldr	r0, [r3, #0]	@  IDENTITY
+	ldr	r1, [r2, #0]	@  num
+	ldr	r3, [ip, #0]	@  YPOS
+	mov	r2, lr
+	str	lr, [r5, #0]	@  XPOS
+	ldr	ip, .L10+16
+	mov	lr, pc
+	bx	ip
+	b	.L2
+.L11:
+	.align	2
+.L10:
+	.word	XPOS
+	.word	YPOS
+	.word	IDENTITY
+	.word	num
+	.word	drawSprite
 	.size	checkbutton, .-checkbutton
 	.align	2
 	.global	buttonR
@@ -7136,15 +7210,15 @@ buttonR:
 	sub	fp, ip, #-4294967292
 	mov	r2, #20
 	mov	r3, #80
-	ldr	ip, .L7
+	ldr	ip, .L13
 	mov	r0, #0
 	mov	lr, pc
 	bx	ip
 	ldmea	fp, {fp, sp, lr}
 	bx	lr
-.L8:
+.L14:
 	.align	2
-.L7:
+.L13:
 	.word	drawSprite
 	.size	buttonR, .-buttonR
 	.align	2
@@ -7156,22 +7230,22 @@ fillPalette:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
 	mov	r0, #83886080
-	ldr	ip, .L17
+	ldr	ip, .L23
 	@ lr needed for prologue
 	mov	r1, #0	@  i
 	add	r0, r0, #512
-.L14:
+.L20:
 	mov	r3, r1, asl #2	@  i
 	mov	r2, r1, asl #1	@  i
 	ldrh	r3, [r3, ip]	@  palette
 	add	r1, r1, #1	@  i,  i
 	cmp	r1, #19	@  i
 	strh	r3, [r2, r0]	@ movhi 
-	ble	.L14
+	ble	.L20
 	bx	lr
-.L18:
+.L24:
 	.align	2
-.L17:
+.L23:
 	.word	palette
 	.size	fillPalette, .-fillPalette
 	.align	2
@@ -7186,11 +7260,11 @@ fillSprites:
 	sub	fp, ip, #-4294967292
 	mov	r5, #32512
 	mov	lr, #100663296
-	ldr	ip, .L34
+	ldr	ip, .L40
 	mov	r4, #0	@  i
 	add	r5, r5, #255
 	add	lr, lr, #65536
-.L24:
+.L30:
 	mov	r1, r4, asl #2	@  i
 	add	r3, r1, ip
 	ldrh	r0, [r3, #2]	@  sprites
@@ -7200,10 +7274,10 @@ fillSprites:
 	add	r2, r2, r0, asl #8
 	cmp	r4, r5	@  i
 	strh	r2, [r3, lr]	@ movhi 
-	ble	.L24
-	ldr	r5, .L34+4
+	ble	.L30
+	ldr	r5, .L40+4
 	mov	r4, #0	@  i
-.L29:
+.L35:
 	mov	r1, r4	@  i
 	mov	r0, #0
 	mov	r2, #240
@@ -7212,12 +7286,12 @@ fillSprites:
 	mov	lr, pc
 	bx	r5
 	cmp	r4, #127	@  i
-	ble	.L29
+	ble	.L35
 	ldmea	fp, {r4, r5, fp, sp, lr}
 	bx	lr
-.L35:
+.L41:
 	.align	2
-.L34:
+.L40:
 	.word	sprites
 	.word	drawSprite
 	.size	fillSprites, .-fillSprites
@@ -7243,13 +7317,13 @@ drawSprite:
 	ldmfd	sp!, {r4, lr}
 	bx	lr
 	.size	drawSprite, .-drawSprite
-	.global	COUNTER_NUM
+	.global	IDENTITY
 	.bss
-	.global	COUNTER_NUM
+	.global	IDENTITY
 	.align	2
-	.type	COUNTER_NUM, %object
-	.size	COUNTER_NUM, 4
-COUNTER_NUM:
+	.type	IDENTITY, %object
+	.size	IDENTITY, 4
+IDENTITY:
 	.space	4
 	.global	XPOS
 	.data
@@ -7258,6 +7332,18 @@ COUNTER_NUM:
 	.size	XPOS, 4
 XPOS:
 	.word	10
+	.global	YPOS
+	.align	2
+	.type	YPOS, %object
+	.size	YPOS, 4
+YPOS:
+	.word	80
+	.global	num
+	.align	2
+	.type	num, %object
+	.size	num, 4
+num:
+	.word	1
 	.text
 	.align	2
 	.global	Handler
@@ -7277,17 +7363,17 @@ Handler:
 	ldrh	r3, [r4, #0]
 	tst	r3, #4096
 	sub	fp, ip, #-4294967292
-	bne	.L39
-.L38:
+	bne	.L45
+.L44:
 	strh	r3, [r4, #0]	@ movhi 
 	mov	r3, #1	@ movhi
 	strh	r3, [r5, #0]	@ movhi 
 	ldmea	fp, {r4, r5, fp, sp, lr}
 	bx	lr
-.L39:
+.L45:
 	bl	checkbutton
 	ldrh	r3, [r4, #0]
-	b	.L38
+	b	.L44
 	.size	Handler, .-Handler
 	.align	2
 	.global	main
@@ -7311,10 +7397,10 @@ main:
 	mov	r4, #100663296
 	strh	r2, [r0, #2]	@ movhi 
 	strh	ip, [r0, #0]	@ movhi 	@  i
-	ldr	lr, .L51
+	ldr	lr, .L57
 	add	r5, r5, #3
 	add	r4, r4, #65536
-.L45:
+.L51:
 	mov	r1, ip, asl #2	@  i
 	add	r3, r1, lr
 	ldrh	r0, [r3, #2]	@  numbers
@@ -7324,40 +7410,44 @@ main:
 	add	r2, r2, r0, asl #8
 	cmp	ip, r5	@  i
 	strh	r2, [r3, r4]	@ movhi 
-	ble	.L45
+	ble	.L51
 	mov	r2, #67108864
 	add	r2, r2, #512
 	ldrh	r3, [r2, #0]
 	orr	r3, r3, #4096
 	strh	r3, [r2, #0]	@ movhi 
-	mov	ip, #304
-	add	ip, ip, #67108866
-	ldrh	r2, [ip, #0]
-	ldr	r3, .L51+4
-	mov	r1, #50331648
-	add	r1, r1, #32512
-	str	r3, [r1, #252]
-	mvn	r2, r2
-	ldr	r3, .L51+8
-	and	r2, r2, #32768
-	mvn	r2, r2
-	ldr	r0, [r3, #0]	@  COUNTER_NUM
-	mov	r3, #67108864
-	add	r3, r3, #520
-	strh	r2, [ip, #0]	@ movhi 
-	mov	r2, #1	@ movhi
-	strh	r2, [r3, #0]	@ movhi 
+	mov	r4, #304
+	add	r4, r4, #67108866
+	ldr	r3, .L57+4
+	mov	r2, #50331648
+	ldrh	lr, [r4, #0]
+	add	r2, r2, #32512
+	str	r3, [r2, #252]
+	ldr	r1, .L57+8
+	ldr	r3, .L57+12
+	ldr	ip, .L57+16
+	mvn	lr, lr
+	ldr	r2, [r1, #0]	@  XPOS
+	and	lr, lr, #32768
+	mov	r1, #67108864
+	add	r1, r1, #520
+	ldr	r0, [r3, #0]	@  IDENTITY
+	mvn	lr, lr
+	ldr	r3, [ip, #0]	@  YPOS
+	mov	ip, #1	@ movhi
+	strh	lr, [r4, #0]	@ movhi 
+	strh	ip, [r1, #0]	@ movhi 
 	mov	r1, #1
-	mov	r2, #10
-	mov	r3, #80
 	bl	drawSprite
-.L46:
-	b	.L46
 .L52:
+	b	.L52
+.L58:
 	.align	2
-.L51:
+.L57:
 	.word	numbers
 	.word	Handler
-	.word	COUNTER_NUM
+	.word	XPOS
+	.word	IDENTITY
+	.word	YPOS
 	.size	main, .-main
 	.ident	"GCC: (GNU) 3.3.6"
