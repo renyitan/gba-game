@@ -1,12 +1,13 @@
 // -----------------------------------------------------------------------------
 // C-Skeleton to be used with HAM Library from www.ngine.de
 // -----------------------------------------------------------------------------
-#include "numbers.h"
+// #include "numbers.h"
 #include "gba.h"
 
 #include "mygbalib.h"
 #include "position.h"
 #include "game.h"
+// #include "sprites.h"
 
 // Global variable for counter
 int IDENTITY = 0;
@@ -60,12 +61,17 @@ int main(void)
     REG_DISPCNT = MODE2 | OBJ_ENABLE;
 
     // Fill SpritePal
-    *(unsigned short *)0x5000200 = 0;
-    *(unsigned short *)0x5000202 = RGB(31, 31, 31);
+    // *(unsigned short *)0x5000200 = 0;
+    // *(unsigned short *)0x5000202 = RGB(31, 31, 31);
+
+    fillPalette();
+    fillSprites();
 
     // Fill SpriteData
-    for (i = 0; i < 10 * 8 * 8 / 2; i++)
-        spriteData[i] = (numbers[i * 2 + 1] << 8) + numbers[i * 2];
+    // for (i = 0; i < 10 * 8 * 8 / 2; i++)
+        // spriteData[i] = (numbers[i * 2 + 1] << 8) + numbers[i * 2];
+        // spriteData[i] = (sprites[i * 2 + 1] << 8) + sprites[i * 2];
+
 
     // Set Handler Function for interrupts and enable selected interrupts
     REG_INT = (int)&interruptsHandler;

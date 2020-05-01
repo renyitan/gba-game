@@ -70,9 +70,9 @@ void drawSprite(int numb, int N, int x, int y)
 
 // void drawLaser(void)
 // {
-// 	// Gift function showing you how to draw an example sprite defined in sprite.h on screen, using drawSprite()
-// 	// Note that this code uses largeer sprites with a palette, so the main code needs to be initialized in graphical mode 2, using:
-//     //		*(unsigned short *) 0x4000000 = 0x40 | 0x2 | 0x1000;
+	// Gift function showing you how to draw an example sprite defined in sprite.h on screen, using drawSprite()
+	// Note that this code uses largeer sprites with a palette, so the main code needs to be initialized in graphical mode 2, using:
+    		// *(unsigned short *) 0x4000000 = 0x40 | 0x2 | 0x1000;
 // 	// at the beginning of main() in main.c
 
 //     switch(lPlat) {
