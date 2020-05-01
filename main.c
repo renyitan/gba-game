@@ -1,70 +1,56 @@
 // -----------------------------------------------------------------------------
 // C-Skeleton to be used with HAM Library from www.ngine.de
 // -----------------------------------------------------------------------------
-// #include "numbers.h"
+#include "numbers.h"
 #include "gba.h"
-// #include "mygbalib.h"
+#include "mygbalib.h"
 
-#define SCREENBUFFER ((volatile u16 *)0x06000000)
+// Global variable for counter
+int IDENTITY = 0;
+int XPOS = 10;
+int YPOS = SCREEN_HEIGHT / 2;
+
+void Handler(void)
+{
+    REG_IME = 0x00; // Stop all other interrupt handling, while we handle this current one
+
+    if ((REG_IF & INT_BUTTON) == INT_BUTTON)
+    {
+        checkbutton();
+    }
+    REG_IF = REG_IF; // Update interrupt table, to confirm we have handled this interrupt
+
+    REG_IME = 0x01; // Re-enable interrupt handling
+}
 
 // -----------------------------------------------------------------------------
 // Project Entry Point
 // -----------------------------------------------------------------------------
-
-// write colour which isn't white
-// [unused bit] BBB BBGG GGGR RRRR
-inline u16 MakeCol(u8 red, u8 green, u8 blue)
-{
-    return red | green << 5 | blue << 10;
-}
-
-inline void vsync()
-{
-    while (REG_VCOUNT >= SCREEN_HEIGHT)
-        ;
-    while (REG_VCOUNT < SCREEN_HEIGHT)
-        ;
-}
-
-void drawRect(int left, int top, int width, int height, u16 clr)
-{
-    int y, x;
-    for (y = 0; y < height; ++y)
-    {
-        for (x = 0; x < width; ++x)
-        {
-            SCREENBUFFER[(top + y) * SCREEN_WIDTH + left + x] = clr;
-        }
-    }
-}
-
 int main(void)
 {
-    // Set Mode 3
-    REG_DISPCNT = MODE3 | BG2_ENABLE;
-
     int i;
-    for (i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; ++i)
-    {
-        SCREENBUFFER[i] = MakeCol(0, 0, 0);
-    }
 
-    int x = 0;
+    // Set Mode 2
+    *(unsigned short *)0x4000000 = 0x40 | 0x2 | 0x1000;
+
+    // Fill SpritePal
+    *(unsigned short *)0x5000200 = 0;
+    *(unsigned short *)0x5000202 = RGB(31, 31, 31);
+
+    // Fill SpriteData
+    for (i = 0; i < 10 * 8 * 8 / 2; i++)
+        spriteData[i] = (numbers[i * 2 + 1] << 8) + numbers[i * 2];
+
+    // Set Handler Function for interrupts and enable selected interrupts
+    REG_INT = (int)&Handler;
+    REG_IE |= INT_BUTTON; // choose which interrupt to enable.S
+    REG_P1CNT |= 0x7FFF;
+    REG_IME = 0x1; // Enable interrupt handling
+
+    drawSprite(IDENTITY, 1, XPOS, YPOS);
+
     while (1)
-    {
-        vsync();
-
-        if (x > SCREEN_WIDTH * (SCREEN_WIDTH / 10))
-            x = 0;
-        if (x)
-        {
-            int last = x - 10;
-            drawRect(last % SCREEN_WIDTH, (last / SCREEN_WIDTH) * 10, 10, 10, MakeCol(0, 0, 0));
-        }
-
-        drawRect(x % SCREEN_WIDTH, (x / SCREEN_WIDTH) * 10, 10, 10, MakeCol(31, 31, 31));
-        x += 10;
-    }
+        ;
 
     return 0;
 }

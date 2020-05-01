@@ -1,44 +1,48 @@
 #include "sprites.h"
 #define INPUT                      (KEY_MASK & (~REG_KEYS))
 
-// void checkbutton(void)
-// {
-// 	// Gift function to show you how a function that can be called upon button interrupt to detect which button was pressed and run a specific function for each button could look like. You would have to define each buttonA/buttonB/... function yourself.
-//     u16 buttons = INPUT;
+void checkbutton(void)
+{
+	// Gift function to show you how a function that can be called upon button interrupt to detect which button was pressed and run a specific function for each button could look like. You would have to define each buttonA/buttonB/... function yourself.
+    u16 buttons = INPUT;
     
-//     if ((buttons & KEY_A) == KEY_A)
-//     {
-//         buttonA();
-//     }
-//     if ((buttons & KEY_B) == KEY_B)
-//     {
-//         buttonB();
-//     }
-//     if ((buttons & KEY_SELECT) == KEY_SELECT)
-//     {
-//         buttonSel();
-//     }
-//     if ((buttons & KEY_START) == KEY_START)
-//     {
-//         buttonS();
-//     }
-//     if ((buttons & KEY_RIGHT) == KEY_RIGHT)
-//     {
-//         buttonR();
-//     }
-//     if ((buttons & KEY_LEFT) == KEY_LEFT)
-//     {
-//         buttonL();
-//     }
-//     if ((buttons & KEY_UP) == KEY_UP)
-//     {
-//         buttonU();
-//     }
-//     if ((buttons & KEY_DOWN) == KEY_DOWN)
-//     {
-//         buttonD();
-//     }
-// }
+    // if ((buttons & KEY_A) == KEY_A)
+    // {
+    //     buttonA();
+    // }
+    // if ((buttons & KEY_B) == KEY_B)
+    // {
+    //     buttonB();
+    // }
+    // if ((buttons & KEY_SELECT) == KEY_SELECT)
+    // {
+    //     buttonSel();
+    // }
+    // if ((buttons & KEY_START) == KEY_START)
+    // {
+    //     buttonS();
+    // }
+    if ((buttons & KEY_RIGHT) == KEY_RIGHT)
+    {
+        buttonR();
+    }
+    // if ((buttons & KEY_LEFT) == KEY_LEFT)
+    // {
+    //     buttonL();
+    // }
+    // if ((buttons & KEY_UP) == KEY_UP)
+    // {
+    //     buttonU();
+    // }
+    // if ((buttons & KEY_DOWN) == KEY_DOWN)
+    // {
+    //     buttonD();
+    // }
+}
+
+void buttonR() {
+    drawSprite(0, 1, 20, SCREEN_HEIGHT / 2);
+}
 
 
 void fillPalette(void)
