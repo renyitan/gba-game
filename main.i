@@ -5,8 +5,8 @@
 
 
 
-# 1 "numbers.h" 1
-# 14 "numbers.h"
+# 1 "src/numbers.h" 1
+# 14 "src/numbers.h"
 unsigned short numbers[] = {
 
     0,0,1,1,1,1,0,0,
@@ -100,7 +100,7 @@ unsigned short numbers[] = {
     0,0,0,0,0,1,1,0,
 };
 # 5 "main.c" 2
-# 1 "gba.h" 1
+# 1 "src/gba.h" 1
 
 
 
@@ -119,7 +119,7 @@ typedef signed int s32;
 typedef unsigned char byte;
 typedef unsigned short hword;
 typedef unsigned int word;
-# 211 "gba.h"
+# 211 "src/gba.h"
 enum
 {
     VBLANK_HANDLER,
@@ -138,7 +138,7 @@ enum
     CART_HANDLER,
     MAX_INTERRUPT_HANDLERS,
 };
-# 267 "gba.h"
+# 267 "src/gba.h"
 typedef void (*fp)(void);
 # 6 "main.c" 2
 
@@ -197,8 +197,8 @@ int main(void)
     *(u16*)0x4000208 = 0x1;
 
 
+    *(u16*)0x4000100 = -0x4000;
 
-    *(u16*)0x4000100 = 0;
     *(u16*)0x4000102 |= 0x0002 | 0x0040 | 0x0080;
 
 

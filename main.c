@@ -1,8 +1,8 @@
 // -----------------------------------------------------------------------------
 // C-Skeleton to be used with HAM Library from www.ngine.de
 // -----------------------------------------------------------------------------
-#include "numbers.h"
-#include "gba.h"
+#include "./src/numbers.h"
+#include "./src/gba.h"
 
 // Global variable for counter
 int COUNTER_NUM = 0;
@@ -59,8 +59,8 @@ int main(void)
     REG_IME = 0x1;		// Enable interrupt handling
 
     // Set Timer Mode (fill that section and replace TMX with selected timer number)
-    // REG_TM0D =	-0x4000;		// initial counter value of -16384, return to this value when counter overflows.
-    REG_TM0D = 0;
+    REG_TM0D =	-0x4000;		// initial counter value of -16384, return to this value when counter overflows.
+    // REG_TM0D = 0;
     REG_TM0CNT |= TIMER_FREQUENCY_256 | TIMER_INTERRUPTS | TIMER_ENABLE; 	
 
     // reset to 0 once counter reaches 99

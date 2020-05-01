@@ -794,29 +794,30 @@ main:
 	mov	r1, #67108864
 	add	r1, r1, #512
 	ldrh	r2, [r1, #0]
-	mov	ip, #67108864
 	ldr	r3, .L19+4
 	mov	r0, #50331648
-	mov	lr, ip
+	mov	ip, #67108864
 	add	r0, r0, #32512
+	mov	lr, ip
 	orr	r2, r2, #8
-	mov	r4, #0
 	str	r3, [r0, #252]
 	add	ip, ip, #520
 	mov	r3, #1	@ movhi
-	add	lr, lr, #256
 	strh	r2, [r1, #0]	@ movhi 
-	ldr	r0, .L19+8
+	add	lr, lr, #256
 	strh	r3, [ip, #0]	@ movhi 
+	mov	r3, #49152
+	strh	r3, [lr, #0]	@ movhi 
+	ldr	r0, .L19+8
 	mov	r1, #256
-	strh	r4, [lr, #0]	@ movhi 
 	add	r1, r1, #67108866
 	ldrh	r3, [r1, #0]
 	ldr	r2, [r0, #0]	@  COUNTER_NUM
 	orr	r3, r3, #194
 	cmp	r2, #99
 	strh	r3, [r1, #0]	@ movhi 
-	strgt	r4, [r0, #0]	@  COUNTER_NUM
+	movgt	r3, #0
+	strgt	r3, [r0, #0]	@  COUNTER_NUM
 .L14:
 	b	.L14
 .L20:
