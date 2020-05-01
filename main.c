@@ -3,10 +3,8 @@
 // -----------------------------------------------------------------------------
 // #include "numbers.h"
 #include "gba.h"
-
 #include "mygbalib.h"
 #include "position.h"
-#include "game.h"
 // #include "sprites.h"
 
 // Global variable for counter
@@ -57,8 +55,8 @@ int main(void)
     int i;
 
     // Set Mode 2
-    // REG_DISPCNT = OBJ_MAP_1D | MODE2 | OBJ_ENABLE;
-    REG_DISPCNT = MODE2 | OBJ_ENABLE;
+    REG_DISPCNT = OBJ_MAP_1D | MODE2 | OBJ_ENABLE;
+    // REG_DISPCNT = MODE2 | OBJ_ENABLE;
 
     // Fill SpritePal
     // *(unsigned short *)0x5000200 = 0;

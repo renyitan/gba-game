@@ -1,6 +1,6 @@
 	.file	"main.c"
 @ GNU C version 3.3.6 (arm-thumb-elf)
-@	compiled by GNU C version 5.4.0 20160609.
+@	compiled by GNU C version 7.5.0.
 @ GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
 @ options passed:  -fpreprocessed -mthumb-interwork -mlong-calls
 @ -auxbase-strip -O2 -Wall -fverbose-asm
@@ -6638,81 +6638,6 @@ drawSprite:
 	ldmfd	sp!, {r4, lr}
 	bx	lr
 	.size	drawSprite, .-drawSprite
-	.global	__modsi3
-	.align	2
-	.global	getRandomNumber
-	.type	getRandomNumber, %function
-getRandomNumber:
-	@ Function supports interworking.
-	@ args = 0, pretend = 0, frame = 0
-	@ frame_needed = 1, uses_anonymous_args = 0
-	mov	ip, sp
-	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
-	mov	r5, r0	@  lower
-	mov	r4, r1	@  upper
-	rsb	r4, r5, r4	@  lower,  upper
-	sub	fp, ip, #-4294967292
-	add	r4, r4, #1	@  upper
-	ldr	r0, .L45
-	mov	lr, pc
-	bx	r0
-	mov	r1, r4	@  upper
-	ldr	r3, .L45+4
-	mov	lr, pc
-	bx	r3
-	ldr	r3, .L45+8
-	add	r0, r0, r5	@  lower,  lower,  lower
-	str	r0, [r3, #0]	@  lower,  num
-	ldmea	fp, {r4, r5, fp, sp, lr}
-	bx	lr
-.L46:
-	.align	2
-.L45:
-	.word	rand
-	.word	__modsi3
-	.word	num
-	.size	getRandomNumber, .-getRandomNumber
-	.align	2
-	.global	spawnVirus
-	.type	spawnVirus, %function
-spawnVirus:
-	@ Function supports interworking.
-	@ args = 0, pretend = 0, frame = 0
-	@ frame_needed = 0, uses_anonymous_args = 0
-	@ link register save eliminated.
-	mov	r0, #1
-	mov	r1, #2
-	mov	r2, #50
-	mov	r3, #80
-	@ lr needed for prologue
-	b	drawSprite
-	.size	spawnVirus, .-spawnVirus
-	.align	2
-	.global	renderGame
-	.type	renderGame, %function
-renderGame:
-	@ Function supports interworking.
-	@ args = 0, pretend = 0, frame = 0
-	@ frame_needed = 0, uses_anonymous_args = 0
-	@ link register save eliminated.
-	ldr	r3, .L49
-	ldr	r2, .L49+4
-	ldr	r0, [r3, #0]	@  IDENTITY
-	ldr	ip, .L49+8
-	ldr	r3, .L49+12
-	ldr	r1, [r2, #0]	@  num
-	ldr	r2, [r3, #0]	@  XPOS
-	ldr	r3, [ip, #0]	@  YPOS
-	@ lr needed for prologue
-	b	drawSprite
-.L50:
-	.align	2
-.L49:
-	.word	IDENTITY
-	.word	num
-	.word	YPOS
-	.word	XPOS
-	.size	renderGame, .-renderGame
 	.global	IDENTITY
 	.bss
 	.global	IDENTITY
@@ -6767,22 +6692,22 @@ interruptsHandler:
 	ldrh	r0, [r4, #0]
 	tst	r0, #4096
 	sub	fp, ip, #-4294967292
-	ldr	r7, .L56
-	ldr	r6, .L56+4
-	bne	.L54
-.L52:
+	ldr	r7, .L49
+	ldr	r6, .L49+4
+	bne	.L47
+.L45:
 	tst	r0, #8
 	mov	r1, #3
 	mov	r2, #116
 	mov	r3, #80
-	bne	.L55
-.L53:
+	bne	.L48
+.L46:
 	mov	r8, #1	@ movhi
 	strh	r0, [r4, #0]	@ movhi 
 	strh	r8, [r5, #0]	@ movhi 
 	ldmea	fp, {r4, r5, r6, r7, r8, fp, sp, lr}
 	bx	lr
-.L55:
+.L48:
 	ldr	lr, [r7, #0]	@  COUNTER_NUM
 	smull	r8, ip, r6, lr
 	mov	r0, lr, asr #31
@@ -6807,14 +6732,14 @@ interruptsHandler:
 	add	r3, r3, #1
 	str	r3, [r7, #0]	@  COUNTER_NUM
 	ldrh	r0, [r4, #0]
-	b	.L53
-.L54:
+	b	.L46
+.L47:
 	bl	checkMovementButtonInGame
 	ldrh	r0, [r4, #0]
-	b	.L52
-.L57:
+	b	.L45
+.L50:
 	.align	2
-.L56:
+.L49:
 	.word	COUNTER_NUM
 	.word	1717986919
 	.size	interruptsHandler, .-interruptsHandler
@@ -6837,11 +6762,14 @@ main:
 	mov	ip, sp
 	add	r3, r3, #2
 	mov	r2, #67108864
-	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	stmfd	sp!, {fp, ip, lr, pc}
 	str	r3, [r2, #0]
 	sub	fp, ip, #-4294967292
 	bl	fillPalette
 	bl	fillSprites
+	mov	r0, #67108864
+	add	r0, r0, #512
+	ldrh	r3, [r0, #0]
 	mov	r2, #67108864
 	orr	r3, r3, #4096
 	mov	r1, r2
@@ -6858,36 +6786,33 @@ main:
 	ldrh	r3, [r2, #0]
 	orr	r3, r3, #193
 	strh	r3, [r2, #0]	@ movhi 
-	mov	ip, #304
-	add	ip, ip, #67108866
-	ldrh	r2, [ip, #0]
-	ldr	r3, .L48
-	mvn	r2, r2
+	mov	r0, #304
+	add	r0, r0, #67108866
+	ldr	r2, .L56
 	mov	r1, #50331648
 	ldrh	r3, [r0, #0]
 	add	r1, r1, #32512
-	and	r2, r2, #32768
-	mov	r0, #67108864
-	str	r3, [r1, #252]
-	mvn	r2, r2
-	add	r0, r0, #520
-	mov	r3, #1	@ movhi
-	strh	r2, [ip, #0]	@ movhi 
-	ldr	r7, .L48+4
-	ldr	r6, .L48+8
-	ldr	r5, .L48+12
-	ldr	r4, .L48+16
+	str	r2, [r1, #252]
+	ldr	r1, .L56+4
+	mvn	r3, r3
+	ldr	r2, [r1, #0]	@  COUNTER_NUM
+	and	r3, r3, #32768
+	mvn	r3, r3
+	cmp	r2, #99
 	strh	r3, [r0, #0]	@ movhi 
-.L47:
-	ldr	r0, [r7, #0]	@  IDENTITY
-	ldr	r1, [r6, #0]	@  num
-	ldr	r2, [r5, #0]	@  XPOS
-	ldr	r3, [r4, #0]	@  YPOS
+	ldr	r2, .L56+8
+	ldr	r3, .L56+12
+	strgt	ip, [r1, #0]	@  COUNTER_NUM
+	ldr	r0, [r3, #0]	@  IDENTITY
+	ldr	r1, [r2, #0]	@  num
+	mov	r3, #160
+	mov	r2, #240
 	bl	drawSprite
-	b	.L47
-.L49:
+.L53:
+	b	.L53
+.L57:
 	.align	2
-.L48:
+.L56:
 	.word	interruptsHandler
 	.word	COUNTER_NUM
 	.word	num
