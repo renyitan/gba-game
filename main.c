@@ -3,8 +3,10 @@
 // -----------------------------------------------------------------------------
 #include "numbers.h"
 #include "gba.h"
+
 #include "mygbalib.h"
 #include "position.h"
+#include "game.h"
 
 // Global variable for counter
 int IDENTITY = 0;
@@ -13,8 +15,8 @@ int YPOS = SCREEN_HEIGHT / 2;
 int num = 1;
 
 #define STATE_JUST_LAUNCHED 0
-#define STATE_TITLE 1
-#define STATE_GAME 2
+#define STATE_START 1
+#define STATE_PLAYING 2
 #define STATE_END 3
 
 void interruptsHandler(void)
@@ -30,6 +32,8 @@ void interruptsHandler(void)
     REG_IME = 0x01; // Re-enable interrupt handling
 }
 
+u8 AppState = STATE_JUST_LAUNCHED;
+
 // -----------------------------------------------------------------------------
 // Project Entry Point
 // -----------------------------------------------------------------------------
@@ -38,7 +42,8 @@ int main(void)
     int i;
 
     // Set Mode 2
-    REG_DISPCNT = OBJ_MAP_1D | MODE2 | OBJ_ENABLE;
+    // REG_DISPCNT = OBJ_MAP_1D | MODE2 | OBJ_ENABLE;
+    REG_DISPCNT = MODE2 | OBJ_ENABLE;
 
     // Fill SpritePal
     *(unsigned short *)0x5000200 = 0;
@@ -57,7 +62,7 @@ int main(void)
 
     while (1)
     {
-        drawSprite(IDENTITY, num, XPOS, YPOS);
+        renderGame();
     }
 
     return 0;

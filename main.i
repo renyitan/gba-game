@@ -141,6 +141,7 @@ enum
 # 267 "gba.h"
 typedef void (*fp)(void);
 # 6 "main.c" 2
+
 # 1 "mygbalib.h" 1
 # 1 "sprites.h" 1
 
@@ -1218,7 +1219,6 @@ extern int num;
 
 void checkMovementButtonInGame(void)
 {
-
     u16 buttons = (0x3FF & (~*(volatile u16*)0x4000130));
     int displacement = 1;
 
@@ -1272,13 +1272,33 @@ void drawSprite(int numb, int N, int x, int y)
     *(unsigned short *)(0x7000002 + 8 * N) = x | 0x4000;
     *(unsigned short *)(0x7000004 + 8 * N) = numb * 8;
 }
-# 7 "main.c" 2
+# 8 "main.c" 2
 # 1 "position.h" 1
 extern int XPOS;
 extern int YPOS;
 extern int IDENTITY;
 extern int num;
-# 8 "main.c" 2
+# 9 "main.c" 2
+# 1 "game.h" 1
+# 1 "position.h" 1
+extern int XPOS;
+extern int YPOS;
+extern int IDENTITY;
+extern int num;
+# 2 "game.h" 2
+
+
+void spawnVirus(void)
+{
+    drawSprite(2, 5, 100, 80);
+}
+
+void renderGame(void)
+{
+    drawSprite(IDENTITY, num, XPOS, YPOS);
+    spawnVirus();
+}
+# 10 "main.c" 2
 
 
 int IDENTITY = 0;
@@ -1304,6 +1324,8 @@ void interruptsHandler(void)
     *(u16*)0x4000208 = 0x01;
 }
 
+u8 AppState = 0;
+
 
 
 
@@ -1312,7 +1334,8 @@ int main(void)
     int i;
 
 
-    *(u32*)0x4000000 = 0x40 | 0x2 | 0x1000;
+
+    *(u32*)0x4000000 = 0x2 | 0x1000;
 
 
     *(unsigned short *)0x5000200 = 0;
@@ -1329,11 +1352,9 @@ int main(void)
     *(u16*)0x4000132 |= 0x7FFF;
     *(u16*)0x4000208 = 0x1;
 
-
-
     while (1)
     {
-        drawSprite(IDENTITY, num, XPOS, YPOS);
+        renderGame();
     }
 
     return 0;

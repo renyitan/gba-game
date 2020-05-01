@@ -4,7 +4,6 @@
 
 void checkMovementButtonInGame(void)
 {
-
     u16 buttons = INPUT;
     int displacement = 1;
 
