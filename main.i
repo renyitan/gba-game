@@ -1286,6 +1286,11 @@ int XPOS = 10;
 int YPOS = 160 / 2;
 int num = 1;
 
+
+
+
+
+
 void interruptsHandler(void)
 {
     *(u16*)0x4000208 = 0x00;
@@ -1329,8 +1334,6 @@ int main(void)
     while (1)
     {
         drawSprite(IDENTITY, num, XPOS, YPOS);
-        if(YPOS >= 160) drawSprite(0, num, XPOS, 160/2);
-        if(YPOS < 0) drawSprite(0, num, XPOS, 0);
     }
 
     return 0;

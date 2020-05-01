@@ -12,6 +12,11 @@ int XPOS = 10;
 int YPOS = SCREEN_HEIGHT / 2;
 int num = 1;
 
+#define STATE_JUST_LAUNCHED 0
+#define STATE_TITLE 1
+#define STATE_GAME 2
+#define STATE_END 3
+
 void interruptsHandler(void)
 {
     REG_IME = 0x00; // Stop all other interrupt handling, while we handle this current one
@@ -49,8 +54,6 @@ int main(void)
 
     REG_P1CNT |= 0x7FFF;
     REG_IME = 0x1; // Enable interrupt handling
-
-    
 
     while (1)
     {

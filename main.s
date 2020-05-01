@@ -7361,7 +7361,7 @@ main:
 	mov	ip, sp
 	mov	r1, #4160
 	mov	r0, #83886080
-	stmfd	sp!, {r4, r5, r6, r7, r8, sl, fp, ip, lr, pc}
+	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
 	add	r0, r0, #512
 	sub	fp, ip, #-4294967292
 	add	r1, r1, #2
@@ -7373,7 +7373,7 @@ main:
 	str	r1, [r3, #0]
 	strh	r2, [r0, #2]	@ movhi 
 	strh	ip, [r0, #0]	@ movhi 	@  i
-	ldr	lr, .L59
+	ldr	lr, .L55
 	add	r5, r5, #3
 	add	r4, r4, #65536
 .L48:
@@ -7395,58 +7395,37 @@ main:
 	mov	ip, #304
 	add	ip, ip, #67108866
 	ldrh	r2, [ip, #0]
-	ldr	r3, .L59+4
+	ldr	r3, .L55+4
 	mvn	r2, r2
 	mov	r1, #50331648
 	add	r1, r1, #32512
 	and	r2, r2, #32768
 	mov	r0, #67108864
-	ldr	r6, .L59+8
-	ldr	r5, .L59+12
 	str	r3, [r1, #252]
 	mvn	r2, r2
 	add	r0, r0, #520
 	mov	r3, #1	@ movhi
 	strh	r2, [ip, #0]	@ movhi 
-	ldr	r7, .L59+16
-	ldr	r4, .L59+20
+	ldr	r7, .L55+8
+	ldr	r6, .L55+12
+	ldr	r5, .L55+16
+	ldr	r4, .L55+20
 	strh	r3, [r0, #0]	@ movhi 
-	mov	sl, r6
-	mov	r8, r5
-.L57:
+.L52:
 	ldr	r0, [r7, #0]	@  IDENTITY
+	ldr	r1, [r6, #0]	@  num
 	ldr	r2, [r5, #0]	@  XPOS
 	ldr	r3, [r4, #0]	@  YPOS
-	ldr	r1, [r6, #0]	@  num
 	bl	drawSprite
-	ldr	r2, [r4, #0]	@  YPOS
-	cmp	r2, #159
-	mov	r0, #0
-	mov	r3, #80
-	bgt	.L58
-.L52:
-	mov	r0, #0
-	cmp	r2, r0
-	mov	r3, r0
-	bge	.L57
-	ldr	r1, [sl, #0]	@  num
-	ldr	r2, [r8, #0]	@  XPOS
-	bl	drawSprite
-	b	.L57
-.L58:
-	ldr	r2, [r5, #0]	@  XPOS
-	ldr	r1, [r6, #0]	@  num
-	bl	drawSprite
-	ldr	r2, [r4, #0]	@  YPOS
 	b	.L52
-.L60:
+.L56:
 	.align	2
-.L59:
+.L55:
 	.word	numbers
 	.word	interruptsHandler
+	.word	IDENTITY
 	.word	num
 	.word	XPOS
-	.word	IDENTITY
 	.word	YPOS
 	.size	main, .-main
 	.ident	"GCC: (GNU) 3.3.6"
