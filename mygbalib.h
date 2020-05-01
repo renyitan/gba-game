@@ -1,4 +1,4 @@
-#include "../assets/sprites.h"
+#include "sprites.h"
 #define INPUT                      (KEY_MASK & (~REG_KEYS))
 
 // void checkbutton(void)
