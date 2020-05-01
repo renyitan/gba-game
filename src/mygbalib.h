@@ -1,44 +1,44 @@
-#include "sprites.h"
+#include "../assets/sprites.h"
 #define INPUT                      (KEY_MASK & (~REG_KEYS))
 
-void checkbutton(void)
-{
-	// Gift function to show you how a function that can be called upon button interrupt to detect which button was pressed and run a specific function for each button could look like. You would have to define each buttonA/buttonB/... function yourself.
-    u16 buttons = INPUT;
+// void checkbutton(void)
+// {
+// 	// Gift function to show you how a function that can be called upon button interrupt to detect which button was pressed and run a specific function for each button could look like. You would have to define each buttonA/buttonB/... function yourself.
+//     u16 buttons = INPUT;
     
-    if ((buttons & KEY_A) == KEY_A)
-    {
-        buttonA();
-    }
-    if ((buttons & KEY_B) == KEY_B)
-    {
-        buttonB();
-    }
-    if ((buttons & KEY_SELECT) == KEY_SELECT)
-    {
-        buttonSel();
-    }
-    if ((buttons & KEY_START) == KEY_START)
-    {
-        buttonS();
-    }
-    if ((buttons & KEY_RIGHT) == KEY_RIGHT)
-    {
-        buttonR();
-    }
-    if ((buttons & KEY_LEFT) == KEY_LEFT)
-    {
-        buttonL();
-    }
-    if ((buttons & KEY_UP) == KEY_UP)
-    {
-        buttonU();
-    }
-    if ((buttons & KEY_DOWN) == KEY_DOWN)
-    {
-        buttonD();
-    }
-}
+//     if ((buttons & KEY_A) == KEY_A)
+//     {
+//         buttonA();
+//     }
+//     if ((buttons & KEY_B) == KEY_B)
+//     {
+//         buttonB();
+//     }
+//     if ((buttons & KEY_SELECT) == KEY_SELECT)
+//     {
+//         buttonSel();
+//     }
+//     if ((buttons & KEY_START) == KEY_START)
+//     {
+//         buttonS();
+//     }
+//     if ((buttons & KEY_RIGHT) == KEY_RIGHT)
+//     {
+//         buttonR();
+//     }
+//     if ((buttons & KEY_LEFT) == KEY_LEFT)
+//     {
+//         buttonL();
+//     }
+//     if ((buttons & KEY_UP) == KEY_UP)
+//     {
+//         buttonU();
+//     }
+//     if ((buttons & KEY_DOWN) == KEY_DOWN)
+//     {
+//         buttonD();
+//     }
+// }
 
 
 void fillPalette(void)
@@ -73,25 +73,25 @@ void drawSprite(int numb, int N, int x, int y)
     *(unsigned short *)(0x7000004 + 8*N) = numb*8;
 }
 
-void drawLaser(void)
-{
-	// Gift function showing you how to draw an example sprite defined in sprite.h on screen, using drawSprite()
-	// Note that this code uses largeer sprites with a palette, so the main code needs to be initialized in graphical mode 2, using:
-    //		*(unsigned short *) 0x4000000 = 0x40 | 0x2 | 0x1000;
-	// at the beginning of main() in main.c
+// void drawLaser(void)
+// {
+// 	// Gift function showing you how to draw an example sprite defined in sprite.h on screen, using drawSprite()
+// 	// Note that this code uses largeer sprites with a palette, so the main code needs to be initialized in graphical mode 2, using:
+//     //		*(unsigned short *) 0x4000000 = 0x40 | 0x2 | 0x1000;
+// 	// at the beginning of main() in main.c
 
-    switch(lPlat) {
-        case 16:
-        {
-            drawSprite(LASER, NPLATS*3 + 5 + NROCK + NMET, LaserX, LaserY);
-            break;
-        }
-        case 9:
-        {
-            drawSprite(LASER, NPLATS*2 + 5 + NROCK + NMET, LaserX, LaserY);
-            break;
-        }
-        default:
-            break;
-    }
-}
+//     switch(lPlat) {
+//         case 16:
+//         {
+//             drawSprite(LASER, NPLATS*3 + 5 + NROCK + NMET, LaserX, LaserY);
+//             break;
+//         }
+//         case 9:
+//         {
+//             drawSprite(LASER, NPLATS*2 + 5 + NROCK + NMET, LaserX, LaserY);
+//             break;
+//         }
+//         default:
+//             break;
+//     }
+// }
