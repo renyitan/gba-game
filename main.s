@@ -7333,42 +7333,14 @@ getRandomNumber:
 spawnVirus:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
-	@ frame_needed = 1, uses_anonymous_args = 0
-	mov	ip, sp
-	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
-	ldr	r3, .L44
-	sub	fp, ip, #-4294967292
-	mov	r0, #0
-	mov	lr, pc
-	bx	r3
-	ldr	r2, .L44+4
-	mov	lr, pc
-	bx	r2
-	ldr	r3, .L44+8
-	ldr	r0, [r3, #0]	@  num
-	mov	r1, #1000
-	add	r0, r0, #1	@  randomN
-	bl	getRandomNumber
-	mov	r1, #240
-	mov	r5, r0	@  randomN
-	mov	r0, #0
-	bl	getRandomNumber
-	mov	r1, #160
-	mov	r4, r0	@  randomXPOS
-	mov	r0, #0
-	bl	getRandomNumber
-	mov	r1, r5	@  randomN
-	mov	r3, r0	@  randomYPOS
-	mov	r2, r4	@  randomXPOS
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
 	mov	r0, #1
-	ldmea	fp, {r4, r5, fp, sp, lr}
+	mov	r1, #2
+	mov	r2, #50
+	mov	r3, #80
+	@ lr needed for prologue
 	b	drawSprite
-.L45:
-	.align	2
-.L44:
-	.word	time
-	.word	srand
-	.word	num
 	.size	spawnVirus, .-spawnVirus
 	.align	2
 	.global	renderGame
@@ -7379,21 +7351,21 @@ renderGame:
 	@ frame_needed = 1, uses_anonymous_args = 0
 	mov	ip, sp
 	stmfd	sp!, {fp, ip, lr, pc}
-	ldr	r3, .L47
+	ldr	r3, .L45
 	sub	fp, ip, #-4294967292
 	ldr	r0, [r3, #0]	@  IDENTITY
-	ldr	ip, .L47+4
-	ldr	r2, .L47+8
-	ldr	r3, .L47+12
+	ldr	ip, .L45+4
+	ldr	r2, .L45+8
+	ldr	r3, .L45+12
 	ldr	r1, [r2, #0]	@  num
 	ldr	r2, [r3, #0]	@  XPOS
 	ldr	r3, [ip, #0]	@  YPOS
 	bl	drawSprite
 	ldmea	fp, {fp, sp, lr}
 	b	spawnVirus
-.L48:
+.L46:
 	.align	2
-.L47:
+.L45:
 	.word	IDENTITY
 	.word	YPOS
 	.word	num
@@ -7445,17 +7417,17 @@ interruptsHandler:
 	ldrh	r3, [r4, #0]
 	tst	r3, #4096
 	sub	fp, ip, #-4294967292
-	bne	.L51
-.L50:
+	bne	.L49
+.L48:
 	strh	r3, [r4, #0]	@ movhi 
 	mov	r3, #1	@ movhi
 	strh	r3, [r5, #0]	@ movhi 
 	ldmea	fp, {r4, r5, fp, sp, lr}
 	bx	lr
-.L51:
+.L49:
 	bl	checkMovementButtonInGame
 	ldrh	r3, [r4, #0]
-	b	.L50
+	b	.L48
 	.size	interruptsHandler, .-interruptsHandler
 	.global	AppState
 	.bss
@@ -7487,10 +7459,10 @@ main:
 	str	r1, [r3, #0]
 	strh	r2, [r0, #2]	@ movhi 
 	strh	ip, [r0, #0]	@ movhi 	@  i
-	ldr	lr, .L64
+	ldr	lr, .L62
 	add	r5, r5, #3
 	add	r4, r4, #65536
-.L57:
+.L55:
 	mov	r1, ip, asl #2	@  i
 	add	r3, r1, lr
 	ldrh	r0, [r3, #2]	@  numbers
@@ -7500,7 +7472,7 @@ main:
 	add	r2, r2, r0, asl #8
 	cmp	ip, r5	@  i
 	strh	r2, [r3, r4]	@ movhi 
-	ble	.L57
+	ble	.L55
 	mov	r2, #67108864
 	add	r2, r2, #512
 	ldrh	r3, [r2, #0]
@@ -7514,19 +7486,19 @@ main:
 	mvn	r3, r3
 	mov	r1, #50331648
 	mov	r0, #67108864
-	ldr	r2, .L64+4
+	ldr	r2, .L62+4
 	strh	r3, [ip, #0]	@ movhi 
 	add	r1, r1, #32512
 	add	r0, r0, #520
 	mov	r3, #1	@ movhi
 	str	r2, [r1, #252]
 	strh	r3, [r0, #0]	@ movhi 
-.L61:
+.L59:
 	bl	renderGame
-	b	.L61
-.L65:
+	b	.L59
+.L63:
 	.align	2
-.L64:
+.L62:
 	.word	numbers
 	.word	interruptsHandler
 	.size	main, .-main

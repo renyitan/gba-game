@@ -11,16 +11,7 @@ int getRandomNumber(int lower, int upper)
 
 void spawnVirus(void)
 {
-    int randomN;
-    int randomXPOS;
-    int randomYPOS;
-
-    srand(time(0));
-    randomN = getRandomNumber(num + 1, 1000);
-    randomXPOS = getRandomNumber(0, SCREEN_WIDTH);
-    randomYPOS = getRandomNumber(0, SCREEN_HEIGHT);
-
-    drawSprite(1, randomN, randomXPOS, randomYPOS);
+    drawSprite(1, 2, 50,80);
 }
 
 void renderGame(void)

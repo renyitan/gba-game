@@ -3,15 +3,18 @@
 // -----------------------------------------------------------------------------
 #include "numbers.h"
 #include "gba.h"
-#include "mygbalib.h"
 
-#define SCREENBUFFER ((volatile u16 *)0x06000000)
-
+// Global variable for counter
 int COUNTER_NUM = 0;
 
-// -----------------------------------------------------------------------------
-// Project Entry Point
-// -----------------------------------------------------------------------------
+
+void drawSprite(int numb, int N, int x, int y)
+{
+    // Gift function: displays sprite number numb on screen at position (x,y), as sprite object N
+    *(unsigned short *)(0x7000000 + 8 * N) = y | 0x2000;
+    *(unsigned short *)(0x7000002 + 8 * N) = x;
+    *(unsigned short *)(0x7000004 + 8 * N) = numb * 2;
+}
 
 void Handler(void)
 {
@@ -21,8 +24,8 @@ void Handler(void)
     {
         // screen width/2 -4 is for offset of the sprites to centralise them
 
-        drawSprite(((COUNTER_NUM / 10) % 10), 1, COUNTER_NUM, COUNTER_NUM); // sprite for the ten's digit positions
-        drawSprite((COUNTER_NUM % 10), 0, SCREEN_WIDTH/2+4, SCREEN_HEIGHT/2); // sprite for the one's digit positions
+        drawSprite(((COUNTER_NUM / 10) % 10), 2, SCREEN_WIDTH / 2 - 4, SCREEN_HEIGHT / 2); // sprite for the ten's digit positions
+        drawSprite((COUNTER_NUM % 10), 1, SCREEN_WIDTH / 2 + 4, SCREEN_HEIGHT / 2);        // sprite for the one's digit positions
         COUNTER_NUM++;
     }
 
@@ -31,6 +34,9 @@ void Handler(void)
     REG_IME = 0x01; // Re-enable interrupt handling
 }
 
+// -----------------------------------------------------------------------------
+// Project Entry Point
+// -----------------------------------------------------------------------------
 int main(void)
 {
     int i;
@@ -53,8 +59,7 @@ int main(void)
 
     // Set Timer Mode (fill that section and replace TMX with selected timer number)
     REG_TM0D = -0x4000; // initial counter value of -16384, return to this value when counter overflows.
-    // REG_TM0D = 0;
-    REG_TM0CNT |= TIMER_FREQUENCY_256 | TIMER_INTERRUPTS | TIMER_ENABLE;
+    REG_TM0CNT |= TIMER_FREQUENCY_1024 | TIMER_INTERRUPTS | TIMER_ENABLE;
 
     // reset to 0 once counter reaches 99
     if (COUNTER_NUM >= 100)

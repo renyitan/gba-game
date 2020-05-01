@@ -4,6 +4,7 @@
 #include "numbers.h"
 #include "gba.h"
 
+
 #include "mygbalib.h"
 #include "position.h"
 #include "game.h"
@@ -26,6 +27,7 @@ void interruptsHandler(void)
     if ((REG_IF & INT_BUTTON) == INT_BUTTON)
     {
         checkMovementButtonInGame();
+        REG_IF = INT_BUTTON;
     }
     REG_IF = REG_IF; // Update interrupt table, to confirm we have handled this interrupt
 
@@ -40,7 +42,6 @@ u8 AppState = STATE_JUST_LAUNCHED;
 int main(void)
 {
     int i;
-
 
     // Set Mode 2
     // REG_DISPCNT = OBJ_MAP_1D | MODE2 | OBJ_ENABLE;

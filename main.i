@@ -142,6 +142,7 @@ enum
 typedef void (*fp)(void);
 # 6 "main.c" 2
 
+
 # 1 "mygbalib.h" 1
 # 1 "sprites.h" 1
 
@@ -1272,13 +1273,13 @@ void drawSprite(int numb, int N, int x, int y)
     *(unsigned short *)(0x7000002 + 8 * N) = x | 0x4000;
     *(unsigned short *)(0x7000004 + 8 * N) = numb * 8;
 }
-# 8 "main.c" 2
+# 9 "main.c" 2
 # 1 "position.h" 1
 extern int XPOS;
 extern int YPOS;
 extern int IDENTITY;
 extern int num;
-# 9 "main.c" 2
+# 10 "main.c" 2
 # 1 "game.h" 1
 # 1 "position.h" 1
 extern int XPOS;
@@ -2028,16 +2029,7 @@ int getRandomNumber(int lower, int upper)
 
 void spawnVirus(void)
 {
-    int randomN;
-    int randomXPOS;
-    int randomYPOS;
-
-    srand(time(0));
-    randomN = getRandomNumber(num + 1, 1000);
-    randomXPOS = getRandomNumber(0, 240);
-    randomYPOS = getRandomNumber(0, 160);
-
-    drawSprite(1, randomN, randomXPOS, randomYPOS);
+    drawSprite(1, 2, 50,80);
 }
 
 void renderGame(void)
@@ -2045,7 +2037,7 @@ void renderGame(void)
     drawSprite(IDENTITY, num, XPOS, YPOS);
     spawnVirus();
 }
-# 10 "main.c" 2
+# 11 "main.c" 2
 
 
 int IDENTITY = 0;
@@ -2079,7 +2071,6 @@ u8 AppState = 0;
 int main(void)
 {
     int i;
-
 
 
 
