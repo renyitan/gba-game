@@ -4,31 +4,40 @@
 
 void checkMovementButtonInGame(void)
 {
-
     u16 buttons = INPUT;
     int displacement = 1;
 
     if ((buttons & KEY_RIGHT) == KEY_RIGHT)
     {
         XPOS = XPOS + displacement;
-        drawSprite(IDENTITY, num, XPOS, YPOS);
     }
     if ((buttons & KEY_LEFT) == KEY_LEFT)
     {
         XPOS = XPOS - displacement;
-        drawSprite(IDENTITY, num, XPOS, YPOS);
     }
     if ((buttons & KEY_UP) == KEY_UP)
     {
         YPOS = YPOS + displacement;
-        drawSprite(IDENTITY, num, XPOS, YPOS);
     }
     if ((buttons & KEY_DOWN) == KEY_DOWN)
     {
         YPOS = YPOS - displacement;
-        drawSprite(IDENTITY, num, XPOS, YPOS);
     }
-}
+    moveSprite(XPOS, YPOS);
+};
+
+void moveSprite(int newX, int newY)
+{
+
+    if (newX < SCREEN_WIDTH && newX > 0)
+    {
+        if (newY < SCREEN_HEIGHT && newX > 0)
+        {
+            drawSprite(IDENTITY, num, newX, newY);
+        }
+    }
+};
+
 void fillPalette(void)
 {
     int i;
@@ -56,7 +65,7 @@ void drawSprite(int numb, int N, int x, int y)
     // Same as CA2, make specific sprite (based on its name/numb) appear on screen, as slide number N (each sprite needs a different, arbitrary, N >= 0)
     *(unsigned short *)(0x7000000 + 8 * N) = y | 0x2000;
     *(unsigned short *)(0x7000002 + 8 * N) = x | 0x4000;
-    *(unsigned short *)(0x7000004 + 8 * N) = numb * 8;
+    *(unsigned short *)(0x7000004 + 8 * N) = numb * 2;
 }
 
 // void drawLaser(void)
