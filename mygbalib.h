@@ -10,24 +10,34 @@ void checkMovementButtonInGame(void)
     if ((buttons & KEY_RIGHT) == KEY_RIGHT)
     {
         XPOS = XPOS + displacement;
-        drawSprite(IDENTITY, num, XPOS, YPOS);
     }
     if ((buttons & KEY_LEFT) == KEY_LEFT)
     {
         XPOS = XPOS - displacement;
-        drawSprite(IDENTITY, num, XPOS, YPOS);
     }
     if ((buttons & KEY_UP) == KEY_UP)
     {
         YPOS = YPOS + displacement;
-        drawSprite(IDENTITY, num, XPOS, YPOS);
     }
     if ((buttons & KEY_DOWN) == KEY_DOWN)
     {
         YPOS = YPOS - displacement;
-        drawSprite(IDENTITY, num, XPOS, YPOS);
     }
-}
+    moveSprite(XPOS, YPOS);
+};
+
+void moveSprite(int newX, int newY)
+{
+
+    if (newX < SCREEN_WIDTH && newX > 0)
+    {
+        if (newY < SCREEN_HEIGHT && newX > 0)
+        {
+            drawSprite(IDENTITY, num, newX, newY);
+        }
+    }
+};
+
 void fillPalette(void)
 {
     int i;

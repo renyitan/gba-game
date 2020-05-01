@@ -1225,24 +1225,34 @@ void checkMovementButtonInGame(void)
     if ((buttons & 0x010) == 0x010)
     {
         XPOS = XPOS + displacement;
-        drawSprite(IDENTITY, num, XPOS, YPOS);
     }
     if ((buttons & 0x020) == 0x020)
     {
         XPOS = XPOS - displacement;
-        drawSprite(IDENTITY, num, XPOS, YPOS);
     }
     if ((buttons & 0x080) == 0x080)
     {
         YPOS = YPOS + displacement;
-        drawSprite(IDENTITY, num, XPOS, YPOS);
     }
     if ((buttons & 0x040) == 0x040)
     {
         YPOS = YPOS - displacement;
-        drawSprite(IDENTITY, num, XPOS, YPOS);
     }
-}
+    moveSprite(XPOS, YPOS);
+};
+
+void moveSprite(int newX, int newY)
+{
+
+    if (newX < 240 && newX > 0)
+    {
+        if (newY < 160 && newX > 0)
+        {
+            drawSprite(IDENTITY, num, newX, newY);
+        }
+    }
+};
+
 void fillPalette(void)
 {
     int i;
@@ -2059,6 +2069,7 @@ void interruptsHandler(void)
         checkMovementButtonInGame();
 
     }
+
     if ((*(u16*)0x4000202 & 0x8) == 0x8)
     {
 
@@ -2067,11 +2078,13 @@ void interruptsHandler(void)
         drawSprite((COUNTER_NUM % 10), 2, 240 / 2 + 4, 160 / 2);
         COUNTER_NUM++;
 
+
     }
 
     *(u16*)0x4000202 = *(u16*)0x4000202;
     *(u16*)0x4000208 = 0x01;
 }
+
 
 u8 AppState = 0;
 
@@ -2096,10 +2109,11 @@ int main(void)
 
 
     (*(unsigned int*)0x3007FFC) = (int)&interruptsHandler;
-    *(u16*)0x4000200 |= 0x1000 | 0x8;
+    *(u16*)0x4000200 |= 0x8 | 0x1000;
     *(u16*)0x4000208 = 0x1;
-    *(u16*)0x4000100 = 0;
-    *(u16*)0x4000102 |= 0x0002 | 0x0040 | 0x0080;
+
+    *(u16*)0x4000100 = 0x0;
+    *(u16*)0x4000102 |= 0x0001 | 0x0040 | 0x0080;
 
     *(u16*)0x4000132 |= 0x7FFF;
 
@@ -2108,7 +2122,7 @@ int main(void)
         COUNTER_NUM = 0;
     }
 
-    drawSprite(IDENTITY, num, XPOS, YPOS);
+    drawSprite(IDENTITY, num, 240, 160);
 
     while (1)
     {
