@@ -88,6 +88,5 @@ int main(void)
     {
         // renderGame();
     }
-
     return 0;
 }
