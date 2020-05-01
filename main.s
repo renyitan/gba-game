@@ -7293,20 +7293,82 @@ drawSprite:
 	ldmfd	sp!, {r4, lr}
 	bx	lr
 	.size	drawSprite, .-drawSprite
+	.global	__modsi3
+	.align	2
+	.global	getRandomNumber
+	.type	getRandomNumber, %function
+getRandomNumber:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	mov	r5, r0	@  lower
+	mov	r4, r1	@  upper
+	rsb	r4, r5, r4	@  lower,  upper
+	sub	fp, ip, #-4294967292
+	add	r4, r4, #1	@  upper
+	ldr	r0, .L41
+	mov	lr, pc
+	bx	r0
+	mov	r1, r4	@  upper
+	ldr	r3, .L41+4
+	mov	lr, pc
+	bx	r3
+	ldr	r3, .L41+8
+	add	r0, r0, r5	@  lower,  lower,  lower
+	str	r0, [r3, #0]	@  lower,  num
+	ldmea	fp, {r4, r5, fp, sp, lr}
+	bx	lr
+.L42:
+	.align	2
+.L41:
+	.word	rand
+	.word	__modsi3
+	.word	num
+	.size	getRandomNumber, .-getRandomNumber
 	.align	2
 	.global	spawnVirus
 	.type	spawnVirus, %function
 spawnVirus:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
-	@ frame_needed = 0, uses_anonymous_args = 0
-	@ link register save eliminated.
-	mov	r0, #2
-	mov	r1, #5
-	mov	r2, #100
-	mov	r3, #80
-	@ lr needed for prologue
+	@ frame_needed = 1, uses_anonymous_args = 0
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	ldr	r3, .L44
+	sub	fp, ip, #-4294967292
+	mov	r0, #0
+	mov	lr, pc
+	bx	r3
+	ldr	r2, .L44+4
+	mov	lr, pc
+	bx	r2
+	ldr	r3, .L44+8
+	ldr	r0, [r3, #0]	@  num
+	mov	r1, #1000
+	add	r0, r0, #1	@  randomN
+	bl	getRandomNumber
+	mov	r1, #240
+	mov	r5, r0	@  randomN
+	mov	r0, #0
+	bl	getRandomNumber
+	mov	r1, #160
+	mov	r4, r0	@  randomXPOS
+	mov	r0, #0
+	bl	getRandomNumber
+	mov	r1, r5	@  randomN
+	mov	r3, r0	@  randomYPOS
+	mov	r2, r4	@  randomXPOS
+	mov	r0, #1
+	ldmea	fp, {r4, r5, fp, sp, lr}
 	b	drawSprite
+.L45:
+	.align	2
+.L44:
+	.word	time
+	.word	srand
+	.word	num
 	.size	spawnVirus, .-spawnVirus
 	.align	2
 	.global	renderGame
@@ -7317,21 +7379,21 @@ renderGame:
 	@ frame_needed = 1, uses_anonymous_args = 0
 	mov	ip, sp
 	stmfd	sp!, {fp, ip, lr, pc}
-	ldr	r3, .L42
+	ldr	r3, .L47
 	sub	fp, ip, #-4294967292
 	ldr	r0, [r3, #0]	@  IDENTITY
-	ldr	ip, .L42+4
-	ldr	r2, .L42+8
-	ldr	r3, .L42+12
+	ldr	ip, .L47+4
+	ldr	r2, .L47+8
+	ldr	r3, .L47+12
 	ldr	r1, [r2, #0]	@  num
 	ldr	r2, [r3, #0]	@  XPOS
 	ldr	r3, [ip, #0]	@  YPOS
 	bl	drawSprite
 	ldmea	fp, {fp, sp, lr}
 	b	spawnVirus
-.L43:
+.L48:
 	.align	2
-.L42:
+.L47:
 	.word	IDENTITY
 	.word	YPOS
 	.word	num
@@ -7383,17 +7445,17 @@ interruptsHandler:
 	ldrh	r3, [r4, #0]
 	tst	r3, #4096
 	sub	fp, ip, #-4294967292
-	bne	.L46
-.L45:
+	bne	.L51
+.L50:
 	strh	r3, [r4, #0]	@ movhi 
 	mov	r3, #1	@ movhi
 	strh	r3, [r5, #0]	@ movhi 
 	ldmea	fp, {r4, r5, fp, sp, lr}
 	bx	lr
-.L46:
+.L51:
 	bl	checkMovementButtonInGame
 	ldrh	r3, [r4, #0]
-	b	.L45
+	b	.L50
 	.size	interruptsHandler, .-interruptsHandler
 	.global	AppState
 	.bss
@@ -7425,10 +7487,10 @@ main:
 	str	r1, [r3, #0]
 	strh	r2, [r0, #2]	@ movhi 
 	strh	ip, [r0, #0]	@ movhi 	@  i
-	ldr	lr, .L59
+	ldr	lr, .L64
 	add	r5, r5, #3
 	add	r4, r4, #65536
-.L52:
+.L57:
 	mov	r1, ip, asl #2	@  i
 	add	r3, r1, lr
 	ldrh	r0, [r3, #2]	@  numbers
@@ -7438,7 +7500,7 @@ main:
 	add	r2, r2, r0, asl #8
 	cmp	ip, r5	@  i
 	strh	r2, [r3, r4]	@ movhi 
-	ble	.L52
+	ble	.L57
 	mov	r2, #67108864
 	add	r2, r2, #512
 	ldrh	r3, [r2, #0]
@@ -7452,19 +7514,19 @@ main:
 	mvn	r3, r3
 	mov	r1, #50331648
 	mov	r0, #67108864
-	ldr	r2, .L59+4
+	ldr	r2, .L64+4
 	strh	r3, [ip, #0]	@ movhi 
 	add	r1, r1, #32512
 	add	r0, r0, #520
 	mov	r3, #1	@ movhi
 	str	r2, [r1, #252]
 	strh	r3, [r0, #0]	@ movhi 
-.L56:
+.L61:
 	bl	renderGame
-	b	.L56
-.L60:
+	b	.L61
+.L65:
 	.align	2
-.L59:
+.L64:
 	.word	numbers
 	.word	interruptsHandler
 	.size	main, .-main

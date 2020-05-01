@@ -41,6 +41,7 @@ int main(void)
 {
     int i;
 
+
     // Set Mode 2
     // REG_DISPCNT = OBJ_MAP_1D | MODE2 | OBJ_ENABLE;
     REG_DISPCNT = MODE2 | OBJ_ENABLE;
