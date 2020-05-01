@@ -4,7 +4,7 @@
 #include "numbers.h"
 #include "gba.h"
 #include "mygbalib.h"
-#include "position.h";
+#include "position.h"
 
 // Global variable for counter
 int IDENTITY = 0;
@@ -12,13 +12,13 @@ int XPOS = 10;
 int YPOS = SCREEN_HEIGHT / 2;
 int num = 1;
 
-void Handler(void)
+void interruptsHandler(void)
 {
     REG_IME = 0x00; // Stop all other interrupt handling, while we handle this current one
 
     if ((REG_IF & INT_BUTTON) == INT_BUTTON)
     {
-        checkbutton();
+        checkMovementButtonInGame();
     }
     REG_IF = REG_IF; // Update interrupt table, to confirm we have handled this interrupt
 
@@ -33,7 +33,7 @@ int main(void)
     int i;
 
     // Set Mode 2
-    *(unsigned short *)0x4000000 = 0x40 | 0x2 | 0x1000;
+    REG_DISPCNT = OBJ_MAP_1D | MODE2 | OBJ_ENABLE;
 
     // Fill SpritePal
     *(unsigned short *)0x5000200 = 0;
@@ -44,15 +44,18 @@ int main(void)
         spriteData[i] = (numbers[i * 2 + 1] << 8) + numbers[i * 2];
 
     // Set Handler Function for interrupts and enable selected interrupts
-    REG_INT = (int)&Handler;
+    REG_INT = (int)&interruptsHandler;
     REG_IE |= INT_BUTTON; // choose which interrupt to enable.S
+
     REG_P1CNT |= 0x7FFF;
     REG_IME = 0x1; // Enable interrupt handling
 
-    drawSprite(IDENTITY, 1, XPOS, YPOS);
+    
 
     while (1)
-        ;
+    {
+        drawSprite(IDENTITY, num, XPOS, YPOS);
+    }
 
     return 0;
 }

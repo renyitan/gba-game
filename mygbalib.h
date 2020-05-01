@@ -1,8 +1,8 @@
 #include "sprites.h"
-#include "position.h";
+#include "position.h"
 #define INPUT (KEY_MASK & (~REG_KEYS))
 
-void checkbutton(void)
+void checkMovementButtonInGame(void)
 {
 
     u16 buttons = INPUT;
@@ -29,12 +29,6 @@ void checkbutton(void)
         drawSprite(IDENTITY, num, XPOS, YPOS);
     }
 }
-
-void buttonR()
-{
-    drawSprite(0, 1, 20, SCREEN_HEIGHT / 2);
-}
-
 void fillPalette(void)
 {
     int i;

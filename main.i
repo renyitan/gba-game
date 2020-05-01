@@ -1216,7 +1216,7 @@ extern int num;
 # 3 "mygbalib.h" 2
 
 
-void checkbutton(void)
+void checkMovementButtonInGame(void)
 {
 
     u16 buttons = (0x3FF & (~*(volatile u16*)0x4000130));
@@ -1243,12 +1243,6 @@ void checkbutton(void)
         drawSprite(IDENTITY, num, XPOS, YPOS);
     }
 }
-
-void buttonR()
-{
-    drawSprite(0, 1, 20, 160 / 2);
-}
-
 void fillPalette(void)
 {
     int i;
@@ -1292,13 +1286,13 @@ int XPOS = 10;
 int YPOS = 160 / 2;
 int num = 1;
 
-void Handler(void)
+void interruptsHandler(void)
 {
     *(u16*)0x4000208 = 0x00;
 
     if ((*(u16*)0x4000202 & 0x1000) == 0x1000)
     {
-        checkbutton();
+        checkMovementButtonInGame();
     }
     *(u16*)0x4000202 = *(u16*)0x4000202;
 
@@ -1313,7 +1307,7 @@ int main(void)
     int i;
 
 
-    *(unsigned short *)0x4000000 = 0x40 | 0x2 | 0x1000;
+    *(u32*)0x4000000 = 0x40 | 0x2 | 0x1000;
 
 
     *(unsigned short *)0x5000200 = 0;
@@ -1324,15 +1318,20 @@ int main(void)
         ((unsigned short *) 0x6010000)[i] = (numbers[i * 2 + 1] << 8) + numbers[i * 2];
 
 
-    (*(unsigned int*)0x3007FFC) = (int)&Handler;
+    (*(unsigned int*)0x3007FFC) = (int)&interruptsHandler;
     *(u16*)0x4000200 |= 0x1000;
+
     *(u16*)0x4000132 |= 0x7FFF;
     *(u16*)0x4000208 = 0x1;
 
-    drawSprite(IDENTITY, 1, XPOS, YPOS);
+
 
     while (1)
-        ;
+    {
+        drawSprite(IDENTITY, num, XPOS, YPOS);
+        if(YPOS >= 160) drawSprite(0, num, XPOS, 160/2);
+        if(YPOS < 0) drawSprite(0, num, XPOS, 0);
+    }
 
     return 0;
 }
