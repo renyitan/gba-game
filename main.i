@@ -142,7 +142,6 @@ enum
 typedef void (*fp)(void);
 # 6 "main.c" 2
 
-
 # 1 "mygbalib.h" 1
 # 1 "sprites.h" 1
 
@@ -1271,15 +1270,15 @@ void drawSprite(int numb, int N, int x, int y)
 
     *(unsigned short *)(0x7000000 + 8 * N) = y | 0x2000;
     *(unsigned short *)(0x7000002 + 8 * N) = x | 0x4000;
-    *(unsigned short *)(0x7000004 + 8 * N) = numb * 8;
+    *(unsigned short *)(0x7000004 + 8 * N) = numb * 2;
 }
-# 9 "main.c" 2
+# 8 "main.c" 2
 # 1 "position.h" 1
 extern int XPOS;
 extern int YPOS;
 extern int IDENTITY;
 extern int num;
-# 10 "main.c" 2
+# 9 "main.c" 2
 # 1 "game.h" 1
 # 1 "position.h" 1
 extern int XPOS;
@@ -2035,9 +2034,9 @@ void spawnVirus(void)
 void renderGame(void)
 {
     drawSprite(IDENTITY, num, XPOS, YPOS);
-    spawnVirus();
+
 }
-# 11 "main.c" 2
+# 10 "main.c" 2
 
 
 int IDENTITY = 0;
@@ -2050,6 +2049,7 @@ int num = 1;
 
 
 
+int COUNTER_NUM = 0;
 void interruptsHandler(void)
 {
     *(u16*)0x4000208 = 0x00;
@@ -2057,9 +2057,19 @@ void interruptsHandler(void)
     if ((*(u16*)0x4000202 & 0x1000) == 0x1000)
     {
         checkMovementButtonInGame();
-    }
-    *(u16*)0x4000202 = *(u16*)0x4000202;
 
+    }
+    if ((*(u16*)0x4000202 & 0x8) == 0x8)
+    {
+
+
+        drawSprite(((COUNTER_NUM / 10) % 10), 3, 240 / 2 - 4, 160 / 2);
+        drawSprite((COUNTER_NUM % 10), 2, 240 / 2 + 4, 160 / 2);
+        COUNTER_NUM++;
+
+    }
+
+    *(u16*)0x4000202 = *(u16*)0x4000202;
     *(u16*)0x4000208 = 0x01;
 }
 
@@ -2086,14 +2096,23 @@ int main(void)
 
 
     (*(unsigned int*)0x3007FFC) = (int)&interruptsHandler;
-    *(u16*)0x4000200 |= 0x1000;
+    *(u16*)0x4000200 |= 0x1000 | 0x8;
+    *(u16*)0x4000208 = 0x1;
+    *(u16*)0x4000100 = 0;
+    *(u16*)0x4000102 |= 0x0002 | 0x0040 | 0x0080;
 
     *(u16*)0x4000132 |= 0x7FFF;
-    *(u16*)0x4000208 = 0x1;
+
+    if (COUNTER_NUM >= 100)
+    {
+        COUNTER_NUM = 0;
+    }
+
+    drawSprite(IDENTITY, num, XPOS, YPOS);
 
     while (1)
     {
-        renderGame();
+
     }
 
     return 0;

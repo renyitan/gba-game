@@ -4,7 +4,6 @@
 #include "numbers.h"
 #include "gba.h"
 
-
 #include "mygbalib.h"
 #include "position.h"
 #include "game.h"
@@ -20,6 +19,7 @@ int num = 1;
 #define STATE_PLAYING 2
 #define STATE_END 3
 
+int COUNTER_NUM = 0;
 void interruptsHandler(void)
 {
     REG_IME = 0x00; // Stop all other interrupt handling, while we handle this current one
@@ -27,10 +27,19 @@ void interruptsHandler(void)
     if ((REG_IF & INT_BUTTON) == INT_BUTTON)
     {
         checkMovementButtonInGame();
-        REG_IF = INT_BUTTON;
+        // REG_IF = INT_BUTTON;
     }
-    REG_IF = REG_IF; // Update interrupt table, to confirm we have handled this interrupt
+    if ((REG_IF & INT_TIMER0) == INT_TIMER0) // handling INT_TIMER0 interrupt
+    {
+        // screen width/2 -4 is for offset of the sprites to centralise them
 
+        drawSprite(((COUNTER_NUM / 10) % 10), 3, SCREEN_WIDTH / 2 - 4, SCREEN_HEIGHT / 2); // sprite for the ten's digit positions
+        drawSprite((COUNTER_NUM % 10), 2, SCREEN_WIDTH / 2 + 4, SCREEN_HEIGHT / 2);        // sprite for the one's digit positions
+        COUNTER_NUM++;
+        // REG_IF = INT_TIMER0;
+    }
+    // Update interrupt table, to confirm we have handled this interrupt
+    REG_IF = REG_IF;
     REG_IME = 0x01; // Re-enable interrupt handling
 }
 
@@ -57,14 +66,23 @@ int main(void)
 
     // Set Handler Function for interrupts and enable selected interrupts
     REG_INT = (int)&interruptsHandler;
-    REG_IE |= INT_BUTTON; // choose which interrupt to enable.S
+    REG_IE |= INT_BUTTON | INT_TIMER0; // choose which interrupt to enable.S
+    REG_IME = 0x1;                     // Enable interrupt handling
+    REG_TM0D = 0;                // initial counter value of -16384, return to this value when counter overflows.
+    REG_TM0CNT |= TIMER_FREQUENCY_256 | TIMER_INTERRUPTS | TIMER_ENABLE;
 
     REG_P1CNT |= 0x7FFF;
-    REG_IME = 0x1; // Enable interrupt handling
+
+    if (COUNTER_NUM >= 100)
+    {
+        COUNTER_NUM = 0;
+    }
+
+    drawSprite(IDENTITY, num, XPOS, YPOS);
 
     while (1)
     {
-        renderGame();
+        // renderGame();
     }
 
     return 0;

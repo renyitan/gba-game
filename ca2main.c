@@ -18,6 +18,7 @@ void drawSprite(int numb, int N, int x, int y)
 
 void Handler(void)
 {
+    
     REG_IME = 0x00; // Stop all other interrupt handling, while we handle this current one
 
     if ((REG_IF & INT_TIMER0) == INT_TIMER0) // handling INT_TIMER0 interrupt
@@ -25,7 +26,7 @@ void Handler(void)
         // screen width/2 -4 is for offset of the sprites to centralise them
 
         drawSprite(((COUNTER_NUM / 10) % 10), 2, SCREEN_WIDTH / 2 - 4, SCREEN_HEIGHT / 2); // sprite for the ten's digit positions
-        drawSprite((COUNTER_NUM % 10), 1, SCREEN_WIDTH / 2 + 4, SCREEN_HEIGHT / 2);        // sprite for the one's digit positions
+        // drawSprite((COUNTER_NUM % 10), 1, SCREEN_WIDTH / 2 + 4, SCREEN_HEIGHT / 2);        // sprite for the one's digit positions
         COUNTER_NUM++;
     }
 
@@ -58,8 +59,8 @@ int main(void)
     REG_IME = 0x1;        // Enable interrupt handling
 
     // Set Timer Mode (fill that section and replace TMX with selected timer number)
-    REG_TM0D = -0x4000; // initial counter value of -16384, return to this value when counter overflows.
-    REG_TM0CNT |= TIMER_FREQUENCY_1024 | TIMER_INTERRUPTS | TIMER_ENABLE;
+    REG_TM0D = 0; // initial counter value of -16384, return to this value when counter overflows.
+    REG_TM0CNT |= TIMER_FREQUENCY_256 | TIMER_INTERRUPTS | TIMER_ENABLE;
 
     // reset to 0 once counter reaches 99
     if (COUNTER_NUM >= 100)

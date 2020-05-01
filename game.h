@@ -17,5 +17,5 @@ void spawnVirus(void)
 void renderGame(void)
 {
     drawSprite(IDENTITY, num, XPOS, YPOS);
-    spawnVirus();
+    // spawnVirus();
 }
