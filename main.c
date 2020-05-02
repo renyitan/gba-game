@@ -6,10 +6,8 @@
 #include "mygbalib.h"
 #include "player.h"
 
-#define STATE_JUST_LAUNCHED 0
-#define STATE_START 1
-#define STATE_PLAYING 2
-#define STATE_END 3
+
+int GAME_STATE = STATE_PLAYING;
 
 // Initialise player propeties;
 int PLAYER_SPRITE = 0;
@@ -23,7 +21,6 @@ Virus virus;
 
 Masks masks;
 Mask mask;
-
 
 void interruptsHandler(void)
 {
@@ -49,6 +46,9 @@ void interruptsHandler(void)
 
     if ((REG_IF & INT_BUTTON) == INT_BUTTON)
     {
+        // check for auxillary control buttons (start, select, L, R)
+        auxButtonHandler();
+        // check for position altering buttons
         if (PLAYER_LIFE_COUNTS > 0)
         {
             movePlayer();
@@ -63,7 +63,6 @@ void interruptsHandler(void)
     REG_IF = REG_IF;
     REG_IME = 0x01; // Re-enable interrupt handling
 }
-
 
 // -----------------------------------------------------------------------------
 // Project Entry Point
@@ -94,6 +93,49 @@ int main(void)
 
     REG_P1CNT |= 0x7FFF;
 
+    // InitViruses(&viruses);
+
+    // InitMasks(&masks);
+    // for (i = 0; i <= 5; i++)
+    // {
+    //     addMask(&masks);
+    // }
+
+    // drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
+
+    // renderGame();
+
+    // while (1)
+    // {
+    // drawViruses(&viruses);
+    // drawMasks(&masks);
+    // virusCollisionWithPlayer(&viruses);
+    // maskCollisionWithPlayer(&masks);
+    // }
+
+    while (1)
+    {
+        switch (GAME_STATE)
+        {
+        case STATE_START:
+            renderTitle();
+            break;
+        case STATE_PLAYING:
+            renderGame();
+            break;
+        }
+    }
+    return 0;
+}
+
+void renderTitle()
+{
+    drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
+}
+
+void renderGame()
+{
+    int i;
     InitViruses(&viruses);
 
     InitMasks(&masks);
@@ -111,6 +153,4 @@ int main(void)
         virusCollisionWithPlayer(&viruses);
         maskCollisionWithPlayer(&masks);
     }
-    return 0;
 }
-
