@@ -4,7 +4,7 @@
 // #include "numbers.h"
 #include "gba.h"
 #include "mygbalib.h"
-#include "position.h"
+#include "player.h"
 
 #define STATE_JUST_LAUNCHED 0
 #define STATE_START 1
@@ -21,6 +21,10 @@ int PLAYER_LIFE_COUNTS = 1;
 Viruses viruses;
 Virus virus;
 
+Masks masks;
+Mask mask;
+
+
 void interruptsHandler(void)
 {
 
@@ -36,6 +40,7 @@ void interruptsHandler(void)
     {
         updateVirusPosition(&viruses);
         addVirus(&viruses);
+
         if (PLAYER_LIFE_COUNTS <= 0)
         {
             removePlayer();
@@ -58,6 +63,7 @@ void interruptsHandler(void)
     REG_IF = REG_IF;
     REG_IME = 0x01; // Re-enable interrupt handling
 }
+
 
 // -----------------------------------------------------------------------------
 // Project Entry Point
@@ -88,17 +94,23 @@ int main(void)
 
     REG_P1CNT |= 0x7FFF;
 
-    // drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
-
     InitViruses(&viruses);
-    addVirus(&viruses);
+
+    InitMasks(&masks);
+    for (i = 0; i <= 5; i++)
+    {
+        addMask(&masks);
+    }
 
     drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
 
     while (1)
     {
         drawViruses(&viruses);
+        drawMasks(&masks);
         virusCollisionWithPlayer(&viruses);
+        maskCollisionWithPlayer(&masks);
     }
     return 0;
 }
+
