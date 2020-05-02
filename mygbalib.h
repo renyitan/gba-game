@@ -1,5 +1,5 @@
 #include "sprites.h"
-#include "position.h"
+#include "player.h"
 #include "virus.h"
 #include "masks.h"
 
@@ -57,15 +57,22 @@ void removePlayer(void)
     drawSprite(PLAYER_SPRITE, PLAYER_ID, SCREEN_WIDTH + 10, SCREEN_HEIGHT + 10);
 }
 
-// void drawMasks(Masks *m)
-// {
-//     int i;
-//     for (i = 0; i < m->length; i++)
-//     {
-//         Mask *currentMask = &m->freeMasks[i];
-//         drawSprite(SPRITE_MASK, currentMask->id, currentMask->xPos, currentMask->yPos);
-//     }
-// }
+void drawMasks(Masks *m)
+{
+    int i;
+    for (i = 0; i < m->length; i++)
+    {
+        Mask *currentMask = &m->freeMasks[i];
+        if (!currentMask->collected)
+        {
+            drawSprite(SPRITE_MASK, currentMask->id, currentMask->xPos, currentMask->yPos);
+        }
+        else
+        {
+            drawSprite(SPRITE_MASK, currentMask->id, SCREEN_WIDTH + 12, SCREEN_HEIGHT + 12);
+        }
+    }
+}
 
 void drawViruses(Viruses *v)
 {

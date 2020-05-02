@@ -1,11 +1,11 @@
 #include "gba.h"
-#include "position.h"
+#include "player.h"
 #include <stdlib.h>
 #include <stdbool.h>
-#include <limits.h>
+// #include <limits.h>
 
 #define MASK_NUM_MAX 20
-#define MASK_PADDING 12
+#define MASK_PADDING 16
 
 typedef struct
 {
@@ -29,29 +29,31 @@ void InitMasks(Masks *masks)
 void addMask(Masks *m)
 {
     Mask *newMask = &m->freeMasks[m->length - 1];
-    newMask->id = INT_MAX - m->length;
-    newMask->xPos = (rand() % 240);
-    newMask->yPos = (rand() % 160);
+    newMask->id = 99999 + m->length;
+    newMask->xPos = (rand() % (150/2)) + SCREEN_WIDTH/3;
+    newMask->yPos = (rand() % (SCREEN_HEIGHT-8)) ;
     newMask->collected = false;
 
     m->length++;
 }
 
-// void maskCollisionWithPlayer(Masks *m)
-// {
-//     int i;
-//     for (i = 0; i < m->length; i++)
-//     {
-//         Mask *currentMask = &m->freeMasks[i];
+void maskCollisionWithPlayer(Masks *m)
+{
+    int i;
+    for (i = 0; i < m->length; i++)
+    {
+        Mask *currentMask = &m->freeMasks[i];
 
-//         // check for horizontal collision
-//         if (PLAYER_XPOS >= currentMask->xPos && PLAYER_XPOS <= currentMask->xPos + MASK_PADDING)
-//         {
-//             // check for vertical collision
-//             if (PLAYER_YPOS >= currentMask->yPos && PLAYER_YPOS <= currentMask->yPos + MASK_PADDING)
-//             {
-//                 currentMask->collected = true;
-//             }
-//         }
-//     }
-// }
+        // check for horizontal collision
+        if ((PLAYER_XPOS >= currentMask->xPos && PLAYER_XPOS <= currentMask->xPos + MASK_PADDING) ||
+            (PLAYER_XPOS + PLAYER_PADDING >= currentMask->xPos && PLAYER_XPOS + PLAYER_PADDING <= currentMask->xPos + MASK_PADDING))
+        {
+            // check for vertical collision
+            if ((PLAYER_YPOS >= currentMask->yPos && PLAYER_YPOS <= currentMask->yPos + MASK_PADDING) ||
+                (PLAYER_YPOS + PLAYER_PADDING >= currentMask->yPos && PLAYER_YPOS + PLAYER_PADDING <= currentMask->yPos + MASK_PADDING))
+            {
+                currentMask->collected = true;
+            }
+        }
+    }
+}

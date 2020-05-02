@@ -1,10 +1,10 @@
 #include "gba.h"
-#include "position.h"
+#include "player.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define VIRUS_LENGTH 12
+#define VIRUS_PADDING 12
 #define VIRUS_NUM_MAX 9999
 
 typedef struct Virus
@@ -41,8 +41,8 @@ void addVirus(Viruses *v)
     {
         newVirus->yPos = (rand() % 6) * 28; //minimum y pos is 0. max is 140
     }
-    newVirus->xVel = 8;
-    newVirus->yVel = 8;
+    newVirus->xVel = 10;
+    newVirus->yVel = 10;
     v->length++;
 }
 
@@ -71,10 +71,12 @@ void virusCollisionWithPlayer(Viruses *v)
         Virus *currentVirus = &v->freeVirus[i];
 
         // check for horizontal collision
-        if (PLAYER_XPOS >= currentVirus->xPos && PLAYER_XPOS <= currentVirus->xPos + VIRUS_LENGTH)
+        if ((PLAYER_XPOS >= currentVirus->xPos && PLAYER_XPOS <= currentVirus->xPos + VIRUS_PADDING) ||
+            (PLAYER_XPOS + PLAYER_PADDING >= currentVirus->xPos && PLAYER_XPOS + PLAYER_PADDING <= currentVirus->xPos + VIRUS_PADDING))
         {
             // check for vertical collision
-            if (PLAYER_YPOS >= currentVirus->yPos && PLAYER_YPOS <= currentVirus->yPos + VIRUS_LENGTH)
+            if (PLAYER_YPOS >= currentVirus->yPos && PLAYER_YPOS <= currentVirus->yPos + VIRUS_PADDING ||
+                (PLAYER_YPOS + PLAYER_PADDING >= currentVirus->yPos && PLAYER_YPOS + PLAYER_PADDING <= currentVirus->yPos + VIRUS_PADDING))
             {
                 PLAYER_LIFE_COUNTS -= 1;
             }
