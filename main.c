@@ -91,6 +91,7 @@ int main(void)
     // drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
 
     InitViruses(&viruses);
+    addVirus(&viruses);
 
     drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
 
