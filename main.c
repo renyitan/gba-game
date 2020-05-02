@@ -113,8 +113,9 @@ int main(void)
 void renderStartPage()
 {
     drawGameTitle();
-    // drawUserPrompt();
+    drawUserPrompt();
 }
+
 
 void renderGame()
 {
