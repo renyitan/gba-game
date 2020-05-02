@@ -23,7 +23,7 @@ Virus virus;
 
 Masks masks;
 Mask mask;
-
+int TOTAL_MASKS = 5;
 
 void interruptsHandler(void)
 {
@@ -64,7 +64,6 @@ void interruptsHandler(void)
     REG_IME = 0x01; // Re-enable interrupt handling
 }
 
-
 // -----------------------------------------------------------------------------
 // Project Entry Point
 // -----------------------------------------------------------------------------
@@ -97,7 +96,7 @@ int main(void)
     InitViruses(&viruses);
 
     InitMasks(&masks);
-    for (i = 0; i <= 5; i++)
+    for (i = 0; i <= TOTAL_MASKS; i++)
     {
         addMask(&masks);
     }
@@ -113,4 +112,3 @@ int main(void)
     }
     return 0;
 }
-
