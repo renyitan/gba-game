@@ -7,6 +7,10 @@ extern int PLAYER_SPRITE;
 extern int PLAYER_ID;
 extern int PLAYER_LIFE_COUNTS;
 
+
+// Sprite Properties
+#define LIFE_XPOS 0
+#define LIFE_YPOS (SCREEN_HEIGHT - 16)
 #define PLAYER_PADDING 8
 
 // typedef struct Player

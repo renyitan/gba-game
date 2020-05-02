@@ -28,8 +28,8 @@ void InitMasks(Masks *masks)
 
 void addMask(Masks *m)
 {
-    Mask *newMask = &m->freeMasks[m->length - 1];
-    newMask->id = 99999 + m->length;
+    Mask *newMask = &m->freeMasks[m->length];
+    newMask->id = 9000 + m->length;
     newMask->xPos = (rand() % (150/2)) + SCREEN_WIDTH/3;
     newMask->yPos = (rand() % (SCREEN_HEIGHT-8)) ;
     newMask->collected = false;
