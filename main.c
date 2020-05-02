@@ -6,7 +6,6 @@
 #include "mygbalib.h"
 #include "player.h"
 
-
 int GAME_STATE = STATE_PLAYING;
 
 // Initialise player propeties;
@@ -153,5 +152,11 @@ void renderGame()
         drawMasks(&masks);
         virusCollisionWithPlayer(&viruses);
         maskCollisionWithPlayer(&masks);
+
+        drawLifeCounts();
+
+        // drawSprite(LIFE_1, 2, LIFE_XPOS, LIFE_YPOS);
+        // drawSprite(LIFE_1, 3, LIFE_XPOS + 16, LIFE_YPOS);
+        // drawSprite(LIFE_1, 4, LIFE_XPOS + 32, LIFE_YPOS);
     }
 }
