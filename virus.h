@@ -26,7 +26,6 @@ typedef struct
 void InitViruses(Viruses *viruses)
 {
     viruses->length = 0;
-    // memset(&viruses->freeVirus[0], 0, sizeof(Virus) * 22 * 14);
 }
 
 void addVirus(Viruses *v)
@@ -80,7 +79,6 @@ void virusCollisionWithPlayer(Viruses *v)
                 (PLAYER_YPOS + PLAYER_PADDING >= currentVirus->yPos && PLAYER_YPOS + PLAYER_PADDING <= currentVirus->yPos + VIRUS_PADDING))
             {
                 PLAYER_LIFE_COUNTS -= 1;
-                PLAYER_XPOS -= 16;
             }
         }
     }

@@ -3,7 +3,6 @@
 #include "sprites_id.h"
 #include <stdlib.h>
 #include <stdbool.h>
-// #include <limits.h>
 
 #define MASK_NUM_MAX 20
 #define MASK_PADDING 16

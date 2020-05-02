@@ -1,3 +1,6 @@
+/**
+ * The draw header file holds all our draw / render functions. 
+*/
 #include "sprites.h"
 #include "player.h"
 #include "virus.h"
@@ -84,47 +87,20 @@ void drawViruses(Viruses *v)
     }
 }
 
-// void drawLifeCounts(void)
-// {
-//     int i;
-//     for (i = 0; i < PLAYER_LIFE_COUNTS; i++)
-//     {
-//         drawSprite(LIFE_1, i + 2, (LIFE_XPOS + i) * 16, LIFE_YPOS);
-//     }
-// }
-
 void drawGameTitle(void)
 {
     int LETTER_XPOS = 48;
     int LETTER_YPOS = SCREEN_HEIGHT / 2;
 
-    drawSprite(SPRITE_V, LETTER_ID, LETTER_XPOS, 50);
-    drawSprite(SPRITE_I, LETTER_ID + 1, LETTER_XPOS + 16, 50);
-    drawSprite(SPRITE_R, LETTER_ID + 2, LETTER_XPOS + 32, 50);
-    drawSprite(SPRITE_V, LETTER_ID + 3, LETTER_XPOS + 48, 50);
-    drawSprite(SPRITE_S, LETTER_ID + 4, LETTER_XPOS + 64, 50);
+    drawSprite(SPRITE_V, TITLE_LETTER_ID, LETTER_XPOS, 50);
+    drawSprite(SPRITE_I, TITLE_LETTER_ID + 1, LETTER_XPOS + 16, 50);
+    drawSprite(SPRITE_R, TITLE_LETTER_ID + 2, LETTER_XPOS + 32, 50);
+    drawSprite(SPRITE_V, TITLE_LETTER_ID + 3, LETTER_XPOS + 48, 50);
+    drawSprite(SPRITE_S, TITLE_LETTER_ID + 4, LETTER_XPOS + 64, 50);
 
-    drawSprite(SPRITE_R, LETTER_ID + 5, LETTER_XPOS + 96, 50);
-    drawSprite(SPRITE_V, LETTER_ID + 6, LETTER_XPOS + 112, 50);
-    drawSprite(SPRITE_M, LETTER_ID + 7, LETTER_XPOS + 128, 50);
-}
-
-void fillPalette(void)
-{
-    int i;
-
-    // Fill the palette in GBA memory
-    for (i = 0; i < NCOLS; i++)
-        spritePal[i] = palette[i];
-}
-
-void fillSprites(void)
-{
-    int i;
-
-    // Load all sprites in GBA memory
-    for (i = 0; i < 128 * 16 * 16; i++)
-        spriteData[i] = (sprites[i * 2 + 1] << 8) + sprites[i * 2];
+    drawSprite(SPRITE_R, TITLE_LETTER_ID + 5, LETTER_XPOS + 96, 50);
+    drawSprite(SPRITE_V, TITLE_LETTER_ID + 6, LETTER_XPOS + 112, 50);
+    drawSprite(SPRITE_M, TITLE_LETTER_ID + 7, LETTER_XPOS + 128, 50);
 }
 
 void drawSprite(int numb, int N, int x, int y)
@@ -142,26 +118,3 @@ void removeSprite(int N)
     *(unsigned short *)(0x7000004 + 8 * N) = 0x000;
     // free(*(unsigned short *)(0x7000004 + 8 * N));
 }
-
-// void drawLaser(void)
-// {
-// Gift function showing you how to draw an example sprite defined in sprite.h on screen, using drawSprite()
-// Note that this code uses largeer sprites with a palette, so the main code needs to be initialized in graphical mode 2, using:
-// *(unsigned short *) 0x4000000 = 0x40 | 0x2 | 0x1000;
-// 	// at the beginning of main() in main.c
-
-//     switch(lPlat) {
-//         case 16:
-//         {
-//             drawSprite(LASER, NPLATS*3 + 5 + NROCK + NMET, LaserX, LaserY);
-//             break;
-//         }
-//         case 9:
-//         {
-//             drawSprite(LASER, NPLATS*2 + 5 + NROCK + NMET, LaserX, LaserY);
-//             break;
-//         }
-//         default:
-//             break;
-//     }
-// }
