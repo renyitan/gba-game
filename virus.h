@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int VIRUS_LENGTH = 12;
+#define VIRUS_LENGTH 12
 #define VIRUS_NUM_MAX 9999
 
 typedef struct Virus
@@ -56,7 +56,7 @@ void updateVirusPosition(Viruses *v)
         currentVirus->xPos -= currentVirus->xVel;
         currentVirus->yPos += currentVirus->yVel;
 
-        if (currentVirus->xPos <= 16)
+        if (currentVirus->xPos <= 2)
         {
             currentVirus->yPos = SCREEN_HEIGHT + 16;
         }

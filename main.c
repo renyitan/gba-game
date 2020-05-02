@@ -36,6 +36,10 @@ void interruptsHandler(void)
     {
         updateVirusPosition(&viruses);
         addVirus(&viruses);
+        if (PLAYER_LIFE_COUNTS <= 0)
+        {
+            removePlayer();
+        }
     }
 
     if ((REG_IF & INT_BUTTON) == INT_BUTTON)
@@ -44,7 +48,8 @@ void interruptsHandler(void)
         {
             movePlayer();
         }
-        else {
+        else
+        {
             removePlayer();
         }
     }
@@ -89,7 +94,7 @@ int main(void)
     addVirus(&viruses);
 
     drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
-    
+
     while (1)
     {
         drawViruses(&viruses);
