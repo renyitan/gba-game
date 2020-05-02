@@ -6,12 +6,6 @@
 #include "mygbalib.h"
 #include "position.h"
 
-// Global variable for counter
-int IDENTITY = 0;
-int XPOS = 10;
-int YPOS = SCREEN_HEIGHT / 2;
-int num = 1;
-
 #define STATE_JUST_LAUNCHED 0
 #define STATE_START 1
 #define STATE_PLAYING 2
@@ -21,10 +15,16 @@ int COUNTER_0 = 0;
 int COUNTER_1 = 0;
 int LOOP_COUNT = 0;
 
-Player player;
+
+
+int IDENTITY = 0;
+int id = 1;
+int XPOS = 50;
+int YPOS = SCREEN_HEIGHT / 2;
 
 Viruses viruses;
 Virus virus;
+Player player;
 
 void interruptsHandler(void)
 {
@@ -55,6 +55,7 @@ void interruptsHandler(void)
 // -----------------------------------------------------------------------------
 // Project Entry Point
 // -----------------------------------------------------------------------------
+
 int main(void)
 {
     int i;
@@ -85,18 +86,14 @@ int main(void)
         LOOP_COUNT = 0;
     }
 
-    // drawSprite(IDENTITY, num, XPOS, YPOS);
-
-    InitPlayer(&player);
+    drawSprite(IDENTITY, id, XPOS, YPOS);
 
     InitViruses(&viruses);
-    addVirus(&viruses); // Add the first virus
+    addVirus(&viruses);
 
     while (1)
     {
-        drawPlayer(&player);
-        updatePlayerPosition(&player);
-        // drawViruses(&viruses);
+        drawViruses(&viruses);
     }
     return 0;
 }

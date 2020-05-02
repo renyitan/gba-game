@@ -18,17 +18,14 @@ void checkMovementButtonInGame(void)
             XPOS = 0;
         }
         XPOS = XPOS + displacement;
-        // drawSprite(IDENTITY, num, XPOS, YPOS);
+        drawSprite(IDENTITY, id, XPOS, YPOS);
     }
     else if ((buttons & KEY_LEFT) == KEY_LEFT)
     {
         IDENTITY = 1;
-        if (XPOS <= 0)
-        {
-            XPOS = 240;
-        }
         XPOS = XPOS - displacement;
-        // drawSprite(IDENTITY, num, XPOS, YPOS);
+
+        drawSprite(IDENTITY, id, XPOS, YPOS);
     }
     else if ((buttons & KEY_UP) == KEY_UP)
     {
@@ -37,7 +34,8 @@ void checkMovementButtonInGame(void)
             YPOS = 160;
         }
         YPOS = YPOS + displacement;
-        // drawSprite(IDENTITY, num, XPOS, YPOS);
+
+        drawSprite(IDENTITY, id, XPOS, YPOS);
     }
     else if ((buttons & KEY_DOWN) == KEY_DOWN)
     {
@@ -46,10 +44,8 @@ void checkMovementButtonInGame(void)
             YPOS = 0;
         }
         YPOS = YPOS - displacement;
-        // drawSprite(IDENTITY, num, XPOS, YPOS);
+        drawSprite(IDENTITY, id, XPOS, YPOS);
     }
-    // moveSprite(XPOS, YPOS);
-    // updatePlayerPosition()
 };
 
 void drawViruses(Viruses *v)
@@ -60,11 +56,6 @@ void drawViruses(Viruses *v)
         Virus *currentVirus = &v->freeVirus[i];
         drawSprite(2, currentVirus->id, currentVirus->xPos, currentVirus->yPos);
     }
-}
-
-void drawPlayer(Player *player)
-{
-    drawSprite(0, player->id, player->xPos, player->yPos);
 }
 
 void fillPalette(void)

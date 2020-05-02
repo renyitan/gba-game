@@ -32,7 +32,7 @@ void InitViruses(Viruses *viruses)
 void addVirus(Viruses *v)
 {
     Virus *newVirus = &v->freeVirus[v->length - 1];
-    newVirus->id = v->length + 1;
+    newVirus->id = v->length + 2;
     newVirus->xPos = (rand() % 160);
     newVirus->yPos = (rand() % 240);
     newVirus->xVel = 5;

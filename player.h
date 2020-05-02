@@ -10,13 +10,13 @@ typedef struct Player
 
 void InitPlayer(Player *player)
 {
-    player->id = 0;
-    player->xPos = 50;
-    player->yPos = 50;
+    player->id = 1;
+    player->xPos = SCREEN_HEIGHT / 2;
+    player->yPos = 10;
 }
 
-void updatePlayerPosition(Player *player)
+void updatePlayerPosition(Player *player, int xPos, int yPos)
 {
-    player->xPos = XPOS;
-    player->yPos = YPOS;
+    player->xPos = xPos;
+    player->yPos = yPos;
 }
