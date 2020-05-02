@@ -11,18 +11,15 @@
 #define STATE_PLAYING 2
 #define STATE_END 3
 
-int COUNTER_0 = 0;
-int COUNTER_1 = 0;
-int LOOP_COUNT = 0;
-
-int IDENTITY = 0;
-int id = 1;
-int XPOS = 50;
-int YPOS = SCREEN_HEIGHT / 2;
+// Initialise player propeties;
+int PLAYER_SPRITE = 0;
+int PLAYER_ID = 1;
+int PLAYER_XPOS = 50;
+int PLAYER_YPOS = SCREEN_HEIGHT / 2;
+int PLAYER_LIFE_COUNTS = 1;
 
 Viruses viruses;
 Virus virus;
-Player player;
 
 void interruptsHandler(void)
 {
@@ -39,11 +36,22 @@ void interruptsHandler(void)
     {
         updateVirusPosition(&viruses);
         addVirus(&viruses);
+        if (PLAYER_LIFE_COUNTS <= 0)
+        {
+            removePlayer();
+        }
     }
 
     if ((REG_IF & INT_BUTTON) == INT_BUTTON)
     {
-        checkMovementButtonInGame();
+        if (PLAYER_LIFE_COUNTS > 0)
+        {
+            movePlayer();
+        }
+        else
+        {
+            removePlayer();
+        }
     }
 
     // Update interrupt table, to confirm we have handled this interrupt
@@ -80,19 +88,17 @@ int main(void)
 
     REG_P1CNT |= 0x7FFF;
 
-    if (LOOP_COUNT >= 100)
-    {
-        LOOP_COUNT = 0;
-    }
-
-    drawSprite(IDENTITY, id, XPOS, YPOS);
+    // drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
 
     InitViruses(&viruses);
     addVirus(&viruses);
 
+    drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
+
     while (1)
     {
         drawViruses(&viruses);
+        virusCollisionWithPlayer(&viruses);
     }
     return 0;
 }

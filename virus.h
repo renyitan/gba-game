@@ -1,9 +1,10 @@
-// #include "mygbalib.h"
 #include "gba.h"
+#include "position.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#define VIRUS_LENGTH 12
 #define VIRUS_NUM_MAX 9999
 
 typedef struct Virus
@@ -21,10 +22,6 @@ typedef struct
     int length;
 } Viruses;
 
-// void createVirus(Virus *v)
-// {
-//     drawSprite(3, v->id, v->xPos, v->yPos);
-// }
 void InitViruses(Viruses *viruses)
 {
     viruses->length = 1;
@@ -59,9 +56,28 @@ void updateVirusPosition(Viruses *v)
         currentVirus->xPos -= currentVirus->xVel;
         currentVirus->yPos += currentVirus->yVel;
 
-        if (currentVirus->xPos <= 16)
+        if (currentVirus->xPos <= 2)
         {
             currentVirus->yPos = SCREEN_HEIGHT + 16;
+        }
+    }
+}
+
+void virusCollisionWithPlayer(Viruses *v)
+{
+    int i;
+    for (i = 0; i < v->length; i++)
+    {
+        Virus *currentVirus = &v->freeVirus[i];
+
+        // check for horizontal collision
+        if (PLAYER_XPOS >= currentVirus->xPos && PLAYER_XPOS <= currentVirus->xPos + VIRUS_LENGTH)
+        {
+            // check for vertical collision
+            if (PLAYER_YPOS >= currentVirus->yPos && PLAYER_YPOS <= currentVirus->yPos + VIRUS_LENGTH)
+            {
+                PLAYER_LIFE_COUNTS -= 1;
+            }
         }
     }
 }
