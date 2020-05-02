@@ -10,11 +10,13 @@ void checkMovementButtonInGame(void)
 
     if ((buttons & KEY_RIGHT) == KEY_RIGHT)
     {
+        IDENTITY = 0;
         XPOS = XPOS + displacement;
         drawSprite(IDENTITY, num, XPOS, YPOS);
     }
     if ((buttons & KEY_LEFT) == KEY_LEFT)
     {
+        IDENTITY = 1;
         XPOS = XPOS - displacement;
         drawSprite(IDENTITY, num, XPOS, YPOS);
     }
@@ -59,9 +61,9 @@ void fillSprites(void)
     for (i = 0; i < 128 * 16 * 16; i++)
         spriteData[i] = (sprites[i * 2 + 1] << 8) + sprites[i * 2];
 
-    // draw all sprites on screen, but all of them outside of the screen (starting at position (240,160) the bottom right corner of the GBA screen)
-    for (i = 0; i < 128; i++)
-        drawSprite(0, i, 240, 160);
+    // // draw all sprites on screen, but all of them outside of the screen (starting at position (240,160) the bottom right corner of the GBA screen)
+    // for (i = 0; i < 128; i++)
+    //     drawSprite(0, i, 240, 160);
 }
 
 void drawSprite(int numb, int N, int x, int y)
@@ -69,7 +71,7 @@ void drawSprite(int numb, int N, int x, int y)
     // Same as CA2, make specific sprite (based on its name/numb) appear on screen, as slide number N (each sprite needs a different, arbitrary, N >= 0)
     *(unsigned short *)(0x7000000 + 8 * N) = y | 0x2000;
     *(unsigned short *)(0x7000002 + 8 * N) = x | 0x4000;
-    *(unsigned short *)(0x7000004 + 8 * N) = numb * 2;
+    *(unsigned short *)(0x7000004 + 8 * N) = numb * 8;
 }
 
 // void drawLaser(void)
