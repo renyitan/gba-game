@@ -12,38 +12,36 @@ void checkMovementButtonInGame(void)
 
     if ((buttons & KEY_RIGHT) == KEY_RIGHT)
     {
-        IDENTITY = 0;
-        if (XPOS >= 240)
+        IDENTITY = N_R;
+        if (XPOS <= 224)
         {
-            XPOS = 0;
+            XPOS = XPOS + displacement;
         }
-        XPOS = XPOS + displacement;
         drawSprite(IDENTITY, id, XPOS, YPOS);
     }
     else if ((buttons & KEY_LEFT) == KEY_LEFT)
     {
-        IDENTITY = 1;
-        XPOS = XPOS - displacement;
-
+        IDENTITY = N_L;
+        if (XPOS >= 1)
+        {
+            XPOS = XPOS - displacement;
+        }
         drawSprite(IDENTITY, id, XPOS, YPOS);
     }
     else if ((buttons & KEY_DOWN) == KEY_DOWN)
     {
-        if (YPOS <= 0)
+        if (YPOS <= 144)
         {
-            YPOS = 160;
+            YPOS = YPOS + displacement;
         }
-        YPOS = YPOS + displacement;
-
         drawSprite(IDENTITY, id, XPOS, YPOS);
     }
     else if ((buttons & KEY_UP) == KEY_UP)
     {
-        if (YPOS >= 160)
+        if (YPOS >= 1)
         {
-            YPOS = 0;
+            YPOS = YPOS - displacement;
         }
-        YPOS = YPOS - displacement;
         drawSprite(IDENTITY, id, XPOS, YPOS);
     }
 };
