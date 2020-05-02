@@ -1,52 +1,57 @@
 #include "sprites.h"
 #include "position.h"
-#include "virus.h";
+#include "virus.h"
 #include "player.h"
 
 #define INPUT (KEY_MASK & (~REG_KEYS))
 
-void checkMovementButtonInGame(void)
+void movePlayer(void)
 {
     u16 buttons = INPUT;
     int displacement = 1;
 
     if ((buttons & KEY_RIGHT) == KEY_RIGHT)
     {
-        IDENTITY = 0;
-        if (XPOS >= 240)
-        {
-            XPOS = 0;
-        }
-        XPOS = XPOS + displacement;
-        drawSprite(IDENTITY, id, XPOS, YPOS);
+        PLAYER_SPRITE = 0;
+        // if (PLAYER_XPOS >= 240)
+        // {
+        //     PLAYER_XPOS = 0;
+        // }
+        PLAYER_XPOS = PLAYER_XPOS + displacement;
+        drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
     }
     else if ((buttons & KEY_LEFT) == KEY_LEFT)
     {
-        IDENTITY = 1;
-        XPOS = XPOS - displacement;
+        PLAYER_SPRITE = 1;
+        PLAYER_XPOS = PLAYER_XPOS - displacement;
 
-        drawSprite(IDENTITY, id, XPOS, YPOS);
+        drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
     }
     else if ((buttons & KEY_UP) == KEY_UP)
     {
-        if (YPOS <= 0)
-        {
-            YPOS = 160;
-        }
-        YPOS = YPOS + displacement;
+        // if (PLAYER_YPOS <= 0)
+        // {
+        //     PLAYER_YPOS = 160;
+        // }
+        PLAYER_YPOS = PLAYER_YPOS + displacement;
 
-        drawSprite(IDENTITY, id, XPOS, YPOS);
+        drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
     }
     else if ((buttons & KEY_DOWN) == KEY_DOWN)
     {
-        if (YPOS >= 160)
-        {
-            YPOS = 0;
-        }
-        YPOS = YPOS - displacement;
-        drawSprite(IDENTITY, id, XPOS, YPOS);
+        // if (PLAYER_YPOS >= 160)
+        // {
+        //     PLAYER_YPOS = 0;
+        // }
+        PLAYER_YPOS = PLAYER_YPOS - displacement;
+        drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
     }
 };
+
+void removePlayer(void)
+{
+    drawSprite(PLAYER_SPRITE, PLAYER_ID, SCREEN_WIDTH + 10, SCREEN_HEIGHT + 10);
+}
 
 void drawViruses(Viruses *v)
 {
