@@ -23,7 +23,7 @@ Virus virus;
 
 Masks masks;
 Mask mask;
-int TOTAL_MASKS = 5;
+int TOTAL_MASKS = 10;
 
 void interruptsHandler(void)
 {

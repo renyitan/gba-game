@@ -17,7 +17,7 @@ void movePlayer(void)
             PLAYER_XPOS = 0;
         }
 
-        PLAYER_SPRITE = SPRITE_NURSE_RIGHT;
+        PLAYER_SPRITE = SPRITE_O;
 
         PLAYER_XPOS = PLAYER_XPOS + displacement;
         drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
