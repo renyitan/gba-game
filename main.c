@@ -21,6 +21,7 @@ Virus virus;
 
 Masks masks;
 Mask mask;
+int TOTAL_MASKS = 10;
 
 void interruptsHandler(void)
 {
@@ -139,7 +140,7 @@ void renderGame()
     InitViruses(&viruses);
 
     InitMasks(&masks);
-    for (i = 0; i <= 5; i++)
+    for (i = 0; i <= TOTAL_MASKS; i++)
     {
         addMask(&masks);
     }
