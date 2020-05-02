@@ -21,29 +21,26 @@ int num = 1;
 int COUNTER_NUM = 0;
 void interruptsHandler(void)
 {
-    REG_IME = 0x00; // Stop all other interrupt handling, while we handle this current one
 
-    if ((REG_IF & INT_BUTTON) == INT_BUTTON)
-    {
-        checkMovementButtonInGame();
-        // REG_IF = INT_BUTTON;
-    }
+    REG_IME = 0x00; // Stop all other interrupt handling, while we handle this current one
 
     if ((REG_IF & INT_TIMER0) == INT_TIMER0) // handling INT_TIMER0 interrupt
     {
-        // screen width/2 -4 is for offset of the sprites to centralise them
-
-        drawSprite(((COUNTER_NUM / 10) % 10), 3, SCREEN_WIDTH / 2 - 4, SCREEN_HEIGHT / 2); // sprite for the ten's digit positions
-        drawSprite((COUNTER_NUM % 10), 2, SCREEN_WIDTH / 2 + 4, SCREEN_HEIGHT / 2);        // sprite for the one's digit positions
+        if (COUNTER_NUM % 2 == 0)
+        {
+            drawSprite(3, 2, COUNTER_NUM + 5, COUNTER_NUM+5);
+        }
         COUNTER_NUM++;
-
-        // REG_IF = INT_TIMER0;
     }
+    if ((REG_IF & INT_BUTTON) == INT_BUTTON)
+    {
+        checkMovementButtonInGame();
+    }
+
     // Update interrupt table, to confirm we have handled this interrupt
     REG_IF = REG_IF;
     REG_IME = 0x01; // Re-enable interrupt handling
 }
-
 
 u8 AppState = STATE_JUST_LAUNCHED;
 
@@ -67,17 +64,15 @@ int main(void)
 
     // Fill SpriteData
     // for (i = 0; i < 10 * 8 * 8 / 2; i++)
-        // spriteData[i] = (numbers[i * 2 + 1] << 8) + numbers[i * 2];
-        // spriteData[i] = (sprites[i * 2 + 1] << 8) + sprites[i * 2];
-
-
+    // spriteData[i] = (numbers[i * 2 + 1] << 8) + numbers[i * 2];
+    // spriteData[i] = (sprites[i * 2 + 1] << 8) + sprites[i * 2];
     // Set Handler Function for interrupts and enable selected interrupts
     REG_INT = (int)&interruptsHandler;
     REG_IE |= INT_TIMER0 | INT_BUTTON; // choose which interrupt to enable.S
-    REG_IME = 0x1;                     // Enable interrupt handling
+    REG_IME = 0x1;        // Enable interrupt handling
 
-    REG_TM0D = 0x0;
-    REG_TM0CNT |= TIMER_FREQUENCY_64 | TIMER_INTERRUPTS | TIMER_ENABLE;
+    REG_TM0D = 0x8000;
+    REG_TM0CNT |= TIMER_FREQUENCY_256 | TIMER_INTERRUPTS | TIMER_ENABLE;
 
     REG_P1CNT |= 0x7FFF;
 
@@ -86,7 +81,7 @@ int main(void)
         COUNTER_NUM = 0;
     }
 
-    drawSprite(IDENTITY, num, SCREEN_WIDTH, SCREEN_HEIGHT);
+    drawSprite(IDENTITY, num, XPOS, YPOS);
 
     while (1)
     {

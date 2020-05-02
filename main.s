@@ -6457,91 +6457,101 @@ checkMovementButtonInGame:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 1, uses_anonymous_args = 0
 	mov	ip, sp
-	stmfd	sp!, {fp, ip, lr, pc}
-	mov	r2, #67108864
-	add	r2, r2, #304
-	ldrh	r3, [r2, #0]
-	mvn	r3, r3
-	mov	r2, r3, asl #22
-	mov	r2, r2, lsr #22
-	tst	r2, #16
-	ldrne	r0, .L8
-	ldrne	r3, [r0, #0]	@  XPOS
-	addne	r3, r3, #1
-	strne	r3, [r0, #0]	@  XPOS
-	ldreq	r0, .L8
-	tst	r2, #32
-	ldrne	r3, [r0, #0]	@  XPOS
-	subne	r3, r3, #1
-	strne	r3, [r0, #0]	@  XPOS
-	tst	r2, #128
-	ldrne	r1, .L8+4
-	ldrne	r3, [r1, #0]	@  YPOS
-	addne	r3, r3, #1
-	strne	r3, [r1, #0]	@  YPOS
-	ldreq	r1, .L8+4
-	tst	r2, #64
-	ldrne	r3, [r1, #0]	@  YPOS
-	subne	r3, r3, #1
-	strne	r3, [r1, #0]	@  YPOS
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	mov	r3, #67108864
+	add	r3, r3, #304
+	ldrh	r2, [r3, #0]
+	mvn	r2, r2
+	mov	r4, r2, asl #22
+	mov	r4, r4, lsr #22
+	tst	r4, #16
 	sub	fp, ip, #-4294967292
-	ldr	r1, [r1, #0]	@  YPOS
-	ldr	r3, .L8+8
-	ldr	r0, [r0, #0]	@  XPOS
-	mov	lr, pc
-	bx	r3
-	ldmea	fp, {fp, sp, lr}
+	ldr	r5, .L10
+	bne	.L6
+.L2:
+	tst	r4, #32
+	ldr	r5, .L10
+	bne	.L7
+.L3:
+	tst	r4, #128
+	ldr	ip, .L10+4
+	bne	.L8
+.L4:
+	tst	r4, #64
+	ldr	ip, .L10+4
+	bne	.L9
+.L1:
+	ldmea	fp, {r4, r5, fp, sp, lr}
 	bx	lr
 .L9:
-	.align	2
-.L8:
-	.word	XPOS
-	.word	YPOS
-	.word	moveSprite
-	.size	checkMovementButtonInGame, .-checkMovementButtonInGame
-	.align	2
-	.global	moveSprite
-	.type	moveSprite, %function
-moveSprite:
-	@ Function supports interworking.
-	@ args = 0, pretend = 0, frame = 0
-	@ frame_needed = 1, uses_anonymous_args = 0
-	sub	r3, r0, #1	@  newX
-	mov	ip, sp
-	cmp	r3, #238
-	stmfd	sp!, {fp, ip, lr, pc}
-	sub	fp, ip, #-4294967292
-	mov	ip, r1	@  newY
-	bhi	.L10
-	mov	r3, r1	@  newY
-	cmp	r0, #0	@  newX
-	movle	r1, #0
-	movgt	r1, #1
-	cmp	ip, #159	@  newY
-	movgt	r1, #0
-	andle	r1, r1, #1
-	cmp	r1, #0
-	mov	r2, r0	@  newX
-	bne	.L13
-.L10:
-	ldmea	fp, {fp, sp, lr}
-	bx	lr
-.L13:
-	ldr	r1, .L14
-	ldr	ip, .L14+4
-	ldr	r0, [r1, #0]	@  newX,  IDENTITY
-	ldr	r1, [ip, #0]	@  newY,  num
-	ldr	ip, .L14+8
+	ldr	r3, .L10+8
+	ldr	lr, [ip, #0]	@  YPOS
+	ldr	r2, .L10+12
+	ldr	r0, [r3, #0]	@  IDENTITY
+	ldr	r3, .L10
+	sub	lr, lr, #1
+	ldr	r1, [r2, #0]	@  num
+	str	lr, [ip, #0]	@  YPOS
+	ldr	r2, [r3, #0]	@  XPOS
+	ldr	ip, .L10+16
+	mov	r3, lr
 	mov	lr, pc
 	bx	ip
-	b	.L10
-.L15:
+	b	.L1
+.L8:
+	ldr	r3, .L10+8
+	ldr	lr, [ip, #0]	@  YPOS
+	ldr	r2, .L10+12
+	ldr	r0, [r3, #0]	@  IDENTITY
+	ldr	r3, .L10
+	add	lr, lr, #1
+	ldr	r1, [r2, #0]	@  num
+	str	lr, [ip, #0]	@  YPOS
+	ldr	r2, [r3, #0]	@  XPOS
+	ldr	ip, .L10+16
+	mov	r3, lr
+	mov	lr, pc
+	bx	ip
+	b	.L4
+.L7:
+	ldr	lr, [r5, #0]	@  XPOS
+	ldr	r3, .L10+8
+	ldr	r2, .L10+12
+	ldr	ip, .L10+4
+	sub	lr, lr, #1
+	ldr	r0, [r3, #0]	@  IDENTITY
+	ldr	r1, [r2, #0]	@  num
+	ldr	r3, [ip, #0]	@  YPOS
+	mov	r2, lr
+	str	lr, [r5, #0]	@  XPOS
+	ldr	ip, .L10+16
+	mov	lr, pc
+	bx	ip
+	b	.L3
+.L6:
+	ldr	lr, [r5, #0]	@  XPOS
+	ldr	r3, .L10+8
+	ldr	r2, .L10+12
+	ldr	ip, .L10+4
+	add	lr, lr, #1
+	ldr	r0, [r3, #0]	@  IDENTITY
+	ldr	r1, [r2, #0]	@  num
+	ldr	r3, [ip, #0]	@  YPOS
+	mov	r2, lr
+	str	lr, [r5, #0]	@  XPOS
+	ldr	ip, .L10+16
+	mov	lr, pc
+	bx	ip
+	b	.L2
+.L11:
 	.align	2
-.L14:
+.L10:
+	.word	XPOS
+	.word	YPOS
 	.word	IDENTITY
 	.word	num
 	.word	drawSprite
-	.size	moveSprite, .-moveSprite
+	.size	checkMovementButtonInGame, .-checkMovementButtonInGame
 	.align	2
 	.global	fillPalette
 	.type	fillPalette, %function
@@ -6551,22 +6561,22 @@ fillPalette:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
 	mov	r0, #83886080
-	ldr	ip, .L24
+	ldr	ip, .L20
 	@ lr needed for prologue
 	mov	r1, #0	@  i
 	add	r0, r0, #512
-.L21:
+.L17:
 	mov	r3, r1, asl #2	@  i
 	mov	r2, r1, asl #1	@  i
 	ldrh	r3, [r3, ip]	@  palette
 	add	r1, r1, #1	@  i,  i
 	cmp	r1, #19	@  i
 	strh	r3, [r2, r0]	@ movhi 
-	ble	.L21
+	ble	.L17
 	bx	lr
-.L25:
+.L21:
 	.align	2
-.L24:
+.L20:
 	.word	palette
 	.size	fillPalette, .-fillPalette
 	.align	2
@@ -6581,11 +6591,11 @@ fillSprites:
 	sub	fp, ip, #-4294967292
 	mov	r5, #32512
 	mov	lr, #100663296
-	ldr	ip, .L41
+	ldr	ip, .L37
 	mov	r4, #0	@  i
 	add	r5, r5, #255
 	add	lr, lr, #65536
-.L31:
+.L27:
 	mov	r1, r4, asl #2	@  i
 	add	r3, r1, ip
 	ldrh	r0, [r3, #2]	@  sprites
@@ -6595,10 +6605,10 @@ fillSprites:
 	add	r2, r2, r0, asl #8
 	cmp	r4, r5	@  i
 	strh	r2, [r3, lr]	@ movhi 
-	ble	.L31
-	ldr	r5, .L41+4
+	ble	.L27
+	ldr	r5, .L37+4
 	mov	r4, #0	@  i
-.L36:
+.L32:
 	mov	r1, r4	@  i
 	mov	r0, #0
 	mov	r2, #240
@@ -6607,12 +6617,12 @@ fillSprites:
 	mov	lr, pc
 	bx	r5
 	cmp	r4, #127	@  i
-	ble	.L36
+	ble	.L32
 	ldmea	fp, {r4, r5, fp, sp, lr}
 	bx	lr
-.L42:
+.L38:
 	.align	2
-.L41:
+.L37:
 	.word	sprites
 	.word	drawSprite
 	.size	fillSprites, .-fillSprites
@@ -6682,66 +6692,54 @@ interruptsHandler:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 1, uses_anonymous_args = 0
 	mov	ip, sp
-	stmfd	sp!, {r4, r5, r6, r7, r8, fp, ip, lr, pc}
-	mov	r5, #67108864
-	add	r5, r5, #520
-	mov	r3, #0	@ movhi
-	mov	r4, #512
-	strh	r3, [r5, #0]	@ movhi 
-	add	r4, r4, #67108866
-	ldrh	r0, [r4, #0]
-	tst	r0, #4096
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	mov	r3, #67108864
+	add	r3, r3, #520
+	mov	r1, #0	@ movhi
+	mov	r2, #512
+	strh	r1, [r3, #0]	@ movhi 
+	mov	r4, r2
+	add	r2, r2, #67108866
+	ldrh	r3, [r2, #0]
+	tst	r3, #8
 	sub	fp, ip, #-4294967292
-	ldr	r7, .L49
-	ldr	r6, .L49+4
-	bne	.L47
-.L45:
-	tst	r0, #8
-	mov	r1, #3
-	mov	r2, #116
-	mov	r3, #80
-	bne	.L48
-.L46:
-	mov	r8, #1	@ movhi
-	strh	r0, [r4, #0]	@ movhi 
-	strh	r8, [r5, #0]	@ movhi 
-	ldmea	fp, {r4, r5, r6, r7, r8, fp, sp, lr}
-	bx	lr
-.L48:
-	ldr	lr, [r7, #0]	@  COUNTER_NUM
-	smull	r8, ip, r6, lr
-	mov	r0, lr, asr #31
-	rsb	r0, r0, ip, asr #2
-	smull	ip, lr, r6, r0
-	mov	ip, r0, asr #31
-	rsb	ip, ip, lr, asr #2
-	add	ip, ip, ip, asl #2
-	sub	r0, r0, ip, asl #1
-	bl	drawSprite
-	ldr	r0, [r7, #0]	@  COUNTER_NUM
-	smull	r3, r2, r6, r0
-	mov	r3, r0, asr #31
-	rsb	r3, r3, r2, asr #2
-	add	r3, r3, r3, asl #2
-	sub	r0, r0, r3, asl #1
+	ldr	r5, .L46
+	add	r4, r4, #67108866
+	beq	.L41
+	ldr	ip, [r5, #0]	@  COUNTER_NUM
+	add	r2, ip, #5
+	tst	ip, #1
+	mov	r0, #3
 	mov	r1, #2
-	mov	r3, #80
-	mov	r2, #124
-	bl	drawSprite
-	ldr	r3, [r7, #0]	@  COUNTER_NUM
-	add	r3, r3, #1
-	str	r3, [r7, #0]	@  COUNTER_NUM
-	ldrh	r0, [r4, #0]
-	b	.L46
-.L47:
+	mov	r3, r2
+	beq	.L44
+.L42:
+	add	r3, ip, #1
+	str	r3, [r5, #0]	@  COUNTER_NUM
+.L41:
+	ldrh	r2, [r4, #0]
+	tst	r2, #4096
+	bne	.L45
+.L43:
+	mov	r3, #67108864
+	strh	r2, [r4, #0]	@ movhi 
+	add	r3, r3, #520
+	mov	r2, #1	@ movhi
+	strh	r2, [r3, #0]	@ movhi 
+	ldmea	fp, {r4, r5, fp, sp, lr}
+	bx	lr
+.L45:
 	bl	checkMovementButtonInGame
-	ldrh	r0, [r4, #0]
-	b	.L45
-.L50:
+	ldrh	r2, [r4, #0]
+	b	.L43
+.L44:
+	bl	drawSprite
+	ldr	ip, [r5, #0]	@  COUNTER_NUM
+	b	.L42
+.L47:
 	.align	2
-.L49:
+.L46:
 	.word	COUNTER_NUM
-	.word	1717986919
 	.size	interruptsHandler, .-interruptsHandler
 	.global	AppState
 	.bss
@@ -6767,55 +6765,60 @@ main:
 	sub	fp, ip, #-4294967292
 	bl	fillPalette
 	bl	fillSprites
-	mov	r0, #67108864
-	add	r0, r0, #512
-	ldrh	r3, [r0, #0]
-	mov	r2, #67108864
+	mov	r1, #67108864
+	add	r1, r1, #512
+	ldrh	r3, [r1, #0]
 	orr	r3, r3, #4096
-	mov	r1, r2
+	mov	r2, #67108864
 	orr	r3, r3, #8
-	strh	r3, [r0, #0]	@ movhi 
-	add	r2, r2, #520
-	add	r1, r1, #256
-	mov	ip, #0
+	strh	r3, [r1, #0]	@ movhi 
+	mov	r0, r2
 	mov	r3, #1	@ movhi
+	add	r2, r2, #520
 	strh	r3, [r2, #0]	@ movhi 
-	strh	ip, [r1, #0]	@ movhi 
+	add	r0, r0, #256
+	mov	r3, #32768
+	strh	r3, [r0, #0]	@ movhi 
 	mov	r2, #256
 	add	r2, r2, #67108866
 	ldrh	r3, [r2, #0]
-	orr	r3, r3, #193
+	orr	r3, r3, #194
 	strh	r3, [r2, #0]	@ movhi 
+	mov	r1, #50331648
+	ldr	r2, .L53
 	mov	r0, #304
 	add	r0, r0, #67108866
-	ldr	r2, .L56
-	mov	r1, #50331648
-	ldrh	r3, [r0, #0]
 	add	r1, r1, #32512
 	str	r2, [r1, #252]
-	ldr	r1, .L56+4
+	ldrh	r3, [r0, #0]
+	ldr	r1, .L53+4
 	mvn	r3, r3
 	ldr	r2, [r1, #0]	@  COUNTER_NUM
 	and	r3, r3, #32768
 	mvn	r3, r3
 	cmp	r2, #99
 	strh	r3, [r0, #0]	@ movhi 
-	ldr	r2, .L56+8
-	ldr	r3, .L56+12
-	strgt	ip, [r1, #0]	@  COUNTER_NUM
+	movgt	r3, #0
+	strgt	r3, [r1, #0]	@  COUNTER_NUM
+	ldr	r3, .L53+8
+	ldr	r2, .L53+12
 	ldr	r0, [r3, #0]	@  IDENTITY
+	ldr	ip, .L53+16
+	ldr	r3, .L53+20
 	ldr	r1, [r2, #0]	@  num
-	mov	r3, #160
-	mov	r2, #240
+	ldr	r2, [r3, #0]	@  XPOS
+	ldr	r3, [ip, #0]	@  YPOS
 	bl	drawSprite
-.L53:
-	b	.L53
-.L57:
+.L50:
+	b	.L50
+.L54:
 	.align	2
-.L56:
+.L53:
 	.word	interruptsHandler
 	.word	COUNTER_NUM
-	.word	num
 	.word	IDENTITY
+	.word	num
+	.word	YPOS
+	.word	XPOS
 	.size	main, .-main
 	.ident	"GCC: (GNU) 3.3.6"
