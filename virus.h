@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define VIRUS_NUM_MAX 9999
+
 typedef struct Virus
 {
     int id;
@@ -15,7 +17,7 @@ typedef struct Virus
 
 typedef struct
 {
-    Virus freeVirus[20];
+    Virus freeVirus[VIRUS_NUM_MAX];
     int length;
 } Viruses;
 
@@ -57,10 +59,9 @@ void updateVirusPosition(Viruses *v)
         currentVirus->xPos -= currentVirus->xVel;
         currentVirus->yPos += currentVirus->yVel;
 
-        // if (currentVirus->xPos <= 16)
-        // {
-        //     currentVirus->xPos = SCREEN_WIDTH + 16;
-        //     currentVirus->yPos = SCREEN_HEIGHT + 16;
-        // }
+        if (currentVirus->xPos <= 16)
+        {
+            currentVirus->yPos = SCREEN_HEIGHT + 16;
+        }
     }
 }
