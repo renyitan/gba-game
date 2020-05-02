@@ -1,13 +1,13 @@
 #include "gba.h"
 #include "position.h"
-#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <limits.h>
 
 #define MASK_NUM_MAX 20
 #define MASK_PADDING 12
 
-typedef struct Mask
+typedef struct
 {
     int id;
     int xPos;
@@ -29,7 +29,7 @@ void InitMasks(Masks *masks)
 void addMask(Masks *m)
 {
     Mask *newMask = &m->freeMasks[m->length - 1];
-    newMask->id = 0 + 1;
+    newMask->id = INT_MAX - m->length;
     newMask->xPos = (rand() % 240);
     newMask->yPos = (rand() % 160);
     newMask->collected = false;
