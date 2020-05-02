@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "sprites_id.h"
 
 #define VIRUS_PADDING 12
 #define VIRUS_NUM_MAX 5000
@@ -31,7 +32,7 @@ void InitViruses(Viruses *viruses)
 void addVirus(Viruses *v)
 {
     Virus *newVirus = &v->freeVirus[v->length];
-    newVirus->id = v->length + 999;
+    newVirus->id = VIRUS_INITIAL_ID + v->length;
     newVirus->xPos = (rand() % 6) * 44; //minimum x pos is 0, max is 220
     if (newVirus->xPos < 220)           //virus is coming from top wall
     {

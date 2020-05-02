@@ -6,33 +6,33 @@
 #include "mygbalib.h"
 #include "player.h"
 
-int GAME_STATE = STATE_PLAYING;
+int GAME_STATE = STATE_START;
 
-// Initialise player propeties;
+// Initialise global player propeties;
 int PLAYER_SPRITE = 0;
-int PLAYER_ID = 1;
 int PLAYER_XPOS = 50;
 int PLAYER_YPOS = SCREEN_HEIGHT / 2;
 int PLAYER_LIFE_COUNTS = 1;
 
+// Declare viruses instances
 Viruses viruses;
 Virus virus;
 
+// Declare masks instances
 Masks masks;
 Mask mask;
-int TOTAL_MASKS = 10;
+int TOTAL_MASKS = 10; // set total masks to display
 
 void interruptsHandler(void)
 {
-
     REG_IME = 0x00; // Stop all other interrupt handling, while we handle this current one
 
-    // Adds a new virus every 1s
+    // Timer for 5s
     if ((REG_IF & INT_TIMER0) == INT_TIMER0)
     {
-        // addVirus(&viruses);
     }
 
+    // Timer for 1s
     if ((REG_IF & INT_TIMER1) == INT_TIMER1)
     {
         updateVirusPosition(&viruses);
@@ -44,11 +44,13 @@ void interruptsHandler(void)
         }
     }
 
+    // Button Interrupts
     if ((REG_IF & INT_BUTTON) == INT_BUTTON)
     {
-        // check for auxillary control buttons (start, select, L, R)
+        // Check for auxillary control buttons (start, select, L, R)
         auxButtonHandler();
-        // check for position altering buttons
+
+        // Check for direction pad butons
         if (PLAYER_LIFE_COUNTS > 0)
         {
             movePlayer();
@@ -59,9 +61,8 @@ void interruptsHandler(void)
         }
     }
 
-    // Update interrupt table, to confirm we have handled this interrupt
     REG_IF = REG_IF;
-    REG_IME = 0x01; // Re-enable interrupt handling
+    REG_IME = 0x01;
 }
 
 // -----------------------------------------------------------------------------
@@ -71,20 +72,21 @@ void interruptsHandler(void)
 int main(void)
 {
     int i;
-    REG_DISPCNT = OBJ_MAP_1D | MODE2 | OBJ_ENABLE;
-    // REG_DISPCNT = MODE2 | OBJ_ENABLE;
 
+    // Set display mode
+    REG_DISPCNT = OBJ_MAP_1D | MODE2 | OBJ_ENABLE;
+
+    // Set up sprites and palette
     fillPalette();
     fillSprites();
 
-    // Set Handler Function for interrupts
+    // Set interrupt handler functions
     REG_INT = (int)&interruptsHandler;
 
     // choose which interrupt to enable.
     REG_IE |= INT_TIMER0 | INT_BUTTON | INT_TIMER1;
     REG_IME = 0x1; // Enable interrupt handling
 
-    // Interrupt every 5s
     REG_TM0D = 0x8000;
     REG_TM0CNT |= TIMER_FREQUENCY_1024 | TIMER_INTERRUPTS | TIMER_ENABLE;
 
@@ -93,32 +95,15 @@ int main(void)
 
     REG_P1CNT |= 0x7FFF;
 
-    // InitViruses(&viruses);
-
-    // InitMasks(&masks);
-    // for (i = 0; i <= 5; i++)
-    // {
-    //     addMask(&masks);
-    // }
-
-    // drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
-
-    // renderGame();
-
-    // while (1)
-    // {
-    // drawViruses(&viruses);
-    // drawMasks(&masks);
-    // virusCollisionWithPlayer(&viruses);
-    // maskCollisionWithPlayer(&masks);
-    // }
-
+    /** Activate game based on state 
+     * by default -- STATE_START
+    */
     while (1)
     {
         switch (GAME_STATE)
         {
         case STATE_START:
-            renderTitle();
+            renderStartPage();
             break;
         case STATE_PLAYING:
             renderGame();
@@ -128,10 +113,12 @@ int main(void)
     return 0;
 }
 
-void renderTitle()
+void renderStartPage()
 {
-    drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
+    drawGameTitle();
+    // drawUserPrompt();
 }
+
 
 void renderGame()
 {
@@ -152,11 +139,6 @@ void renderGame()
         drawMasks(&masks);
         virusCollisionWithPlayer(&viruses);
         maskCollisionWithPlayer(&masks);
-
-        drawLifeCounts();
-
-        // drawSprite(LIFE_1, 2, LIFE_XPOS, LIFE_YPOS);
-        // drawSprite(LIFE_1, 3, LIFE_XPOS + 16, LIFE_YPOS);
-        // drawSprite(LIFE_1, 4, LIFE_XPOS + 32, LIFE_YPOS);
     }
 }
+

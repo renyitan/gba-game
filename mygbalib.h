@@ -96,13 +96,29 @@ void drawViruses(Viruses *v)
     }
 }
 
-void drawLifeCounts(void)
+// void drawLifeCounts(void)
+// {
+//     int i;
+//     for (i = 0; i < PLAYER_LIFE_COUNTS; i++)
+//     {
+//         drawSprite(LIFE_1, i + 2, (LIFE_XPOS + i) * 16, LIFE_YPOS);
+//     }
+// }
+
+void drawGameTitle(void)
 {
-    int i;
-    for (i = 0; i < PLAYER_LIFE_COUNTS; i++)
-    {
-        drawSprite(LIFE_1, i + 2, (LIFE_XPOS + i) * 16, LIFE_YPOS);
-    }
+    int LETTER_XPOS = 48;
+    int LETTER_YPOS = SCREEN_HEIGHT / 2;
+
+    drawSprite(SPRITE_V, LETTER_ID, LETTER_XPOS, 50);
+    drawSprite(SPRITE_I, LETTER_ID + 1, LETTER_XPOS + 16, 50);
+    drawSprite(SPRITE_R, LETTER_ID + 2, LETTER_XPOS + 32, 50);
+    drawSprite(SPRITE_V, LETTER_ID + 3, LETTER_XPOS + 48, 50);
+    drawSprite(SPRITE_S, LETTER_ID + 4, LETTER_XPOS + 64, 50);
+
+    drawSprite(SPRITE_R, LETTER_ID + 5, LETTER_XPOS + 96, 50);
+    drawSprite(SPRITE_V, LETTER_ID + 6, LETTER_XPOS + 112, 50);
+    drawSprite(SPRITE_M, LETTER_ID + 7, LETTER_XPOS + 128, 50);
 }
 
 void fillPalette(void)
@@ -129,6 +145,14 @@ void drawSprite(int numb, int N, int x, int y)
     *(unsigned short *)(0x7000000 + 8 * N) = y | 0x2000;
     *(unsigned short *)(0x7000002 + 8 * N) = x | 0x4000;
     *(unsigned short *)(0x7000004 + 8 * N) = numb * 8;
+}
+
+void removeSprite(int N)
+{
+    *(unsigned short *)(0x7000000 + 8 * N) = 0x2000;
+    *(unsigned short *)(0x7000002 + 8 * N) = 0x4000;
+    *(unsigned short *)(0x7000004 + 8 * N) = 0x000;
+    // free(*(unsigned short *)(0x7000004 + 8 * N));
 }
 
 // void drawLaser(void)
