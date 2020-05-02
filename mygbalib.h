@@ -12,37 +12,41 @@ void movePlayer(void)
 
     if ((buttons & KEY_RIGHT) == KEY_RIGHT)
     {
-        PLAYER_SPRITE = 0;
-        // if (PLAYER_XPOS >= 240)
-        // {
-        //     PLAYER_XPOS = 0;
-        // }
+        if (PLAYER_XPOS >= 240)
+        {
+            PLAYER_XPOS = 0;
+        }
+
+        PLAYER_SPRITE = SPRITE_NURSE_RIGHT;
+
         PLAYER_XPOS = PLAYER_XPOS + displacement;
         drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
     }
     else if ((buttons & KEY_LEFT) == KEY_LEFT)
     {
-        PLAYER_SPRITE = 1;
+        PLAYER_SPRITE = SPRITE_NURSE_LEFT;
         PLAYER_XPOS = PLAYER_XPOS - displacement;
 
         drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
     }
     else if ((buttons & KEY_DOWN) == KEY_DOWN)
     {
-        // if (PLAYER_YPOS <= 0)
-        // {
-        //     PLAYER_YPOS = 160;
-        // }
+        if (PLAYER_YPOS <= 0)
+        {
+            PLAYER_YPOS = 160;
+        }
+
         PLAYER_YPOS = PLAYER_YPOS + displacement;
 
         drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
     }
     else if ((buttons & KEY_UP) == KEY_UP)
     {
-        // if (PLAYER_YPOS >= 160)
-        // {
-        //     PLAYER_YPOS = 0;
-        // }
+        if (PLAYER_YPOS >= 160)
+        {
+            PLAYER_YPOS = 0;
+        }
+
         PLAYER_YPOS = PLAYER_YPOS - displacement;
         drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
     }

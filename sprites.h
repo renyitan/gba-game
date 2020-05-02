@@ -37,7 +37,7 @@ RGB(23,31,23) // lightest green 17
 // Sprite array, defining each big 16x16 sprite as 4 8x8 tiles, using the palette above
 
 u16 sprites[] = {
-#define N_R 0 // Nurse looking right
+#define SPRITE_NURSE_RIGHT 0 // Nurse looking right
 // Tile 00
 0,0,0,0,0,0,2,2,
 0,0,0,0,0,2,3,3,
@@ -75,7 +75,7 @@ u16 sprites[] = {
 4,0,0,0,0,0,0,0,
 4,5,0,0,0,0,0,0,
 
-#define N_L 1 // Nurse looking left
+#define SPRITE_NURSE_LEFT 1 // Nurse looking left
 // Tile 00
 0,0,0,0,0,0,2,2,
 0,0,0,0,0,0,3,3,
@@ -113,7 +113,7 @@ u16 sprites[] = {
 0,4,0,0,0,0,0,0,
 5,4,0,0,0,0,0,0,
 
-#define V 2 // Virus
+#define SPRITE_VIRUS 2 // Virus
 // Tile 00
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -151,7 +151,7 @@ u16 sprites[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
 
-#define M 3 // Mask
+#define SPRITE_MASK 3 // Mask
 // Tile 00
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
