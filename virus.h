@@ -5,7 +5,7 @@
 #include <string.h>
 
 #define VIRUS_PADDING 12
-#define VIRUS_NUM_MAX 9999
+#define VIRUS_NUM_MAX 5000
 
 typedef struct Virus
 {
@@ -30,8 +30,8 @@ void InitViruses(Viruses *viruses)
 
 void addVirus(Viruses *v)
 {
-    Virus *newVirus = &v->freeVirus[v->length - 1];
-    newVirus->id = v->length + 1;
+    Virus *newVirus = &v->freeVirus[v->length];
+    newVirus->id = v->length + 999;
     newVirus->xPos = (rand() % 6) * 44; //minimum x pos is 0, max is 220
     if (newVirus->xPos < 220)           //virus is coming from top wall
     {
@@ -79,6 +79,7 @@ void virusCollisionWithPlayer(Viruses *v)
                 (PLAYER_YPOS + PLAYER_PADDING >= currentVirus->yPos && PLAYER_YPOS + PLAYER_PADDING <= currentVirus->yPos + VIRUS_PADDING))
             {
                 PLAYER_LIFE_COUNTS -= 1;
+                PLAYER_XPOS -= 16;
             }
         }
     }

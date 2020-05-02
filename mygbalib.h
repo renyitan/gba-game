@@ -2,7 +2,8 @@
 #include "player.h"
 #include "virus.h"
 #include "masks.h"
-#include "game_state.h";
+#include "game_state.h"
+// #include "sprites_id.h"
 
 #define INPUT (KEY_MASK & (~REG_KEYS))
 
@@ -92,6 +93,15 @@ void drawViruses(Viruses *v)
     {
         Virus *currentVirus = &v->freeVirus[i];
         drawSprite(SPRITE_VIRUS, currentVirus->id, currentVirus->xPos, currentVirus->yPos);
+    }
+}
+
+void drawLifeCounts(void)
+{
+    int i;
+    for (i = 0; i < PLAYER_LIFE_COUNTS; i++)
+    {
+        drawSprite(LIFE_1, i + 2, (LIFE_XPOS + i) * 16, LIFE_YPOS);
     }
 }
 
