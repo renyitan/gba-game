@@ -35,15 +35,9 @@ void addVirus(Viruses *v)
     newVirus->id = v->length+1;
     newVirus->xPos = (rand() % 160);
     newVirus->yPos = (rand() % 240);
+    newVirus->xVel = 1;
+    newVirus->yVel = 1;
     v->length++;
 }
 
-// void drawViruses(Viruses *v)
-// {
-//     int i;
-//     for (i = 0; i < v->length; i++)
-//     {
-//         Virus *currentVirus = &v->freeVirus[i];
-//         drawSprite(3, currentVirus->id, currentVirus->xPos, currentVirus->yPos);
-//     }
-// }
+
