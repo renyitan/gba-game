@@ -1,5 +1,6 @@
 #include "sprites.h"
 #include "position.h"
+#include "virus.h";
 #define INPUT (KEY_MASK & (~REG_KEYS))
 
 void checkMovementButtonInGame(void)
@@ -29,6 +30,16 @@ void checkMovementButtonInGame(void)
     }
     // moveSprite(XPOS, YPOS);
 };
+
+void drawViruses(Viruses *v)
+{
+    int i;
+    for (i = 0; i < v->length; i++)
+    {
+        Virus *currentVirus = &v->freeVirus[i];
+        drawSprite(3, currentVirus->id, currentVirus->xPos, currentVirus->yPos);
+    }
+}
 
 
 void fillPalette(void)
