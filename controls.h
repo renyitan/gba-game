@@ -11,11 +11,13 @@ void checkMovementButtonInGame(void)
 
     if ((buttons & KEY_RIGHT) == KEY_RIGHT)
     {
+        IDENTITY = 0;
         XPOS = XPOS + displacement;
         drawSprite(IDENTITY, num, XPOS, YPOS);
     }
     if ((buttons & KEY_LEFT) == KEY_LEFT)
     {
+        IDENTITY = 1;
         XPOS = XPOS - displacement;
         drawSprite(IDENTITY, num, XPOS, YPOS);
     }
