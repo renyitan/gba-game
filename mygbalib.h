@@ -1,6 +1,8 @@
 #include "sprites.h"
 #include "position.h"
 #include "virus.h";
+#include "player.h"
+
 #define INPUT (KEY_MASK & (~REG_KEYS))
 
 void checkMovementButtonInGame(void)
@@ -11,24 +13,25 @@ void checkMovementButtonInGame(void)
     if ((buttons & KEY_RIGHT) == KEY_RIGHT)
     {
         XPOS = XPOS + displacement;
-        drawSprite(IDENTITY, num, XPOS, YPOS);
+        // drawSprite(IDENTITY, num, XPOS, YPOS);
     }
     if ((buttons & KEY_LEFT) == KEY_LEFT)
     {
         XPOS = XPOS - displacement;
-        drawSprite(IDENTITY, num, XPOS, YPOS);
+        // drawSprite(IDENTITY, num, XPOS, YPOS);
     }
     if ((buttons & KEY_UP) == KEY_UP)
     {
         YPOS = YPOS + displacement;
-        drawSprite(IDENTITY, num, XPOS, YPOS);
+        // drawSprite(IDENTITY, num, XPOS, YPOS);
     }
     if ((buttons & KEY_DOWN) == KEY_DOWN)
     {
         YPOS = YPOS - displacement;
-        drawSprite(IDENTITY, num, XPOS, YPOS);
+        // drawSprite(IDENTITY, num, XPOS, YPOS);
     }
     // moveSprite(XPOS, YPOS);
+    // updatePlayerPosition()
 };
 
 void drawViruses(Viruses *v)
@@ -41,6 +44,10 @@ void drawViruses(Viruses *v)
     }
 }
 
+void drawPlayer(Player *player)
+{
+    drawSprite(0, player->id, player->xPos, player->yPos);
+}
 
 void fillPalette(void)
 {

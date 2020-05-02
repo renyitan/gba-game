@@ -21,6 +21,8 @@ int COUNTER_0 = 0;
 int COUNTER_1 = 0;
 int LOOP_COUNT = 0;
 
+Player player;
+
 Viruses viruses;
 Virus virus;
 
@@ -35,11 +37,10 @@ void interruptsHandler(void)
         addVirus(&viruses);
     }
 
-    // if ((REG_IF & INT_TIMER1) == INT_TIMER1)
-    // {
-
-    //     addVirus(&viruses);
-    // }
+    if ((REG_IF & INT_TIMER1) == INT_TIMER1)
+    {
+        updateVirusPosition(&viruses);
+    }
 
     if ((REG_IF & INT_BUTTON) == INT_BUTTON)
     {
@@ -71,11 +72,11 @@ int main(void)
     REG_IME = 0x1; // Enable interrupt handling
 
     // Interrupt every 5s
-    REG_TM0D = 0x8000; 
+    REG_TM0D = 0x8000;
     REG_TM0CNT |= TIMER_FREQUENCY_1024 | TIMER_INTERRUPTS | TIMER_ENABLE;
 
     REG_TM1D = 0x0;
-    REG_TM1CNT |= TIMER_FREQUENCY | TIMER_INTERRUPTS | TIMER_ENABLE;
+    REG_TM1CNT |= TIMER_FREQUENCY_256 | TIMER_INTERRUPTS | TIMER_ENABLE;
 
     REG_P1CNT |= 0x7FFF;
 
@@ -84,14 +85,18 @@ int main(void)
         LOOP_COUNT = 0;
     }
 
-    drawSprite(IDENTITY, num, XPOS, YPOS);
+    // drawSprite(IDENTITY, num, XPOS, YPOS);
+
+    InitPlayer(&player);
 
     InitViruses(&viruses);
     addVirus(&viruses); // Add the first virus
 
     while (1)
     {
-        drawViruses(&viruses);
+        drawPlayer(&player);
+        updatePlayerPosition(&player);
+        // drawViruses(&viruses);
     }
     return 0;
 }
