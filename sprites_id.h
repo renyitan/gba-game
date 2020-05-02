@@ -12,3 +12,6 @@
 
 // Title Initial ID
 #define TITLE_LETTER_ID 100
+
+// Subtitle Initial ID
+#define SUBTITLE_LETTER_ID 200
