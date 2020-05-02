@@ -2,8 +2,19 @@
 #include "player.h"
 #include "virus.h"
 #include "masks.h"
+#include "game_state.h";
 
 #define INPUT (KEY_MASK & (~REG_KEYS))
+
+void auxButtonHandler(void)
+{
+    u16 buttons = INPUT;
+
+    if ((buttons & KEY_START) == KEY_START)
+    {
+        GAME_STATE = STATE_PLAYING;
+    }
+}
 
 void movePlayer(void)
 {
