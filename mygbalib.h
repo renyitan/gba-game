@@ -2,8 +2,19 @@
 #include "player.h"
 #include "virus.h"
 #include "masks.h"
+#include "game_state.h";
 
 #define INPUT (KEY_MASK & (~REG_KEYS))
+
+void auxButtonHandler(void)
+{
+    u16 buttons = INPUT;
+
+    if ((buttons & KEY_START) == KEY_START)
+    {
+        GAME_STATE = STATE_PLAYING;
+    }
+}
 
 void movePlayer(void)
 {
@@ -17,7 +28,7 @@ void movePlayer(void)
             PLAYER_XPOS = 0;
         }
 
-        PLAYER_SPRITE = SPRITE_O;
+        PLAYER_SPRITE = SPRITE_NURSE_RIGHT;
 
         PLAYER_XPOS = PLAYER_XPOS + displacement;
         drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
