@@ -1,10 +1,7 @@
 // -----------------------------------------------------------------------------
 // C-Skeleton to be used with HAM Library from www.ngine.de
 // -----------------------------------------------------------------------------
-// #include "numbers.h"
-#include "gba.h"
 #include "mygbalib.h"
-#include "player.h"
 
 int GAME_STATE = STATE_START;
 
@@ -119,7 +116,6 @@ void renderStartPage()
     // drawUserPrompt();
 }
 
-
 void renderGame()
 {
     int i;
@@ -141,4 +137,3 @@ void renderGame()
         maskCollisionWithPlayer(&masks);
     }
 }
-
