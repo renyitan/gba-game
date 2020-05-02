@@ -1,5 +1,6 @@
 #include "sprites.h"
 #include "position.h"
+#include "virus.h";
 #define INPUT (KEY_MASK & (~REG_KEYS))
 
 void checkMovementButtonInGame(void)
@@ -10,33 +11,36 @@ void checkMovementButtonInGame(void)
     if ((buttons & KEY_RIGHT) == KEY_RIGHT)
     {
         XPOS = XPOS + displacement;
+        drawSprite(IDENTITY, num, XPOS, YPOS);
     }
     if ((buttons & KEY_LEFT) == KEY_LEFT)
     {
         XPOS = XPOS - displacement;
+        drawSprite(IDENTITY, num, XPOS, YPOS);
     }
     if ((buttons & KEY_UP) == KEY_UP)
     {
         YPOS = YPOS + displacement;
+        drawSprite(IDENTITY, num, XPOS, YPOS);
     }
     if ((buttons & KEY_DOWN) == KEY_DOWN)
     {
         YPOS = YPOS - displacement;
+        drawSprite(IDENTITY, num, XPOS, YPOS);
     }
-    moveSprite(XPOS, YPOS);
+    // moveSprite(XPOS, YPOS);
 };
 
-void moveSprite(int newX, int newY)
+void drawViruses(Viruses *v)
 {
-
-    if (newX < SCREEN_WIDTH && newX > 0)
+    int i;
+    for (i = 0; i < v->length; i++)
     {
-        if (newY < SCREEN_HEIGHT && newX > 0)
-        {
-            drawSprite(IDENTITY, num, newX, newY);
-        }
+        Virus *currentVirus = &v->freeVirus[i];
+        drawSprite(3, currentVirus->id, currentVirus->xPos, currentVirus->yPos);
     }
-};
+}
+
 
 void fillPalette(void)
 {
@@ -70,9 +74,9 @@ void drawSprite(int numb, int N, int x, int y)
 
 // void drawLaser(void)
 // {
-	// Gift function showing you how to draw an example sprite defined in sprite.h on screen, using drawSprite()
-	// Note that this code uses largeer sprites with a palette, so the main code needs to be initialized in graphical mode 2, using:
-    		// *(unsigned short *) 0x4000000 = 0x40 | 0x2 | 0x1000;
+// Gift function showing you how to draw an example sprite defined in sprite.h on screen, using drawSprite()
+// Note that this code uses largeer sprites with a palette, so the main code needs to be initialized in graphical mode 2, using:
+// *(unsigned short *) 0x4000000 = 0x40 | 0x2 | 0x1000;
 // 	// at the beginning of main() in main.c
 
 //     switch(lPlat) {

@@ -5,7 +5,7 @@
 #include "gba.h"
 #include "mygbalib.h"
 #include "position.h"
-// #include "sprites.h"
+// #include "virus.h"
 
 // Global variable for counter
 int IDENTITY = 0;
@@ -18,34 +18,41 @@ int num = 1;
 #define STATE_PLAYING 2
 #define STATE_END 3
 
-int COUNTER_NUM = 0;
+int COUNTER_0 = 0;
+int COUNTER_1 = 0;
+int LOOP_COUNT = 0;
+
+Viruses viruses;
+Virus virus;
+
+// Viruses viruses[] = {
+//     {.id = 2, .xPos = 40, .yPos = 120, .xVel = 0, .yVel = 0},
+//     {.id = 3, .xPos = 70, .yPos = 30, .xVel = 0, .yVel = 0}};
+
 void interruptsHandler(void)
 {
+
     REG_IME = 0x00; // Stop all other interrupt handling, while we handle this current one
+
+    if ((REG_IF & INT_TIMER0) == INT_TIMER0)
+    {
+        if (COUNTER_0 % 2 == 0)
+        {
+            // drawSprite(3, 2, COUNTER_0 + 5, COUNTER_0 + 5);
+            addVirus(&viruses);
+        }
+        COUNTER_0++;
+    }
 
     if ((REG_IF & INT_BUTTON) == INT_BUTTON)
     {
         checkMovementButtonInGame();
-        // REG_IF = INT_BUTTON;
     }
 
-    if ((REG_IF & INT_TIMER0) == INT_TIMER0) // handling INT_TIMER0 interrupt
-    {
-        // screen width/2 -4 is for offset of the sprites to centralise them
-
-        drawSprite(((COUNTER_NUM / 10) % 10), 3, SCREEN_WIDTH / 2 - 4, SCREEN_HEIGHT / 2); // sprite for the ten's digit positions
-        drawSprite((COUNTER_NUM % 10), 2, SCREEN_WIDTH / 2 + 4, SCREEN_HEIGHT / 2);        // sprite for the one's digit positions
-        COUNTER_NUM++;
-
-        // REG_IF = INT_TIMER0;
-    }
     // Update interrupt table, to confirm we have handled this interrupt
     REG_IF = REG_IF;
     REG_IME = 0x01; // Re-enable interrupt handling
 }
-
-
-u8 AppState = STATE_JUST_LAUNCHED;
 
 // -----------------------------------------------------------------------------
 // Project Entry Point
@@ -53,7 +60,6 @@ u8 AppState = STATE_JUST_LAUNCHED;
 int main(void)
 {
     int i;
-
     // Set Mode 2
     REG_DISPCNT = OBJ_MAP_1D | MODE2 | OBJ_ENABLE;
     // REG_DISPCNT = MODE2 | OBJ_ENABLE;
@@ -65,32 +71,44 @@ int main(void)
     fillPalette();
     fillSprites();
 
-    // Fill SpriteData
-    // for (i = 0; i < 10 * 8 * 8 / 2; i++)
-        // spriteData[i] = (numbers[i * 2 + 1] << 8) + numbers[i * 2];
-        // spriteData[i] = (sprites[i * 2 + 1] << 8) + sprites[i * 2];
-
-
-    // Set Handler Function for interrupts and enable selected interrupts
+    // Set Handler Function for interrupts
     REG_INT = (int)&interruptsHandler;
-    REG_IE |= INT_TIMER0 | INT_BUTTON; // choose which interrupt to enable.S
-    REG_IME = 0x1;                     // Enable interrupt handling
 
-    REG_TM0D = 0x0;
-    REG_TM0CNT |= TIMER_FREQUENCY_64 | TIMER_INTERRUPTS | TIMER_ENABLE;
+    // choose which interrupt to enable.
+    REG_IE |= INT_TIMER0 | INT_BUTTON | INT_TIMER1;
+    REG_IME = 0x1; // Enable interrupt handling
+
+    REG_TM0D = 0x8000;
+    REG_TM0CNT |= TIMER_FREQUENCY_256 | TIMER_INTERRUPTS | TIMER_ENABLE;
+
+    REG_TM1D = 0x0;
+    REG_TM1CNT |= TIMER_FREQUENCY_1024 | TIMER_INTERRUPTS | TIMER_ENABLE;
 
     REG_P1CNT |= 0x7FFF;
 
-    if (COUNTER_NUM >= 100)
+    if (LOOP_COUNT >= 100)
     {
-        COUNTER_NUM = 0;
+        LOOP_COUNT = 0;
     }
 
-    drawSprite(IDENTITY, num, SCREEN_WIDTH, SCREEN_HEIGHT);
+    drawSprite(IDENTITY, num, XPOS, YPOS);
+
+    InitViruses(&viruses);
+
+    addVirus(&viruses);
+    // addVirus(&viruses);
+    // addVirus(&viruses);
+    // addVirus(&viruses);
+    // addVirus(&viruses);
+    // addVirus(&viruses);
+    // addVirus(&viruses);
+    // addVirus(&viruses);
+    // addVirus(&viruses);
 
     while (1)
     {
         // renderGame();
+        drawViruses(&viruses);
     }
     return 0;
 }
