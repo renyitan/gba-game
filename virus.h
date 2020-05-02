@@ -24,14 +24,14 @@ typedef struct
 
 void InitViruses(Viruses *viruses)
 {
-    viruses->length = 1;
+    viruses->length = 0;
     // memset(&viruses->freeVirus[0], 0, sizeof(Virus) * 22 * 14);
 }
 
 void addVirus(Viruses *v)
 {
     Virus *newVirus = &v->freeVirus[v->length - 1];
-    newVirus->id = v->length + 2;
+    newVirus->id = v->length + 1;
     newVirus->xPos = (rand() % 6) * 44; //minimum x pos is 0, max is 220
     if (newVirus->xPos < 220)           //virus is coming from top wall
     {
