@@ -26,21 +26,21 @@ typedef struct
 void InitViruses(Viruses *viruses)
 {
     viruses->length = 1;
-    memset(&viruses->freeVirus[0], 0, sizeof(Virus) * 22 * 14);
+    // memset(&viruses->freeVirus[0], 0, sizeof(Virus) * 22 * 14);
 }
 
 void addVirus(Viruses *v)
 {
     Virus *newVirus = &v->freeVirus[v->length - 1];
     newVirus->id = v->length + 2;
-    newVirus->xPos = (rand() % 6)*44; //minimum x pos is 0, max is 220
-    if (newVirus->xPos < 220) //virus is coming from top wall
+    newVirus->xPos = (rand() % 6) * 44; //minimum x pos is 0, max is 220
+    if (newVirus->xPos < 220)           //virus is coming from top wall
     {
         newVirus->yPos = 0;
     }
-    else if (newVirus->xPos == 220)//virus is coming from right wall
+    else if (newVirus->xPos == 220) //virus is coming from right wall
     {
-        newVirus->yPos = (rand() % 6)*28; //minimum y pos is 0. max is 140
+        newVirus->yPos = (rand() % 6) * 28; //minimum y pos is 0. max is 140
     }
     newVirus->xVel = 8;
     newVirus->yVel = 8;
@@ -56,5 +56,11 @@ void updateVirusPosition(Viruses *v)
         Virus *currentVirus = &v->freeVirus[i];
         currentVirus->xPos -= currentVirus->xVel;
         currentVirus->yPos += currentVirus->yVel;
+
+        if (currentVirus->xPos <= 16)
+        {
+            currentVirus->xPos = SCREEN_WIDTH + 16;
+            currentVirus->yPos = SCREEN_HEIGHT + 16;
+        }
     }
 }
