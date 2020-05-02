@@ -15,8 +15,6 @@ int COUNTER_0 = 0;
 int COUNTER_1 = 0;
 int LOOP_COUNT = 0;
 
-
-
 int IDENTITY = 0;
 int id = 1;
 int XPOS = 50;

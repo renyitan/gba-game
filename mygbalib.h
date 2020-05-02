@@ -27,7 +27,7 @@ void checkMovementButtonInGame(void)
 
         drawSprite(IDENTITY, id, XPOS, YPOS);
     }
-    else if ((buttons & KEY_UP) == KEY_UP)
+    else if ((buttons & KEY_DOWN) == KEY_DOWN)
     {
         if (YPOS <= 0)
         {
@@ -37,7 +37,7 @@ void checkMovementButtonInGame(void)
 
         drawSprite(IDENTITY, id, XPOS, YPOS);
     }
-    else if ((buttons & KEY_DOWN) == KEY_DOWN)
+    else if ((buttons & KEY_UP) == KEY_UP)
     {
         if (YPOS >= 160)
         {
