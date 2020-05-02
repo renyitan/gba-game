@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "sprites_id.h"
 
 #define VIRUS_PADDING 12
 #define VIRUS_NUM_MAX 5000
@@ -25,13 +26,12 @@ typedef struct
 void InitViruses(Viruses *viruses)
 {
     viruses->length = 0;
-    // memset(&viruses->freeVirus[0], 0, sizeof(Virus) * 22 * 14);
 }
 
 void addVirus(Viruses *v)
 {
     Virus *newVirus = &v->freeVirus[v->length];
-    newVirus->id = v->length + 999;
+    newVirus->id = VIRUS_INITIAL_ID + v->length;
     newVirus->xPos = (rand() % 6) * 44; //minimum x pos is 0, max is 220
     if (newVirus->xPos < 220)           //virus is coming from top wall
     {
@@ -79,7 +79,6 @@ void virusCollisionWithPlayer(Viruses *v)
                 (PLAYER_YPOS + PLAYER_PADDING >= currentVirus->yPos && PLAYER_YPOS + PLAYER_PADDING <= currentVirus->yPos + VIRUS_PADDING))
             {
                 PLAYER_LIFE_COUNTS -= 1;
-                PLAYER_XPOS -= 16;
             }
         }
     }

@@ -1,6 +1,6 @@
 {
     "files.associations": {
-        "mygbalib.h": "c",
+        "draw.h": "c",
         "player.h": "c"
     }
 }
