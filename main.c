@@ -29,12 +29,13 @@ void interruptsHandler(void)
     // Adds a new virus every 1s
     if ((REG_IF & INT_TIMER0) == INT_TIMER0)
     {
-        addVirus(&viruses);
+        // addVirus(&viruses);
     }
 
     if ((REG_IF & INT_TIMER1) == INT_TIMER1)
     {
         updateVirusPosition(&viruses);
+        addVirus(&viruses);
     }
 
     if ((REG_IF & INT_BUTTON) == INT_BUTTON)

@@ -27,7 +27,7 @@ void movePlayer(void)
 
         drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
     }
-    else if ((buttons & KEY_UP) == KEY_UP)
+    else if ((buttons & KEY_DOWN) == KEY_DOWN)
     {
         // if (PLAYER_YPOS <= 0)
         // {
@@ -37,7 +37,7 @@ void movePlayer(void)
 
         drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
     }
-    else if ((buttons & KEY_DOWN) == KEY_DOWN)
+    else if ((buttons & KEY_UP) == KEY_UP)
     {
         // if (PLAYER_YPOS >= 160)
         // {

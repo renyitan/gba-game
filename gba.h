@@ -258,8 +258,8 @@ enum
 #define KEY_START  0x008
 #define KEY_RIGHT  0x010
 #define KEY_LEFT   0x020
-#define KEY_UP     0x080
-#define KEY_DOWN   0x040
+#define KEY_UP     0x040
+#define KEY_DOWN   0x080
 #define KEY_R      0x100
 #define KEY_L      0x200
 
