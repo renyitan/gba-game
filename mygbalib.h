@@ -1,7 +1,7 @@
 #include "sprites.h"
-#include "position.h"
-#include "virus.h"
 #include "player.h"
+#include "virus.h"
+#include "masks.h"
 
 #define INPUT (KEY_MASK & (~REG_KEYS))
 
@@ -57,13 +57,30 @@ void removePlayer(void)
     drawSprite(PLAYER_SPRITE, PLAYER_ID, SCREEN_WIDTH + 10, SCREEN_HEIGHT + 10);
 }
 
+void drawMasks(Masks *m)
+{
+    int i;
+    for (i = 0; i < m->length; i++)
+    {
+        Mask *currentMask = &m->freeMasks[i];
+        if (!currentMask->collected)
+        {
+            drawSprite(SPRITE_MASK, currentMask->id, currentMask->xPos, currentMask->yPos);
+        }
+        else
+        {
+            drawSprite(SPRITE_MASK, currentMask->id, SCREEN_WIDTH + 12, SCREEN_HEIGHT + 12);
+        }
+    }
+}
+
 void drawViruses(Viruses *v)
 {
     int i;
     for (i = 0; i < v->length; i++)
     {
         Virus *currentVirus = &v->freeVirus[i];
-        drawSprite(2, currentVirus->id, currentVirus->xPos, currentVirus->yPos);
+        drawSprite(SPRITE_VIRUS, currentVirus->id, currentVirus->xPos, currentVirus->yPos);
     }
 }
 
