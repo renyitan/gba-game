@@ -15,9 +15,7 @@ int COUNTER_0 = 0;
 int COUNTER_1 = 0;
 int LOOP_COUNT = 0;
 
-
-
-int IDENTITY = 0;
+int IDENTITY = N_R;
 int id = 1;
 int XPOS = 50;
 int YPOS = SCREEN_HEIGHT / 2;
@@ -34,12 +32,13 @@ void interruptsHandler(void)
     // Adds a new virus every 1s
     if ((REG_IF & INT_TIMER0) == INT_TIMER0)
     {
-        addVirus(&viruses);
+        // addVirus(&viruses);
     }
 
     if ((REG_IF & INT_TIMER1) == INT_TIMER1)
     {
         updateVirusPosition(&viruses);
+        addVirus(&viruses);
     }
 
     if ((REG_IF & INT_BUTTON) == INT_BUTTON)
