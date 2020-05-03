@@ -136,3 +136,34 @@ void removeSprite(int N)
     *(unsigned short *)(0x7000004 + 8 * N) = 0x000;
     // free(*(unsigned short *)(0x7000004 + 8 * N));
 }
+
+void drawPixel(int x, int y, COLOR color)
+{
+    vid_mem[y * SCREEN_WIDTH + x] = color;
+}
+
+void drawRect(int left, int top, int width, int height, COLOR color)
+{
+    int y;
+    int x;
+    for (y = 0; y < height; ++y)
+    {
+        for (x = 0; x < width; ++x)
+        {
+            drawPixel(left + x, top + y, color);
+        }
+    }
+}
+
+drawRect2(int left, int top, int width, int height)
+{
+    int y;
+    int x;
+    for (y = 0; y < height; ++y)
+    {
+        for (x = 0; x < width; ++x)
+        {
+            drawSprite(SPRITE_NURSE_LEFT, 0, x, y);
+        }
+    }
+}
