@@ -87,6 +87,16 @@ void drawViruses(Viruses *v)
     }
 }
 
+void removeViruses(Viruses *v)
+{
+    int i;
+    for (i = 0; v->length; i++)
+    {
+        Virus *currentVirus = &v->freeVirus[i];
+        drawSprite(SPRITE_VIRUS, currentVirus->id, SCREEN_WIDTH + 16, SCREEN_HEIGHT + 16);
+    }
+}
+
 void drawGameTitle(void)
 {
     int LETTER_XPOS = 48;
@@ -151,7 +161,7 @@ void removeSprite(int N)
 {
     *(unsigned short *)(0x7000000 + 8 * N) = 0x2000;
     *(unsigned short *)(0x7000002 + 8 * N) = 0x4000;
-    *(unsigned short *)(0x7000004 + 8 * N) = 0x000;
+    // *(unsigned short *)(0x7000004 + 8 * N) = 0x000;
     // free(*(unsigned short *)(0x7000004 + 8 * N));
 }
 

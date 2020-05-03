@@ -11,7 +11,7 @@ extern int VIRUSES_MAX;
 extern int MASKS_MAX;
 
 #define VIRUS_TOTAL_L1 10
-#define MASKS_TOTAL_L1 5
+#define MASKS_TOTAL_L1 3
 
 #define VIRUS_TOTAL_L2 20
 #define MASKS_TOTAL_L2 10
@@ -36,19 +36,6 @@ void clearGameStartScreen()
         removeSprite(i);
     }
 
-    for (i = SUBTITLE_LETTER_ID; i <= SUBTITLE_LETTER_ID + 9; i++)
-    {
-        removeSprite(i);
-    }
-}
-
-void clearScreenLevel_1()
-{
-    int i;
-    for (i = VIRUS_INITIAL_ID; i < VIRUSES_MAX; i++)
-    {
-        removeSprite(i);
-    }
     for (i = SUBTITLE_LETTER_ID; i <= SUBTITLE_LETTER_ID + 9; i++)
     {
         removeSprite(i);

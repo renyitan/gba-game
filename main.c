@@ -21,13 +21,11 @@ int PLAYER_COLLECTED_MASKS = 0;
 Virus virus;
 Mask mask;
 
-
 Viruses viruses1;
 Masks masks1;
 
 Viruses viruses2;
 Masks masks2;
-
 
 void interruptsHandler(void)
 {
@@ -160,9 +158,11 @@ void renderGamePlay_L1()
         if (PLAYER_COLLECTED_MASKS >= MASKS_MAX)
         {
             GAME_LEVEL = 2;
+            // removeViruses(&viruses1);
         }
         if (GAME_LEVEL == 2)
         {
+
             renderGamePlay_L2();
         }
     }
@@ -171,9 +171,9 @@ void renderGamePlay_L1()
 void renderGamePlay_L2()
 {
 
+    int i;
     VIRUSES_MAX = VIRUS_TOTAL_L2;
     MASKS_MAX = MASKS_TOTAL_L2;
-    int i;
 
     InitViruses(&viruses2);
 

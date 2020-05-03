@@ -6,7 +6,7 @@
 // Player Initial ID
 #define PLAYER_ID 1
 
-// Object Initial ID
+// Object Initial ID (Level 1)
 #define VIRUS_INITIAL_ID 200
 #define MASK_INITIAL_ID 9000
 
