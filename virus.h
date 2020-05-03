@@ -37,6 +37,14 @@ void addVirus(Viruses *v, int count)
         newVirus->id = VIRUS_INITIAL_ID + v->length;
         newVirus->xPos = ((rand() % 224) + 1); //minimum x pos is 0, max is 224
         newVirus->yPos = ((rand() % 144) + 1); //minimum y pos is 0. max is 145
+
+        // if the x,y position of the virus is where the player is, get new random positions
+        if (newVirus->xPos == PLAYER_XPOS && newVirus->yPos == PLAYER_YPOS)
+        {
+            newVirus->xPos = ((rand() % 224) + 1);
+            newVirus->xVel = ((rand() % 30) - 15);
+        }
+
         newVirus->xVel = ((rand() % 30) - 15);
         newVirus->yVel = ((rand() % 30) - 15);
         v->length++;

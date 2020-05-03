@@ -16,42 +16,45 @@ void movePlayer(void)
 
     if ((buttons & KEY_RIGHT) == KEY_RIGHT)
     {
-        if (PLAYER_XPOS >= 240)
+        PLAYER_XPOS = PLAYER_XPOS + displacement;
+        if (PLAYER_XPOS > SCREEN_WIDTH - 12)
         {
-            PLAYER_XPOS = 0;
+            PLAYER_XPOS = SCREEN_WIDTH - 12;
         }
 
         PLAYER_SPRITE = SPRITE_NURSE_RIGHT;
 
-        PLAYER_XPOS = PLAYER_XPOS + displacement;
         drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
     }
     else if ((buttons & KEY_LEFT) == KEY_LEFT)
     {
         PLAYER_SPRITE = SPRITE_NURSE_LEFT;
         PLAYER_XPOS = PLAYER_XPOS - displacement;
+        if (PLAYER_XPOS < 0)
+        {
+            PLAYER_XPOS = 0;
+        }
 
         drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
     }
     else if ((buttons & KEY_DOWN) == KEY_DOWN)
     {
-        if (PLAYER_YPOS <= 0)
-        {
-            PLAYER_YPOS = 160;
-        }
-
         PLAYER_YPOS = PLAYER_YPOS + displacement;
+        if (PLAYER_YPOS >= SCREEN_HEIGHT - 18)
+        {
+            PLAYER_YPOS = SCREEN_HEIGHT - 18;
+        }
 
         drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
     }
     else if ((buttons & KEY_UP) == KEY_UP)
     {
-        if (PLAYER_YPOS >= 160)
+        PLAYER_YPOS = PLAYER_YPOS - displacement;
+        if (PLAYER_YPOS <= 2)
         {
-            PLAYER_YPOS = 0;
+            PLAYER_YPOS = 2;
         }
 
-        PLAYER_YPOS = PLAYER_YPOS - displacement;
         drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
     }
 };
