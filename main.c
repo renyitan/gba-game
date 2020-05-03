@@ -56,7 +56,6 @@ void interruptsHandler(void)
         }
     }
 
-
     // Button Interrupts
     if ((REG_IF & INT_BUTTON) == INT_BUTTON)
     {
@@ -122,6 +121,7 @@ int main(void)
             renderStartPage();
             break;
         case STATE_PLAYING_L1:
+
             renderGamePlay_L1();
             break;
         }
@@ -133,6 +133,11 @@ void renderStartPage()
 {
     drawGameTitle();
     drawUserPrompt();
+}
+
+void renderLevelTitle()
+{
+    drawGameLevel();
 }
 
 void renderGamePlay_L1()
@@ -151,6 +156,8 @@ void renderGamePlay_L1()
 
     while (1)
     {
+        renderLevelTitle();
+
         drawViruses(&viruses1);
         drawMasks(&masks1);
         virusCollisionWithPlayer(&viruses1);
@@ -184,7 +191,8 @@ void renderGamePlay_L2()
         addMask(&masks2);
     }
 
-    drawSprite(SPRITE_R_SMALL, PLAYER_ID, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+    // updates the game level sprite
+    drawSprite(SPRITE_TWO_SMALL, SUBTITLE_LETTER_ID + 5, 86, SCREEN_HEIGHT - 16);
 
     while (1)
     {
