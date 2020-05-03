@@ -19,7 +19,7 @@ Virus virus;
 // Declare masks instances
 Masks masks;
 Mask mask;
-int TOTAL_MASKS = 10; // set total masks to display
+int TOTAL_MASKS = 15; // set total masks to display
 
 void interruptsHandler(void)
 {

@@ -30,8 +30,8 @@ void addMask(Masks *m)
 {
     Mask *newMask = &m->freeMasks[m->length];
     newMask->id = MASK_INITIAL_ID + m->length;
-    newMask->xPos = (rand() % (150 / 2)) + SCREEN_WIDTH / 3;
-    newMask->yPos = (rand() % (SCREEN_HEIGHT - 8));
+    newMask->xPos = ((rand() % 224) + 1); //minimum x pos is 0, max is 224
+    newMask->yPos = ((rand() % 144) + 1); //minimum y pos is 0. max is 145
     newMask->collected = false;
 
     m->length++;
