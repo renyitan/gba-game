@@ -7,11 +7,11 @@
 
 .GLOBL	drawLevelTitle
 drawLevelTitle:
-mov	ip, sp
+	mov	ip, sp
 	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
 	mov	r6, r1						@x-position 
 	sub	fp, ip, #-4294967292
-	mov	r5, r2						@  uniqueId
+	mov	r5, r2						@ uniqueId
 	ldr	r7, .drawSpriteFn			@ load label 'drawSprite' into r6
 	mov	r4, r0						@ r4 = x
 	mov	r1, r2						@ r1 = y
@@ -51,8 +51,8 @@ mov	ip, sp
 	mov	lr, pc
 	bx	r7
 
-	mov	r1, r5	@  LETTER_YPOS
-	mov	r3, r6	@  LETTER_YPOS
+	mov	r1, r5
+	mov	r3, r6
 	mov	r2, #86						@ here we add 84 to initial x position as we want to give a space between 'LEVEL' and '1'
 	mov	r0, #37						@load the sprite '1' from sprites.h
 	mov	lr, pc
