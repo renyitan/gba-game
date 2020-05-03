@@ -9,8 +9,8 @@ extern int GAME_LEVEL;
 extern int VIRUSES_MAX;
 extern int MASKS_MAX;
 
-#define VIRUS_TOTAL_L1 10
-#define MASKS_TOTAL_L1 5
+#define VIRUS_TOTAL_L1 10 //10
+#define MASKS_TOTAL_L1 5 // 5
 
 #define VIRUS_TOTAL_L2 20 //20
 #define MASKS_TOTAL_L2 10 //10
