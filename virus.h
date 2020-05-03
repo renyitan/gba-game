@@ -8,6 +8,7 @@
 #define VIRUS_PADDING 12
 #define VIRUS_NUM_MAX 5000
 
+
 typedef struct Virus
 {
     int id;
@@ -32,17 +33,10 @@ void addVirus(Viruses *v)
 {
     Virus *newVirus = &v->freeVirus[v->length];
     newVirus->id = VIRUS_INITIAL_ID + v->length;
-    newVirus->xPos = (rand() % 6) * 44; //minimum x pos is 0, max is 220
-    if (newVirus->xPos < 220)           //virus is coming from top wall
-    {
-        newVirus->yPos = 0;
-    }
-    else if (newVirus->xPos == 220) //virus is coming from right wall
-    {
-        newVirus->yPos = (rand() % 6) * 28; //minimum y pos is 0. max is 140
-    }
-    newVirus->xVel = 10;
-    newVirus->yVel = 10;
+    newVirus->xPos = ((rand() % 224) + 1); //minimum x pos is 0, max is 224
+    newVirus->yPos = ((rand() % 144) + 1); //minimum y pos is 0. max is 145
+    newVirus->xVel = ((rand() % 50) - 25);
+    newVirus->yVel = ((rand() % 50) - 25);
     v->length++;
 }
 
@@ -53,7 +47,7 @@ void updateVirusPosition(Viruses *v)
     for (i = 0; i < v->length; i++)
     {
         Virus *currentVirus = &v->freeVirus[i];
-        currentVirus->xPos -= currentVirus->xVel;
+        currentVirus->xPos += currentVirus->xVel;
         currentVirus->yPos += currentVirus->yVel;
 
         if (currentVirus->xPos <= 2)

@@ -2,6 +2,7 @@
 // C-Skeleton to be used with HAM Library from www.ngine.de
 // -----------------------------------------------------------------------------
 #include "mygbalib.h"
+#include <time.h>
 
 int GAME_STATE = STATE_START;
 
@@ -18,7 +19,7 @@ Virus virus;
 // Declare masks instances
 Masks masks;
 Mask mask;
-int TOTAL_MASKS = 10; // set total masks to display
+int TOTAL_MASKS = 15; // set total masks to display
 
 void interruptsHandler(void)
 {
@@ -68,6 +69,7 @@ void interruptsHandler(void)
 
 int main(void)
 {
+    srand((unsigned)time(NULL));
     int i;
 
     // Set display mode
@@ -75,6 +77,7 @@ int main(void)
     REG_DISPCNT = OBJ_MAP_1D | MODE2 | OBJ_ENABLE;
 
     // Set up sprites and palette
+
     fillPalette();
     fillSprites();
 
