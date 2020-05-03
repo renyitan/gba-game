@@ -9,6 +9,7 @@
 
 #include "game_state.h"
 
+
 void fillPalette(void)
 {
     int i;

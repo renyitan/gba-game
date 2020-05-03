@@ -71,6 +71,7 @@ int main(void)
     int i;
 
     // Set display mode
+    // REG_DISPCNT = OBJ_MAP_1D | MODE2 | OBJ_ENABLE | 0x0100;
     REG_DISPCNT = OBJ_MAP_1D | MODE2 | OBJ_ENABLE;
 
     // Set up sprites and palette
@@ -116,7 +117,6 @@ void renderStartPage()
     drawUserPrompt();
 }
 
-
 void renderGame()
 {
     int i;
@@ -138,3 +138,4 @@ void renderGame()
         maskCollisionWithPlayer(&masks);
     }
 }
+

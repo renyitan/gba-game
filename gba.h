@@ -17,6 +17,11 @@ typedef unsigned char byte;
 typedef unsigned short hword;
 typedef unsigned int word;
 
+typedef u16 COLOR;
+
+#define MEM_VRAM        0x06000000
+#define vid_mem         ((u16*)MEM_VRAM)
+
 // some defines
 #define FALSE                0x00
 #define TRUE                 0x01
@@ -63,7 +68,7 @@ typedef unsigned int word;
 #define DMA_CHANNEL_DEFAULT  0x3
 
 // background defines
-#define REG_BG0CNT     *(u16*)0x4000008
+#define REG_BG0CNT     *(volatile u16*)0x4000008
 #define REG_BG1CNT     *(u16*)0x400000A
 #define REG_BG2CNT     *(u16*)0x400000C
 #define REG_BG3CNT     *(u16*)0x400000E
