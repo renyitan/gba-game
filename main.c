@@ -56,6 +56,7 @@ void interruptsHandler(void)
         }
     }
 
+
     // Button Interrupts
     if ((REG_IF & INT_BUTTON) == INT_BUTTON)
     {
