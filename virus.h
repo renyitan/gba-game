@@ -37,8 +37,10 @@ void addVirus(Viruses *v, int count)
         newVirus->id = VIRUS_INITIAL_ID + v->length;
         newVirus->xPos = ((rand() % 224) + 1); //minimum x pos is 0, max is 224
         newVirus->yPos = ((rand() % 144) + 1); //minimum y pos is 0. max is 145
-        newVirus->xVel = ((rand() % 50) - 25);
-        newVirus->yVel = ((rand() % 50) - 25);
+                                               // newVirus->xVel = ((rand() % 50) - 25);
+                                               // newVirus->yVel = ((rand() % 50) - 25);
+        newVirus->xVel = ((rand() % 30) - 15);
+        newVirus->yVel = ((rand() % 30) - 15);
         v->length++;
     }
     else
@@ -54,6 +56,18 @@ void updateVirusPosition(Viruses *v)
     for (i = 0; i < v->length; i++)
     {
         Virus *currentVirus = &v->freeVirus[i];
+
+        //if virus hits left or right wall
+        if ((abs(currentVirus->xPos - 1) < (abs(currentVirus->xVel) - 1)) || (abs(currentVirus->xPos - 224) < abs(currentVirus->xVel)))
+        {
+            currentVirus->xVel = currentVirus->xVel * (-1);
+        }
+        //if virus hits top or bottom wall
+        else if ((abs(currentVirus->yPos) < (abs(currentVirus->yVel))) || (abs(currentVirus->yPos - 144) < abs(currentVirus->yVel)))
+        {
+            currentVirus->yVel = currentVirus->yVel * (-1);
+        }
+
         currentVirus->xPos += currentVirus->xVel;
         currentVirus->yPos += currentVirus->yVel;
 

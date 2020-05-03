@@ -7,8 +7,8 @@
 // intiate global game state properties
 int GAME_STATE = STATE_START;
 int GAME_LEVEL = 1;
-int VIRUSES_MAX = 2;
-int MASKS_MAX = 2;
+int VIRUSES_MAX = VIRUS_TOTAL_L1;
+int MASKS_MAX = MASKS_TOTAL_L1;
 
 // Initialise global player propeties;
 int PLAYER_SPRITE = 0;
@@ -18,14 +18,16 @@ int PLAYER_LIFE_COUNTS = 1;
 int PLAYER_COLLECTED_MASKS = 0;
 
 // Declare viruses instances
-Viruses viruses;
 Virus virus;
+Mask mask;
+
+
+Viruses viruses1;
+Masks masks1;
 
 Viruses viruses2;
+Masks masks2;
 
-// Declare masks instances
-Masks masks;
-Mask mask;
 
 void interruptsHandler(void)
 {
@@ -41,8 +43,8 @@ void interruptsHandler(void)
     {
         if (GAME_LEVEL == 1)
         {
-            updateVirusPosition(&viruses);
-            addVirus(&viruses, VIRUSES_MAX);
+            updateVirusPosition(&viruses1);
+            addVirus(&viruses1, VIRUSES_MAX);
         }
         if (GAME_LEVEL == 2)
         {
@@ -138,22 +140,22 @@ void renderGamePlay_L1()
 {
     int i;
 
-    InitViruses(&viruses);
+    InitViruses(&viruses1);
 
-    InitMasks(&masks);
+    InitMasks(&masks1);
     for (i = 0; i < MASKS_MAX; i++)
     {
-        addMask(&masks);
+        addMask(&masks1);
     }
 
     drawSprite(PLAYER_SPRITE, PLAYER_ID, PLAYER_XPOS, PLAYER_YPOS);
 
     while (1)
     {
-        drawViruses(&viruses);
-        drawMasks(&masks);
-        virusCollisionWithPlayer(&viruses);
-        maskCollisionWithPlayer(&masks);
+        drawViruses(&viruses1);
+        drawMasks(&masks1);
+        virusCollisionWithPlayer(&viruses1);
+        maskCollisionWithPlayer(&masks1);
 
         if (PLAYER_COLLECTED_MASKS >= MASKS_MAX)
         {
@@ -169,11 +171,9 @@ void renderGamePlay_L1()
 void renderGamePlay_L2()
 {
 
-    VIRUSES_MAX = 20;
-    MASKS_MAX = 10;
+    VIRUSES_MAX = VIRUS_TOTAL_L2;
+    MASKS_MAX = MASKS_TOTAL_L2;
     int i;
-
-    Masks masks2;
 
     InitViruses(&viruses2);
 
