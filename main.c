@@ -39,20 +39,21 @@ void interruptsHandler(void)
     // Timer for 1s
     if ((REG_IF & INT_TIMER1) == INT_TIMER1)
     {
-        if (GAME_LEVEL == 1)
+        if (GAME_LEVEL == 1 && GAME_STATE != STATE_WIN)
         {
             updateVirusPosition(&viruses1);
             addVirus(&viruses1, VIRUSES_MAX);
         }
-        if (GAME_LEVEL == 2)
+        if (GAME_LEVEL == 2 && GAME_STATE != STATE_WIN)
         {
             updateVirusPosition(&viruses2);
             addVirus(&viruses2, VIRUSES_MAX);
         }
 
-        if (PLAYER_LIFE_COUNTS <= 0)
+        if (PLAYER_LIFE_COUNTS <= 0 || GAME_STATE == STATE_END)
         {
             removePlayer();
+            // GAME_STATE = STATE_GAMEOVER;
         }
     }
 
@@ -66,9 +67,16 @@ void interruptsHandler(void)
         if (PLAYER_LIFE_COUNTS > 0)
         {
             movePlayer();
+
+            if (PLAYER_COLLECTED_MASKS > MASKS_TOTAL_L1 + MASKS_TOTAL_L2)
+            {
+                GAME_STATE = STATE_WIN;
+                drawGameVictory();
+            }
         }
         else
         {
+            // clearScreen();
             removePlayer();
         }
     }
@@ -87,7 +95,6 @@ int main(void)
     int i;
 
     // Set display mode
-    // REG_DISPCNT = OBJ_MAP_1D | MODE2 | OBJ_ENABLE | 0x0100;
     REG_DISPCNT = OBJ_MAP_1D | MODE2 | OBJ_ENABLE;
 
     // Set up sprites and palette
@@ -115,13 +122,13 @@ int main(void)
     */
     while (1)
     {
+
         switch (GAME_STATE)
         {
         case STATE_START:
             renderStartPage();
             break;
-        case STATE_PLAYING_L1:
-
+        case STATE_PLAYING:
             renderGamePlay_L1();
             break;
         }
@@ -133,11 +140,6 @@ void renderStartPage()
 {
     drawGameTitle();
     drawUserPrompt();
-}
-
-void renderLevelTitle()
-{
-    drawGameLevel();
 }
 
 void renderGamePlay_L1()
@@ -156,29 +158,36 @@ void renderGamePlay_L1()
 
     while (1)
     {
-        renderLevelTitle();
-
+        drawGameLevel();
         drawViruses(&viruses1);
         drawMasks(&masks1);
         virusCollisionWithPlayer(&viruses1);
         maskCollisionWithPlayer(&masks1);
 
-        if (PLAYER_COLLECTED_MASKS >= MASKS_MAX)
+        if (PLAYER_COLLECTED_MASKS >= MASKS_MAX && GAME_STATE == STATE_PLAYING)
         {
             GAME_LEVEL = 2;
-            // removeViruses(&viruses1);
         }
-        if (GAME_LEVEL == 2)
+        if (GAME_LEVEL == 2 && GAME_STATE == STATE_PLAYING)
         {
-
             renderGamePlay_L2();
         }
+
+        if (PLAYER_LIFE_COUNTS <= 0 && GAME_STATE != STATE_WIN)
+        {
+            GAME_STATE = STATE_END;
+            drawGameOver();
+            break;
+        }
+        // if (GAME_STATE == STATE_END && PLAYER_COLLECTED_MASKS > MASKS_TOTAL_L2 + MASKS_TOTAL_L1)
+        // {
+        //     break;
+        // }
     }
 }
 
 void renderGamePlay_L2()
 {
-
     int i;
     VIRUSES_MAX = VIRUS_TOTAL_L2;
     MASKS_MAX = MASKS_TOTAL_L2;
@@ -191,8 +200,8 @@ void renderGamePlay_L2()
         addMask(&masks2);
     }
 
-    // updates the game level sprite
-    drawSprite(SPRITE_TWO_SMALL, SUBTITLE_LETTER_ID + 5, 86, SCREEN_HEIGHT - 16);
+    // updates the game level sprite: 1->2
+    drawSprite(SPRITE_TWO_SMALL, LEVEL_TITLE_ID + 5, 86, SCREEN_HEIGHT - 16);
 
     while (1)
     {
@@ -200,5 +209,13 @@ void renderGamePlay_L2()
         drawMasks(&masks2);
         virusCollisionWithPlayer(&viruses2);
         maskCollisionWithPlayer(&masks2);
+
+        if (PLAYER_LIFE_COUNTS <= 0 && GAME_STATE != STATE_WIN)
+        {
+            GAME_STATE = STATE_END;
+            drawGameOver();
+            break;
+        }
     }
 }
+

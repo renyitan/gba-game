@@ -98,6 +98,16 @@ void removeViruses(Viruses *v)
     }
 }
 
+void removeAllMasks(Masks *m)
+{
+    int i;
+    for (i = 0; i <= m->length; i++)
+    {
+        Mask *currentMask = &m->freeMasks[0];
+        drawSprite(SPRITE_MASK, currentMask->id, SCREEN_WIDTH + 10, SCREEN_HEIGHT + 10);
+    }
+}
+
 void drawGameTitle(void)
 {
     int LETTER_XPOS = 48;
@@ -137,12 +147,42 @@ void drawGameLevel(void)
     int LETTER_XPOS = 0;
     int LETTER_YPOS = SCREEN_HEIGHT - 16;
 
-    drawSprite(SPRITE_L_SMALL, SUBTITLE_LETTER_ID, LETTER_XPOS, LETTER_YPOS);
-    drawSprite(SPRITE_E_SMALL, SUBTITLE_LETTER_ID + 1, LETTER_XPOS + 16, LETTER_YPOS);
-    drawSprite(SPRITE_V_SMALL, SUBTITLE_LETTER_ID + 2, LETTER_XPOS + 32, LETTER_YPOS);
-    drawSprite(SPRITE_E_SMALL, SUBTITLE_LETTER_ID + 3, LETTER_XPOS + 48, LETTER_YPOS);
-    drawSprite(SPRITE_L_SMALL, SUBTITLE_LETTER_ID + 4, LETTER_XPOS + 64, LETTER_YPOS);
-    drawSprite(SPRITE_ONE_SMALL, SUBTITLE_LETTER_ID + 5, 86, SCREEN_HEIGHT - 16);
+    drawSprite(SPRITE_L_SMALL, LEVEL_TITLE_ID, LETTER_XPOS, LETTER_YPOS);
+    drawSprite(SPRITE_E_SMALL, LEVEL_TITLE_ID + 1, LETTER_XPOS + 16, LETTER_YPOS);
+    drawSprite(SPRITE_V_SMALL, LEVEL_TITLE_ID + 2, LETTER_XPOS + 32, LETTER_YPOS);
+    drawSprite(SPRITE_E_SMALL, LEVEL_TITLE_ID + 3, LETTER_XPOS + 48, LETTER_YPOS);
+    drawSprite(SPRITE_L_SMALL, LEVEL_TITLE_ID + 4, LETTER_XPOS + 64, LETTER_YPOS);
+    drawSprite(SPRITE_ONE_SMALL, LEVEL_TITLE_ID + 5, 86, LETTER_YPOS);
+}
+
+void drawGameOver(void)
+{
+    int LETTER_XPOS = 48;
+    int LETTER_YPOS = 50;
+
+    drawSprite(SPRITE_G, TITLE_LETTER_ID, LETTER_XPOS, LETTER_YPOS);
+    drawSprite(SPRITE_A, TITLE_LETTER_ID + 1, LETTER_XPOS + 16, LETTER_YPOS);
+    drawSprite(SPRITE_M, TITLE_LETTER_ID + 2, LETTER_XPOS + 32, LETTER_YPOS);
+    drawSprite(SPRITE_E, TITLE_LETTER_ID + 3, LETTER_XPOS + 48, LETTER_YPOS);
+
+    drawSprite(SPRITE_O, TITLE_LETTER_ID + 4, LETTER_XPOS + 80, LETTER_YPOS);
+    drawSprite(SPRITE_V, TITLE_LETTER_ID + 5, LETTER_XPOS + 96, LETTER_YPOS);
+    drawSprite(SPRITE_E, TITLE_LETTER_ID + 6, LETTER_XPOS + 112, LETTER_YPOS);
+    drawSprite(SPRITE_R, TITLE_LETTER_ID + 7, LETTER_XPOS + 128, LETTER_YPOS);
+}
+
+void drawGameVictory(void)
+{
+    int LETTER_XPOS = 64;
+    int LETTER_YPOS = 50;
+
+    drawSprite(SPRITE_V, TITLE_LETTER_ID, LETTER_XPOS, LETTER_YPOS);
+    drawSprite(SPRITE_I, TITLE_LETTER_ID + 1, LETTER_XPOS + 16, LETTER_YPOS);
+    drawSprite(SPRITE_C, TITLE_LETTER_ID + 2, LETTER_XPOS + 32, LETTER_YPOS);
+    drawSprite(SPRITE_T, TITLE_LETTER_ID + 3, LETTER_XPOS + 48, LETTER_YPOS);
+    drawSprite(SPRITE_O, TITLE_LETTER_ID + 4, LETTER_XPOS + 64, LETTER_YPOS);
+    drawSprite(SPRITE_R, TITLE_LETTER_ID + 5, LETTER_XPOS + 80, LETTER_YPOS);
+    drawSprite(SPRITE_Y, TITLE_LETTER_ID + 6, LETTER_XPOS + 96, LETTER_YPOS);
 }
 
 void drawSprite(int numb, int N, int x, int y)
@@ -157,7 +197,7 @@ void removeSprite(int N)
 {
     *(unsigned short *)(0x7000000 + 8 * N) = 0x2000;
     *(unsigned short *)(0x7000002 + 8 * N) = 0x4000;
-    // *(unsigned short *)(0x7000004 + 8 * N) = 0x000;
+    *(unsigned short *)(0x7000004 + 8 * N) = 0x000;
     // free(*(unsigned short *)(0x7000004 + 8 * N));
 }
 
@@ -175,19 +215,6 @@ void drawRect(int left, int top, int width, int height, COLOR color)
         for (x = 0; x < width; ++x)
         {
             drawPixel(left + x, top + y, color);
-        }
-    }
-}
-
-drawRect2(int left, int top, int width, int height)
-{
-    int y;
-    int x;
-    for (y = 0; y < height; ++y)
-    {
-        for (x = 0; x < width; ++x)
-        {
-            drawSprite(SPRITE_NURSE_LEFT, 0, x, y);
         }
     }
 }
