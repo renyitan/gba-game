@@ -10,6 +10,21 @@ void auxButtonHandler(void)
 
     if ((buttons & KEY_START) == KEY_START)
     {
+        clearGameStartScreen();
         GAME_STATE = STATE_PLAYING;
+    }
+}
+
+void clearGameStartScreen()
+{
+    int i;
+    for (i = TITLE_LETTER_ID; i <= TITLE_LETTER_ID + 7; i++)
+    {
+        removeSprite(i);
+    }
+
+    for (i = SUBTITLE_LETTER_ID; i <= SUBTITLE_LETTER_ID + 9; i++)
+    {
+        removeSprite(i);
     }
 }

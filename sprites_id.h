@@ -11,7 +11,7 @@
 #define MASK_INITIAL_ID 9000
 
 // Title Initial ID
-#define TITLE_LETTER_ID 100
+#define TITLE_LETTER_ID 50
 
 // Subtitle Initial ID
-#define SUBTITLE_LETTER_ID 200
+#define SUBTITLE_LETTER_ID 100
