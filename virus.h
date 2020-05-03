@@ -1,13 +1,13 @@
 #include "gba.h"
 #include "player.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "sprites_id.h"
 
 #define VIRUS_PADDING 12
-#define VIRUS_NUM_MAX 5000
-
+#define VIRUS_MAX 50
 
 typedef struct Virus
 {
@@ -20,7 +20,7 @@ typedef struct Virus
 
 typedef struct
 {
-    Virus freeVirus[VIRUS_NUM_MAX];
+    Virus freeVirus[VIRUS_MAX];
     int length;
 } Viruses;
 
@@ -29,15 +29,22 @@ void InitViruses(Viruses *viruses)
     viruses->length = 0;
 }
 
-void addVirus(Viruses *v)
+void addVirus(Viruses *v, int maxVirus)
 {
-    Virus *newVirus = &v->freeVirus[v->length];
-    newVirus->id = VIRUS_INITIAL_ID + v->length;
-    newVirus->xPos = ((rand() % 224) + 1); //minimum x pos is 0, max is 224
-    newVirus->yPos = ((rand() % 144) + 1); //minimum y pos is 0. max is 145
-    newVirus->xVel = ((rand() % 50) - 25);
-    newVirus->yVel = ((rand() % 50) - 25);
-    v->length++;
+    if (v->length < maxVirus)
+    {
+        Virus *newVirus = &v->freeVirus[v->length];
+        newVirus->id = VIRUS_INITIAL_ID + v->length;
+        newVirus->xPos = ((rand() % 224) + 1); //minimum x pos is 0, max is 224
+        newVirus->yPos = ((rand() % 144) + 1); //minimum y pos is 0. max is 145
+        newVirus->xVel = ((rand() % 50) - 25);
+        newVirus->yVel = ((rand() % 50) - 25);
+        v->length++;
+    }
+    else
+    {
+        return;
+    }
 }
 
 void updateVirusPosition(Viruses *v)

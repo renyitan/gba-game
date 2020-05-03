@@ -34,7 +34,7 @@ void interruptsHandler(void)
     if ((REG_IF & INT_TIMER1) == INT_TIMER1)
     {
         updateVirusPosition(&viruses);
-        addVirus(&viruses);
+        addVirus(&viruses, 10);
 
         if (PLAYER_LIFE_COUNTS <= 0)
         {

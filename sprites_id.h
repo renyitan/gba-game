@@ -7,7 +7,7 @@
 #define PLAYER_ID 1
 
 // Object Initial ID
-#define VIRUS_INITIAL_ID 999
+#define VIRUS_INITIAL_ID 200
 #define MASK_INITIAL_ID 9000
 
 // Title Initial ID
