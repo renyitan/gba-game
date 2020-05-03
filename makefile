@@ -15,7 +15,8 @@ PROGNAME=mini-proj
 #
 # Set a list of files you want to compile
 #
-OFILES +=main.o
+OFILES +=main.o \
+		drawLevelTitle.o
 
 #
 # Set a list of libraries you want to link

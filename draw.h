@@ -145,17 +145,14 @@ void drawUserPrompt(void)
     drawSprite(SPRITE_T_SMALL, SUBTITLE_LETTER_ID + 9, LETTER_XPOS + 160, LETTER_YPOS);
 }
 
-void drawGameLevel(void)
+void drawGameLevel(int LETTER_XPOS, int LETTER_YPOS, int id)
 {
-    int LETTER_XPOS = 0;
-    int LETTER_YPOS = SCREEN_HEIGHT - 16;
-
-    drawSprite(SPRITE_L_SMALL, LEVEL_TITLE_ID, LETTER_XPOS, LETTER_YPOS);
-    drawSprite(SPRITE_E_SMALL, LEVEL_TITLE_ID + 1, LETTER_XPOS + 16, LETTER_YPOS);
-    drawSprite(SPRITE_V_SMALL, LEVEL_TITLE_ID + 2, LETTER_XPOS + 32, LETTER_YPOS);
-    drawSprite(SPRITE_E_SMALL, LEVEL_TITLE_ID + 3, LETTER_XPOS + 48, LETTER_YPOS);
-    drawSprite(SPRITE_L_SMALL, LEVEL_TITLE_ID + 4, LETTER_XPOS + 64, LETTER_YPOS);
-    drawSprite(SPRITE_ONE_SMALL, LEVEL_TITLE_ID + 5, 86, LETTER_YPOS);
+    drawSprite(SPRITE_L_SMALL, id, LETTER_XPOS, LETTER_YPOS);
+    drawSprite(SPRITE_E_SMALL, id + 1, LETTER_XPOS + 16, LETTER_YPOS);
+    drawSprite(SPRITE_V_SMALL, id + 2, LETTER_XPOS + 32, LETTER_YPOS);
+    drawSprite(SPRITE_E_SMALL, id + 3, LETTER_XPOS + 48, LETTER_YPOS);
+    drawSprite(SPRITE_L_SMALL, id + 4, LETTER_XPOS + 64, LETTER_YPOS);
+    drawSprite(SPRITE_ONE_SMALL, id + 5, 86, LETTER_YPOS);
 }
 
 void drawGameOver(void)

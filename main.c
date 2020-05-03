@@ -24,6 +24,9 @@ Masks masks1;
 Viruses viruses2;
 Masks masks2;
 
+// this is the assembly function from drawLevelTitle.s
+extern void drawLevelTitle(int x, int y, int label);
+
 void interruptsHandler(void)
 {
     REG_IME = 0x00; // Stop all other interrupt handling, while we handle this current one
@@ -95,7 +98,6 @@ int main(void)
     REG_DISPCNT = OBJ_MAP_1D | MODE2 | OBJ_ENABLE;
 
     // Set up sprites and palette
-
     fillPalette();
     fillSprites();
 
@@ -161,7 +163,7 @@ void renderGamePlay_L1()
 
     while (1)
     {
-        drawGameLevel();
+        drawLevelTitle(0, SCREEN_HEIGHT - 16, LEVEL_TITLE_ID);
         drawViruses(&viruses1);
         drawMasks(&masks1);
         virusCollisionWithPlayer(&viruses1);
