@@ -1,13 +1,13 @@
 #include "gba.h"
 #include "player.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "sprites_id.h"
 
 #define VIRUS_PADDING 12
-#define VIRUS_NUM_MAX 5000
-
+#define MAX_FREE_VIRUS 50
 
 typedef struct Virus
 {
@@ -20,7 +20,7 @@ typedef struct Virus
 
 typedef struct
 {
-    Virus freeVirus[VIRUS_NUM_MAX];
+    Virus freeVirus[MAX_FREE_VIRUS];
     int length;
 } Viruses;
 
@@ -29,15 +29,22 @@ void InitViruses(Viruses *viruses)
     viruses->length = 0;
 }
 
-void addVirus(Viruses *v)
+void addVirus(Viruses *v, int count)
 {
-    Virus *newVirus = &v->freeVirus[v->length];
-    newVirus->id = VIRUS_INITIAL_ID + v->length;
-    newVirus->xPos = ((rand() % 224) + 1); //minimum x pos is 0, max is 224
-    newVirus->yPos = ((rand() % 144) + 1); //minimum y pos is 0. max is 145
-    newVirus->xVel = ((rand() % 30) - 15);
-    newVirus->yVel = ((rand() % 30) - 15);
-    v->length++;
+    if (v->length < count)
+    {
+        Virus *newVirus = &v->freeVirus[v->length];
+        newVirus->id = VIRUS_INITIAL_ID + v->length;
+        newVirus->xPos = ((rand() % 224) + 1); //minimum x pos is 0, max is 224
+        newVirus->yPos = ((rand() % 144) + 1); //minimum y pos is 0. max is 145
+        newVirus->xVel = ((rand() % 30) - 15);
+        newVirus->yVel = ((rand() % 30) - 15);
+        v->length++;
+    }
+    else
+    {
+        return;
+    }
 }
 
 void updateVirusPosition(Viruses *v)
@@ -49,12 +56,12 @@ void updateVirusPosition(Viruses *v)
         Virus *currentVirus = &v->freeVirus[i];
 
         //if virus hits left or right wall
-        if ((abs(currentVirus->xPos-1) < (abs(currentVirus->xVel) - 1)) || (abs(currentVirus->xPos-224) < abs(currentVirus->xVel)))
+        if ((abs(currentVirus->xPos - 1) < (abs(currentVirus->xVel) - 1)) || (abs(currentVirus->xPos - 224) < abs(currentVirus->xVel)))
         {
             currentVirus->xVel = currentVirus->xVel * (-1);
         }
         //if virus hits top or bottom wall
-        else if ((abs(currentVirus->yPos) < (abs(currentVirus->yVel))) || (abs(currentVirus->yPos-144) < abs(currentVirus->yVel)))
+        else if ((abs(currentVirus->yPos) < (abs(currentVirus->yVel))) || (abs(currentVirus->yPos - 144) < abs(currentVirus->yVel)))
         {
             currentVirus->yVel = currentVirus->yVel * (-1);
         }
@@ -62,11 +69,10 @@ void updateVirusPosition(Viruses *v)
         currentVirus->xPos += currentVirus->xVel;
         currentVirus->yPos += currentVirus->yVel;
 
-        //to prevent glitch from occurring on left wall
         if (currentVirus->xPos <= 2)
         {
-            currentVirus->yPos = SCREEN_HEIGHT + 16; //on the next iteration, the virus will come back into the screen
-        }        
+            currentVirus->yPos = SCREEN_HEIGHT + 16;
+        }
     }
 }
 

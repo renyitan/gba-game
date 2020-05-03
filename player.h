@@ -7,6 +7,8 @@ extern int PLAYER_YPOS;
 extern int PLAYER_SPRITE;
 extern int PLAYER_LIFE_COUNTS;
 
+extern int PLAYER_COLLECTED_MASKS;
+
 // Player Sprite Properties
 #define LIFE_XPOS 0
 #define LIFE_YPOS (SCREEN_HEIGHT - 16)
