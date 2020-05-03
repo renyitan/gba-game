@@ -62,9 +62,10 @@ void updateVirusPosition(Viruses *v)
         currentVirus->xPos += currentVirus->xVel;
         currentVirus->yPos += currentVirus->yVel;
 
+        //to prevent glitch from occurring on left wall
         if (currentVirus->xPos <= 2)
         {
-            currentVirus->yPos = SCREEN_HEIGHT + 16;
+            currentVirus->yPos = SCREEN_HEIGHT + 16; //on the next iteration, the virus will come back into the screen
         }        
     }
 }
