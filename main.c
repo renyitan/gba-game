@@ -1,6 +1,3 @@
-// -----------------------------------------------------------------------------
-// C-Skeleton to be used with HAM Library from www.ngine.de
-// -----------------------------------------------------------------------------
 #include "mygbalib.h"
 #include <time.h>
 
@@ -136,12 +133,18 @@ int main(void)
     return 0;
 }
 
+/*
+ * Render function for game splash screen / menu
+*/
 void renderStartPage()
 {
     drawGameTitle();
     drawUserPrompt();
 }
 
+/**
+ * Render function for Level 1
+ */
 void renderGamePlay_L1()
 {
     int i;
@@ -179,13 +182,12 @@ void renderGamePlay_L1()
             drawGameOver();
             break;
         }
-        // if (GAME_STATE == STATE_END && PLAYER_COLLECTED_MASKS > MASKS_TOTAL_L2 + MASKS_TOTAL_L1)
-        // {
-        //     break;
-        // }
     }
 }
 
+/**
+ * Render function for Level 2
+ */
 void renderGamePlay_L2()
 {
     int i;
@@ -200,7 +202,7 @@ void renderGamePlay_L2()
         addMask(&masks2);
     }
 
-    // updates the game level sprite: 1->2
+    // Updates the game level sprite: 1->2
     drawSprite(SPRITE_TWO_SMALL, LEVEL_TITLE_ID + 5, 86, SCREEN_HEIGHT - 16);
 
     while (1)

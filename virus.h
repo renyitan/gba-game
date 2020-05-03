@@ -9,6 +9,7 @@
 #define VIRUS_PADDING 12
 #define MAX_FREE_VIRUS 50
 
+// Generate Virus Type
 typedef struct Virus
 {
     int id;
@@ -18,6 +19,7 @@ typedef struct Virus
     int yVel;
 } Virus;
 
+// Generate Viruses type, which is basically an array of Virus
 typedef struct
 {
     Virus freeVirus[MAX_FREE_VIRUS];
@@ -63,12 +65,12 @@ void updateVirusPosition(Viruses *v)
     {
         Virus *currentVirus = &v->freeVirus[i];
 
-        //if virus hits left or right wall
+        //if virus hits left or right wall, let it bounce off the ball at an angle
         if ((abs(currentVirus->xPos - 1) < (abs(currentVirus->xVel) - 1)) || (abs(currentVirus->xPos - 224) < abs(currentVirus->xVel)))
         {
             currentVirus->xVel = currentVirus->xVel * (-1);
         }
-        //if virus hits top or bottom wall
+        //if virus hits top or bottom wall, let it bounce off the ball at an angle
         else if ((abs(currentVirus->yPos) < (abs(currentVirus->yVel))) || (abs(currentVirus->yPos - 144) < abs(currentVirus->yVel)))
         {
             currentVirus->yVel = currentVirus->yVel * (-1);
@@ -91,14 +93,15 @@ void virusCollisionWithPlayer(Viruses *v)
     {
         Virus *currentVirus = &v->freeVirus[i];
 
-        // check for horizontal collision
+        // check for horizontal collision with player
         if ((PLAYER_XPOS >= currentVirus->xPos && PLAYER_XPOS <= currentVirus->xPos + VIRUS_PADDING) ||
             (PLAYER_XPOS + PLAYER_PADDING >= currentVirus->xPos && PLAYER_XPOS + PLAYER_PADDING <= currentVirus->xPos + VIRUS_PADDING))
         {
-            // check for vertical collision
+            // check for vertical collision with player
             if (PLAYER_YPOS >= currentVirus->yPos && PLAYER_YPOS <= currentVirus->yPos + VIRUS_PADDING ||
                 (PLAYER_YPOS + PLAYER_PADDING >= currentVirus->yPos && PLAYER_YPOS + PLAYER_PADDING <= currentVirus->yPos + VIRUS_PADDING))
             {
+                // if collided, decrease player life by 1
                 PLAYER_LIFE_COUNTS -= 1;
             }
         }
