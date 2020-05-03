@@ -2,6 +2,7 @@
 // C-Skeleton to be used with HAM Library from www.ngine.de
 // -----------------------------------------------------------------------------
 #include "mygbalib.h"
+#include <time.h>
 
 int GAME_STATE = STATE_START;
 
@@ -68,12 +69,14 @@ void interruptsHandler(void)
 
 int main(void)
 {
+    srand((unsigned)time(NULL));
     int i;
 
     // Set display mode
     REG_DISPCNT = OBJ_MAP_1D | MODE2 | OBJ_ENABLE;
 
     // Set up sprites and palette
+
     fillPalette();
     fillSprites();
 
