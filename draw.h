@@ -145,16 +145,6 @@ void drawUserPrompt(void)
     drawSprite(SPRITE_T_SMALL, SUBTITLE_LETTER_ID + 9, LETTER_XPOS + 160, LETTER_YPOS);
 }
 
-void drawGameLevel(int LETTER_XPOS, int LETTER_YPOS, int id)
-{
-    drawSprite(SPRITE_L_SMALL, id, LETTER_XPOS, LETTER_YPOS);
-    drawSprite(SPRITE_E_SMALL, id + 1, LETTER_XPOS + 16, LETTER_YPOS);
-    drawSprite(SPRITE_V_SMALL, id + 2, LETTER_XPOS + 32, LETTER_YPOS);
-    drawSprite(SPRITE_E_SMALL, id + 3, LETTER_XPOS + 48, LETTER_YPOS);
-    drawSprite(SPRITE_L_SMALL, id + 4, LETTER_XPOS + 64, LETTER_YPOS);
-    drawSprite(SPRITE_ONE_SMALL, id + 5, 86, LETTER_YPOS);
-}
-
 void drawGameOver(void)
 {
     int LETTER_XPOS = 48;
