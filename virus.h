@@ -7,7 +7,7 @@
 #include "sprites_id.h"
 
 #define VIRUS_PADDING 12
-#define VIRUS_MAX 50
+#define MAX_FREE_VIRUS 50
 
 typedef struct Virus
 {
@@ -20,7 +20,7 @@ typedef struct Virus
 
 typedef struct
 {
-    Virus freeVirus[VIRUS_MAX];
+    Virus freeVirus[MAX_FREE_VIRUS];
     int length;
 } Viruses;
 
@@ -29,9 +29,9 @@ void InitViruses(Viruses *viruses)
     viruses->length = 0;
 }
 
-void addVirus(Viruses *v, int maxVirus)
+void addVirus(Viruses *v, int count)
 {
-    if (v->length < maxVirus)
+    if (v->length < count)
     {
         Virus *newVirus = &v->freeVirus[v->length];
         newVirus->id = VIRUS_INITIAL_ID + v->length;

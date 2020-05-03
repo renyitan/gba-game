@@ -4,22 +4,28 @@
 #include "mygbalib.h"
 #include <time.h>
 
+// intiate global game state properties
 int GAME_STATE = STATE_START;
+int GAME_LEVEL = 1;
+int VIRUSES_MAX = 2;
+int MASKS_MAX = 2;
 
 // Initialise global player propeties;
 int PLAYER_SPRITE = 0;
 int PLAYER_XPOS = 50;
 int PLAYER_YPOS = SCREEN_HEIGHT / 2;
 int PLAYER_LIFE_COUNTS = 1;
+int PLAYER_COLLECTED_MASKS = 0;
 
 // Declare viruses instances
 Viruses viruses;
 Virus virus;
 
+Viruses viruses2;
+
 // Declare masks instances
 Masks masks;
 Mask mask;
-int TOTAL_MASKS = 15; // set total masks to display
 
 void interruptsHandler(void)
 {
@@ -33,8 +39,16 @@ void interruptsHandler(void)
     // Timer for 1s
     if ((REG_IF & INT_TIMER1) == INT_TIMER1)
     {
-        updateVirusPosition(&viruses);
-        addVirus(&viruses, 10);
+        if (GAME_LEVEL == 1)
+        {
+            updateVirusPosition(&viruses);
+            addVirus(&viruses, VIRUSES_MAX);
+        }
+        if (GAME_LEVEL == 2)
+        {
+            updateVirusPosition(&viruses2);
+            addVirus(&viruses2, VIRUSES_MAX);
+        }
 
         if (PLAYER_LIFE_COUNTS <= 0)
         {
@@ -106,8 +120,8 @@ int main(void)
         case STATE_START:
             renderStartPage();
             break;
-        case STATE_PLAYING:
-            renderGame();
+        case STATE_PLAYING_L1:
+            renderGamePlay_L1();
             break;
         }
     }
@@ -120,13 +134,14 @@ void renderStartPage()
     drawUserPrompt();
 }
 
-void renderGame()
+void renderGamePlay_L1()
 {
     int i;
+
     InitViruses(&viruses);
 
     InitMasks(&masks);
-    for (i = 0; i <= TOTAL_MASKS; i++)
+    for (i = 0; i < MASKS_MAX; i++)
     {
         addMask(&masks);
     }
@@ -139,6 +154,42 @@ void renderGame()
         drawMasks(&masks);
         virusCollisionWithPlayer(&viruses);
         maskCollisionWithPlayer(&masks);
+
+        if (PLAYER_COLLECTED_MASKS >= MASKS_MAX)
+        {
+            GAME_LEVEL = 2;
+        }
+        if (GAME_LEVEL == 2)
+        {
+            renderGamePlay_L2();
+        }
     }
 }
 
+void renderGamePlay_L2()
+{
+
+    VIRUSES_MAX = 20;
+    MASKS_MAX = 10;
+    int i;
+
+    Masks masks2;
+
+    InitViruses(&viruses2);
+
+    InitMasks(&masks2);
+    for (i = 0; i <= MASKS_MAX; i++)
+    {
+        addMask(&masks2);
+    }
+
+    drawSprite(SPRITE_R_SMALL, PLAYER_ID, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+
+    while (1)
+    {
+        drawViruses(&viruses2);
+        drawMasks(&masks2);
+        virusCollisionWithPlayer(&viruses2);
+        maskCollisionWithPlayer(&masks2);
+    }
+}

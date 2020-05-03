@@ -121,6 +121,24 @@ void drawUserPrompt(void)
     drawSprite(SPRITE_T_SMALL, SUBTITLE_LETTER_ID + 9, LETTER_XPOS + 160, LETTER_YPOS);
 }
 
+void drawGameLevel(void)
+{
+    int LETTER_XPOS = 32;
+    int LETTER_YPOS = 0;
+
+    drawSprite(SPRITE_L, SUBTITLE_LETTER_ID, LETTER_XPOS, LETTER_YPOS);
+    drawSprite(SPRITE_L, SUBTITLE_LETTER_ID + 1, LETTER_XPOS + 16, LETTER_YPOS);
+    drawSprite(SPRITE_L, SUBTITLE_LETTER_ID + 2, LETTER_XPOS + 32, LETTER_YPOS);
+    drawSprite(SPRITE_L, SUBTITLE_LETTER_ID + 3, LETTER_XPOS + 48, LETTER_YPOS);
+    drawSprite(SPRITE_L, SUBTITLE_LETTER_ID + 4, LETTER_XPOS + 64, LETTER_YPOS);
+
+    drawSprite(SPRITE_S_SMALL, SUBTITLE_LETTER_ID + 5, LETTER_XPOS + 96, LETTER_YPOS);
+    drawSprite(SPRITE_T_SMALL, SUBTITLE_LETTER_ID + 6, LETTER_XPOS + 112, LETTER_YPOS);
+    drawSprite(SPRITE_A_SMALL, SUBTITLE_LETTER_ID + 7, LETTER_XPOS + 128, LETTER_YPOS);
+    drawSprite(SPRITE_R_SMALL, SUBTITLE_LETTER_ID + 8, LETTER_XPOS + 144, LETTER_YPOS);
+    drawSprite(SPRITE_T_SMALL, SUBTITLE_LETTER_ID + 9, LETTER_XPOS + 160, LETTER_YPOS);
+}
+
 void drawSprite(int numb, int N, int x, int y)
 {
     // Same as CA2, make specific sprite (based on its name/numb) appear on screen, as slide number N (each sprite needs a different, arbitrary, N >= 0)

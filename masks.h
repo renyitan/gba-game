@@ -52,7 +52,11 @@ void maskCollisionWithPlayer(Masks *m)
             if ((PLAYER_YPOS >= currentMask->yPos && PLAYER_YPOS <= currentMask->yPos + MASK_PADDING) ||
                 (PLAYER_YPOS + PLAYER_PADDING >= currentMask->yPos && PLAYER_YPOS + PLAYER_PADDING <= currentMask->yPos + MASK_PADDING))
             {
-                currentMask->collected = true;
+                if (!currentMask->collected)
+                {
+                    PLAYER_COLLECTED_MASKS++;
+                    currentMask->collected = true;
+                }
             }
         }
     }
