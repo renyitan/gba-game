@@ -31,6 +31,12 @@ void InitViruses(Viruses *viruses)
     viruses->length = 0;
 }
 
+int getRandomVel()
+{
+    int num = (rand() % 2);
+    return (num == 0) ? num - 1 : num;
+}
+
 void addVirus(Viruses *v, int count)
 {
     if (v->length < count)
@@ -44,11 +50,11 @@ void addVirus(Viruses *v, int count)
         if (newVirus->xPos == PLAYER_XPOS && newVirus->yPos == PLAYER_YPOS)
         {
             newVirus->xPos = ((rand() % 224) + 1);
-            newVirus->xVel = ((rand() % 30) - 15);
+            newVirus->yPos = ((rand() % 30) - 15);
         }
 
-        newVirus->xVel = ((rand() % 30) - 15);
-        newVirus->yVel = ((rand() % 30) - 15);
+        newVirus->xVel = getRandomVel(); // generated random between -1 and 1
+        newVirus->yVel = getRandomVel(); // generate randomly between -1 and 1
         v->length++;
     }
     else
@@ -65,13 +71,12 @@ void updateVirusPosition(Viruses *v)
     {
         Virus *currentVirus = &v->freeVirus[i];
 
-        //if virus hits left or right wall, let it bounce off the ball at an angle
-        if ((abs(currentVirus->xPos - 1) < (abs(currentVirus->xVel) - 1)) || (abs(currentVirus->xPos - 224) < abs(currentVirus->xVel)))
+        if (currentVirus->xPos >= SCREEN_WIDTH - 8 || currentVirus->xPos <= 0)
         {
             currentVirus->xVel = currentVirus->xVel * (-1);
         }
-        //if virus hits top or bottom wall, let it bounce off the ball at an angle
-        else if ((abs(currentVirus->yPos) < (abs(currentVirus->yVel))) || (abs(currentVirus->yPos - 144) < abs(currentVirus->yVel)))
+
+        if (currentVirus->yPos >= SCREEN_HEIGHT - 16 || currentVirus->yPos <= 0)
         {
             currentVirus->yVel = currentVirus->yVel * (-1);
         }
@@ -79,10 +84,6 @@ void updateVirusPosition(Viruses *v)
         currentVirus->xPos += currentVirus->xVel;
         currentVirus->yPos += currentVirus->yVel;
 
-        if (currentVirus->xPos <= 2)
-        {
-            currentVirus->yPos = SCREEN_HEIGHT + 16;
-        }
     }
 }
 

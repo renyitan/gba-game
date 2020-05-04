@@ -31,22 +31,32 @@ void interruptsHandler(void)
 {
     REG_IME = 0x00; // Stop all other interrupt handling, while we handle this current one
 
-    // Timer for 5s
     if ((REG_IF & INT_TIMER0) == INT_TIMER0)
     {
+              if (GAME_LEVEL == 1 && GAME_STATE != STATE_WIN)
+        {
+            updateVirusPosition(&viruses1);
+            // addVirus(&viruses1, VIRUSES_MAX);
+        }
+        if (GAME_LEVEL == 2 && GAME_STATE != STATE_WIN)
+        {
+            updateVirusPosition(&viruses2);
+            // addVirus(&viruses2, VIRUSES_MAX);
+        }
     }
+
 
     // Timer for 1s
     if ((REG_IF & INT_TIMER1) == INT_TIMER1)
     {
         if (GAME_LEVEL == 1 && GAME_STATE != STATE_WIN)
         {
-            updateVirusPosition(&viruses1);
+            // updateVirusPosition(&viruses1);
             addVirus(&viruses1, VIRUSES_MAX);
         }
         if (GAME_LEVEL == 2 && GAME_STATE != STATE_WIN)
         {
-            updateVirusPosition(&viruses2);
+            // updateVirusPosition(&viruses2);
             addVirus(&viruses2, VIRUSES_MAX);
         }
 
@@ -108,7 +118,7 @@ int main(void)
     REG_IE |= INT_TIMER0 | INT_BUTTON | INT_TIMER1;
     REG_IME = 0x1; // Enable interrupt handling
 
-    REG_TM0D = 0x8000;
+    REG_TM0D = 0xFDDD;
     REG_TM0CNT |= TIMER_FREQUENCY_1024 | TIMER_INTERRUPTS | TIMER_ENABLE;
 
     REG_TM1D = 0x0;
@@ -143,6 +153,8 @@ void renderStartPage()
     drawGameTitle();
     drawUserPrompt();
 }
+
+
 
 /**
  * Render function for Level 1
@@ -222,3 +234,4 @@ void renderGamePlay_L2()
         }
     }
 }
+
