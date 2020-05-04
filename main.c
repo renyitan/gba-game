@@ -154,8 +154,6 @@ void renderStartPage()
     drawUserPrompt();
 }
 
-
-
 /**
  * Render function for Level 1
  */
